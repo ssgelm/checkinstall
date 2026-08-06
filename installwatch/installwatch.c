@@ -4738,6 +4738,7 @@ int linkat (int olddirfd, const char *oldpath,
                   int newdirfd, const char *newpath, int flags) {
 
  	int result;
+ 	int unnamed_source;
  	instw_t instwold;
  	instw_t instwnew;
 
@@ -4755,9 +4756,13 @@ int linkat (int olddirfd, const char *oldpath,
  	   !(__instw.gstatus & INSTW_OKWRAP))
 		return true_linkat(olddirfd, oldpath, newdirfd, newpath, flags);
 
+	  /* An empty oldpath with AT_EMPTY_PATH names olddirfd itself, which */
+	  /* may be an O_TMPFILE with no path to translate.                   */
+	unnamed_source=(flags&AT_EMPTY_PATH) && oldpath[0]=='\0';
+
  	instw_new(&instwold);
  	instw_new(&instwnew);
- 	instw_setpathrel(&instwold,olddirfd,oldpath);
+	if(!unnamed_source) instw_setpathrel(&instwold,olddirfd,oldpath);
  	instw_setpathrel(&instwnew,newdirfd,newpath);
 
 #if DEBUG
@@ -4765,11 +4770,21 @@ int linkat (int olddirfd, const char *oldpath,
  	instw_print(&instwnew);
 #endif
 
-	backup(instwold.truepath);
-	instw_apply(&instwold);
+	if(!unnamed_source) {
+		backup(instwold.truepath);
+		instw_apply(&instwold);
+	}
 	instw_apply(&instwnew);
 
-	result=true_linkat(olddirfd, oldpath, newdirfd, newpath, flags);
+	  /* instw resolved the named ends to absolute paths, so those      */
+	  /* descriptors are spent and the files to link are the translated */
+	  /* ones.                                                          */
+	if(unnamed_source)
+		result=true_linkat(olddirfd, oldpath,
+		                   AT_FDCWD, instwnew.translpath, flags);
+	else
+		result=true_linkat(AT_FDCWD, instwold.translpath,
+		                   AT_FDCWD, instwnew.translpath, flags);
 	logg("%d\tlinkat\t%s\t%s\t#%s\n",result,
 	    instwold.reslvpath,instwnew.reslvpath,error(result));
 
