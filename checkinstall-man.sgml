@@ -249,6 +249,13 @@
       </varlistentry>
 
       <varlistentry>
+        <term><option>--prerequires</option>
+        </term>
+	<listitem><para>Dependencies that must be installed and configured before this package.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
         <term><option>--rpmflags</option>
         </term>
 	<listitem><para>Pass this flags to the rpm installer.</para>
