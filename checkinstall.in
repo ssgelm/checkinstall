@@ -296,7 +296,7 @@ function restore_backup {
     echogn "Restoring overwritten files from backup..."
     cd ${TMP_DIR}/BACKUP
        files=$(ls -A)
-       $TAR -cpf - $files | $TAR -f - -xvpC / &> /dev/null
+       $TAR -cpf - $files | $TAR $TAR_KEEPSYMLINK -f - -xvpC / &> /dev/null
     okfail
     echo
  fi
@@ -1058,7 +1058,18 @@ if [ $BADTAR -gt 0 ]; then
    echo
 fi
 
+# Restoring a backup into / must not let tar replace a symlinked directory
+# with a real one. On a merged-/usr system that turns /bin, /lib and the
+# other aliased directories into real ones, leaving the system unable to run
+# a single binary. GNU tar 1.27 and later can be told to leave them alone.
+# tar-1.13 and other implementations cannot, so there we do without it.
+TAR_KEEPSYMLINK=""
+if $TAR --keep-directory-symlink --version > /dev/null 2>&1; then
+   TAR_KEEPSYMLINK="--keep-directory-symlink"
+fi
+
 [ $DEBUG -gt 0 ] && echo "debug: TAR=$TAR"
+[ $DEBUG -gt 0 ] && echo "debug: TAR_KEEPSYMLINK=$TAR_KEEPSYMLINK"
 [ $DEBUG -gt 0 ] && echo "debug: VISUAL=$VISUAL"
 
                       #################################
