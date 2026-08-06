@@ -152,6 +152,17 @@ static int (*true_renameat2)(int, const char *, int, const char *);
 static int (*true_symlinkat)(const char *, int, const char *);
 static int (*true_unlinkat)(int, const char *, int);
 
+  /*
+   *   statx() arrived in glibc 2.28 and has no older form to stand in for
+   * it. coreutils calls it directly, so it needs a wrapper of its own.
+   * Without one, a translated file is invisible to ls(1), stat(1) and
+   * anything else that asks this way.
+   */
+#if (GLIBC_MINOR >= 28)
+static int (*true_statx)(int, const char *, int, unsigned int,
+                         struct statx *);
+#endif
+
   /* glibc 2.33 exports these names directly. Keep the __xstat wrappers */
   /* below for binaries built against older glibc.                     */
 #if (GLIBC_MINOR >= 33)
@@ -444,6 +455,10 @@ static void initialize(void) {
 	true_renameat2     = dlsym(libc_handle, "renameat2");
 	true_symlinkat     = dlsym(libc_handle, "symlinkat");
 	true_unlinkat      = dlsym(libc_handle, "unlinkat");
+
+#if (GLIBC_MINOR >= 28)
+	true_statx         = dlsym(libc_handle, "statx");
+#endif
 
 #if (GLIBC_MINOR >= 33)
 	true_stat	 = dlsym(libc_handle, "stat");
@@ -4806,6 +4821,55 @@ int mkdirat (int dirfd, const char *path, mode_t mode) {
  
 	return result;
 }
+
+
+#if (GLIBC_MINOR >= 28)
+int statx(int dirfd, const char *path, int flags,
+          unsigned int mask, struct statx *buf) {
+
+	int result;
+	int status;
+	instw_t instw;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"statx(%d,%s,0%o,%u,%p)\n",dirfd,path,flags,mask,buf);
+#endif
+
+	  /* We were asked to work in "real" mode */
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_statx(dirfd,path,flags,mask,buf);
+
+	  /* An empty path asks about 'dirfd' itself (AT_EMPTY_PATH), */
+	  /* so there is nothing for us to translate.                 */
+	if(path==NULL || *path=='\0')
+		return true_statx(dirfd,path,flags,mask,buf);
+
+	instw_new(&instw);
+	instw_setpathrel(&instw,dirfd,path);
+	instw_getstatus(&instw,&status);
+
+#if DEBUG
+	instw_print(&instw);
+#endif
+
+	  /* instw gave us an absolute path, so 'dirfd' is spent */
+	if(status&INSTW_TRANSLATED) {
+		debug(4,"\teffective statx(%s)\n",instw.translpath);
+		result=true_statx(AT_FDCWD,instw.translpath,flags,mask,buf);
+	} else {
+		debug(4,"\teffective statx(%s)\n",instw.path);
+		result=true_statx(AT_FDCWD,instw.path,flags,mask,buf);
+	}
+
+	instw_delete(&instw);
+
+	return result;
+}
+#endif
 
 
 READLINKAT_T readlinkat (int dirfd, const char *path,
