@@ -4838,6 +4838,26 @@ int mkdirat (int dirfd, const char *path, mode_t mode) {
 }
 
 
+  /* Fortified calls bypass the ordinary interposed symbols. */
+  /* The caller supplies no mode, so pass one explicitly.    */
+
+int __open_2(const char *pathname, int flags) {
+	return open(pathname, flags, 0);
+}
+
+int __open64_2(const char *pathname, int flags) {
+	return open64(pathname, flags, 0);
+}
+
+int __openat_2(int dirfd, const char *pathname, int flags) {
+	return openat(dirfd, pathname, flags, 0);
+}
+
+int __openat64_2(int dirfd, const char *pathname, int flags) {
+	return openat(dirfd, pathname, flags, 0);
+}
+
+
 #if (GLIBC_MINOR >= 28)
 int statx(int dirfd, const char *path, int flags,
           unsigned int mask, struct statx *buf) {
