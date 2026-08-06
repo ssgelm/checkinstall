@@ -28,7 +28,7 @@ install: all
 	
 	mkdir -p $(BINDIR)
 	mkdir -p $(LCDIR)
-	install -m 0755 -o root -g root checkinstall makepak $(BINDIR)
+	install -m 0755 checkinstall makepak $(BINDIR)
 	for file in locale/*.mo ; do \
 		CKLNG=`echo $$file | sed -e 's|locale/checkinstall-||' \
 			-e 's|\.mo||'` && \
