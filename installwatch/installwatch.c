@@ -3674,7 +3674,7 @@ int access (const char *pathname, int type) {
        instw_print(&instw);
 #endif
 
-       backup(instw.truepath);
+         /* access() cannot modify anything, so there is nothing to save */
        instw_apply(&instw);
 
        result=true_access(instw.translpath,type);
