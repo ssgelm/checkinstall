@@ -148,6 +148,7 @@ static int (*true_mkdirat)(int, const char *, mode_t);
 static int (*true_readlinkat)(int, const char *, char *, size_t);
 static int (*true_xmknodat)(int, int, const char *, mode_t, dev_t *);
 static int (*true_renameat)(int, const char *, int, const char *);
+static int (*true_renameat2)(int, const char *, int, const char *);
 static int (*true_symlinkat)(const char *, int, const char *);
 static int (*true_unlinkat)(int, const char *, int);
 
@@ -399,6 +400,7 @@ static void initialize(void) {
 	true_readlinkat      = dlsym(libc_handle, "readlinkat");
 	true_xmknodat      = dlsym(libc_handle, "__xmknodat");
 	true_renameat      = dlsym(libc_handle, "renameat");
+	true_renameat2     = dlsym(libc_handle, "renameat2");
 	true_symlinkat     = dlsym(libc_handle, "symlinkat");
 	true_unlinkat      = dlsym(libc_handle, "unlinkat");
 
@@ -4406,6 +4408,18 @@ int renameat (int olddirfd, const char *oldpath,
 	return result;
 }
 
+/* Note that this only implements RENAME_NOREPLACE */
+int renameat2 (int olddirfd, const char *oldpath,
+                  int newdirfd, const char *newpath, unsigned int flags) {
+  if ( (flags & RENAME_NOREPLACE) == RENAME_NOREPLACE ) {
+    instw_t instwnew;
+    instw_new(&instwnew);
+    instw_setpathrel(&instwnew,newdirfd,newpath);
+    struct stat buf;
+    if (stat(instwnew.path, &buf) == 0) return EEXIST;
+  }
+  return renameat (olddirfd, oldpath, newdirfd, newpath);
+}
 
 int symlinkat (const char *oldpath, int dirfd, const char *newpath) {
  	
