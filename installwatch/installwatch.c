@@ -152,6 +152,19 @@ static int (*true_renameat2)(int, const char *, int, const char *);
 static int (*true_symlinkat)(const char *, int, const char *);
 static int (*true_unlinkat)(int, const char *, int);
 
+  /* glibc 2.33 exports these names directly. Keep the __xstat wrappers */
+  /* below for binaries built against older glibc.                     */
+#if (GLIBC_MINOR >= 33)
+static int (*true_stat)(const char *, struct stat *);
+static int (*true_stat64)(const char *, struct stat64 *);
+static int (*true_mknod)(const char *, mode_t, dev_t);
+static int (*true_lstat)(const char *, struct stat *);
+static int (*true_lstat64)(const char *, struct stat64 *);
+static int (*true_fstatat)(int, const char *, struct stat *, int);
+static int (*true_fstatat64)(int, const char *, struct stat64 *, int);
+static int (*true_mknodat)(int, const char *, mode_t, dev_t);
+#endif
+
 #if defined __GNUC__ && __GNUC__>=2
 	#define inline inline
 #else
@@ -179,6 +192,8 @@ static int (*true_unlinkat)(int, const char *, int);
  #endif
 #endif
 
+
+#if (GLIBC_MINOR < 33)
 static inline int true_stat(const char *pathname,struct stat *info) {
 	return true_xstat(_STAT_VER,pathname,info);
 }
@@ -202,6 +217,7 @@ static inline int true_fstatat64(int dirfd, const char *pathname, struct stat64 
 static inline int true_mknodat(int dirfd, const char *pathname,mode_t mode,dev_t dev) {
 	return true_xmknodat(_MKNOD_VER, dirfd, pathname, mode, &dev);
 }
+#endif
 
 
   /* A few defines to fix things a little */
@@ -426,6 +442,17 @@ static void initialize(void) {
 	true_renameat2     = dlsym(libc_handle, "renameat2");
 	true_symlinkat     = dlsym(libc_handle, "symlinkat");
 	true_unlinkat      = dlsym(libc_handle, "unlinkat");
+
+#if (GLIBC_MINOR >= 33)
+	true_stat	 = dlsym(libc_handle, "stat");
+	true_stat64	 = dlsym(libc_handle, "stat64");
+	true_mknod	 = dlsym(libc_handle, "mknod");
+	true_mknodat	 = dlsym(libc_handle, "mknodat");
+	true_lstat	 = dlsym(libc_handle, "lstat");
+	true_lstat64	 = dlsym(libc_handle, "lstat64");
+	true_fstatat	 = dlsym(libc_handle, "fstatat");
+	true_fstatat64 	 = dlsym(libc_handle, "fstatat64");
+#endif
 
 
 	if(instw_init()) exit(-1);
@@ -2813,6 +2840,46 @@ int mkdir(const char *pathname, mode_t mode) {
 	return result;
 }
 
+#if (GLIBC_MINOR >= 33)
+int mknod(const char *pathname, mode_t mode, dev_t dev) {
+	int result;
+	instw_t instw;
+	
+	REFCOUNT;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"mknod(%s,mode,dev)\n",pathname);
+#endif
+
+	  /* We were asked to work in "real" mode */
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) ) {
+		result=true_mknod(pathname,mode,dev);
+		return result;
+	}
+
+	instw_new(&instw);
+	instw_setpath(&instw,pathname);
+
+#if DEBUG
+	instw_print(&instw);
+#endif
+
+	instw_apply(&instw);
+	backup(instw.truepath);
+
+	result=true_mknod(instw.translpath,mode,dev);
+	logg("%d\tmknod\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+	
+	return result;
+}
+#endif
+
 int __xmknod(int version,const char *pathname, mode_t mode,dev_t *dev) {
 	int result;
 	instw_t instw;
@@ -3136,6 +3203,49 @@ int scandir(	const char *dir,struct dirent ***namelist,
 }		
 #endif
 
+#if (GLIBC_MINOR >= 33)
+int stat(const char *pathname, struct stat *info) {
+	int result;
+	instw_t instw;
+	int status;
+
+	if(!libc_handle)
+		initialize();
+#if DEBUG
+	debug(2, "stat(%s, %p)\n", pathname, info);
+#endif
+	/* We were asked to work in "real" mode */
+	if(!(__instw.gstatus & INSTW_INITIALIZED) || 
+	   !(__instw.gstatus & INSTW_OKWRAP)) {
+		result = true_stat(pathname, info);
+		return result;
+	}
+
+	instw_new(&instw);
+	instw_setpath(&instw, pathname);
+	instw_getstatus(&instw, &status);
+
+#if DEBUG
+	instw_print(&instw);
+#endif
+
+	if(status&INSTW_TRANSLATED) {
+		debug(4,"\teffective stat(%s,%p)\n",
+		      instw.translpath,info);
+		result=true_stat(instw.translpath,info);
+	} else {
+		debug(4,"\teffective stat(%s,%p)\n",
+		      instw.path,info);
+		result=true_stat(instw.path,info);
+	}
+
+	instw_delete(&instw);
+
+	return result;	
+}
+
+#endif
+
 int __xstat(int version,const char *pathname,struct stat *info) {
 	int result;
 	instw_t instw;
@@ -3177,6 +3287,50 @@ int __xstat(int version,const char *pathname,struct stat *info) {
 
 	return result;	
 }
+
+#if (GLIBC_MINOR >= 33)
+int lstat(const char *pathname,struct stat *info) {
+	int result;
+	instw_t instw;
+	int status;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"lstat(%s,%p)\n",pathname,info);
+#endif
+
+	  /* We were asked to work in "real" mode */
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) ) {
+		result=true_lstat(pathname,info);
+		return result;
+	}
+
+	instw_new(&instw);
+	instw_setpath(&instw,pathname);
+	instw_getstatus(&instw,&status);
+
+#if DEBUG
+	instw_print(&instw);
+#endif
+
+	if(status&INSTW_TRANSLATED) {
+		debug(4,"\teffective lstat(%s,%p)\n",
+			instw.translpath,info);
+		result=true_lstat(instw.translpath,info);
+	} else {
+		debug(4,"\teffective lstat(%s,%p)\n",
+			instw.path,info);
+		result=true_lstat(instw.path,info);
+	}
+
+	instw_delete(&instw);
+
+	return result;	
+}
+#endif
 
 int __lxstat(int version,const char *pathname,struct stat *info) {
 	int result;
@@ -3753,6 +3907,53 @@ int scandir64(	const char *dir,struct dirent64 ***namelist,
 	return result;
 }		
 
+#if (GLIBC_MINOR >= 33)
+int stat64(const char *pathname,struct stat64 *info) {
+	int result;
+	instw_t instw;
+	int status;
+
+  if (!libc_handle)
+ 		initialize();
+
+#if DEBUG
+	debug(2,"stat64(%s,%p)\n",pathname,info);
+#endif
+
+	  /* We were asked to work in "real" mode */
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) ) {
+		result=true_stat64(pathname,info);
+		return result;
+	}
+
+	instw_new(&instw);
+	instw_setpath(&instw,pathname);
+	instw_getstatus(&instw,&status);
+
+       if (!libc_handle)
+           initialize();
+
+#if DEBUG
+	instw_print(&instw);
+#endif
+
+	if(status&INSTW_TRANSLATED) {
+		debug(4,"\teffective stat64(%s,%p)\n",
+		      instw.translpath,info);
+		result=true_stat64(instw.translpath,info);
+	} else {
+		debug(4,"\teffective stat64(%s,%p)\n",
+		      instw.path,info);
+		result=true_stat64(instw.path,info);
+	}	
+
+	instw_delete(&instw);
+
+	return result;	
+}
+#endif
+
 int __xstat64(int version,const char *pathname,struct stat64 *info) {
 	int result;
 	instw_t instw;
@@ -3797,6 +3998,47 @@ int __xstat64(int version,const char *pathname,struct stat64 *info) {
 
 	return result;	
 }
+
+#if (GLIBC_MINOR >= 33)
+int lstat64(const char *pathname,struct stat64 *info) {
+	int result;
+	instw_t instw;
+	int status;
+
+#if DEBUG
+	debug(2,"lstat64(%s,%p)\n",pathname,info);
+#endif
+
+	  /* We were asked to work in "real" mode */
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) ) {
+		result=true_lstat64(pathname,info);
+		return result;
+	}
+
+	instw_new(&instw);
+	instw_setpath(&instw,pathname);
+	instw_getstatus(&instw,&status);
+
+#if DEBUG
+	instw_print(&instw);
+#endif
+
+	if(status&INSTW_TRANSLATED) {
+		debug(4,"\teffective lstat64(%s,%p)\n",
+			instw.translpath,info);
+		result=true_lstat64(instw.translpath,info);
+	} else {
+		debug(4,"\teffective lstat64(%s,%p)\n",
+			instw.path,info);
+		result=true_lstat64(instw.path,info);
+	}
+
+	instw_delete(&instw);
+
+	return result;	
+}
+#endif
 
 int __lxstat64(int version,const char *pathname,struct stat64 *info) {
 	int result;
@@ -4057,6 +4299,80 @@ int fchownat (int dirfd, const char *path,uid_t owner,gid_t group,int flags) {
 	return result;
 }
 
+#if (GLIBC_MINOR >= 33)
+int fstatat (int dirfd, const char *path, struct stat *s, int flags) {
+ 	
+ 	int result;
+ 	instw_t instw;
+ 
+ 	/* If all we are doing is normal open, forgo refcounting, etc. */
+         if(dirfd == AT_FDCWD || *path == '/')
+		{
+		 #if DEBUG
+			debug(2, "fstatat(%d,%s,%p,0%o)\n", dirfd, path, s, flags);
+		 #endif
+
+		 /* If we have AT_SYMLINK_NOFOLLOW then we need  */
+		 /* lstat() behaviour, according to fstatat(2) */
+
+		 if ( flags & AT_SYMLINK_NOFOLLOW ) {
+		    return lstat(path, s); 
+		 }
+		 else {
+		    return stat(path, s);
+		 }
+
+		}
+ 
+ 	REFCOUNT;
+ 
+ 	if (!libc_handle)
+ 		initialize();
+ 
+#if DEBUG
+	debug(2, "fstatat(%d,%s,%p,0%o)\n", dirfd, path, s, flags);
+#endif
+ 	
+ 	/* We were asked to work in "real" mode */
+ 	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
+ 	   !(__instw.gstatus & INSTW_OKWRAP)) {
+
+
+		 /* If we have AT_SYMLINK_NOFOLLOW then we need  */
+		 /* lstat() behaviour, according to fstatat(2) */
+
+		 if ( flags & AT_SYMLINK_NOFOLLOW ) {
+		    return true_lstat(path, s); 
+		 }
+		 else {
+ 		    return true_stat(path, s);
+		 }
+	}
+
+	
+ 	instw_new(&instw);
+ 	instw_setpathrel(&instw,dirfd,path);
+ 	
+#if DEBUG
+ 	instw_print(&instw);
+#endif
+ 
+		 /* If we have AT_SYMLINK_NOFOLLOW then we need  */
+		 /* lstat() behaviour, according to fstatat(2) */
+
+		 if ( flags & AT_SYMLINK_NOFOLLOW ) {
+ 		    result=lstat(instw.path, s);
+		 }
+		 else {
+ 		    result=stat(instw.path, s);
+ 		    
+		 }	
+ 	
+ 	instw_delete(&instw);
+ 
+	return result;
+}
+#endif
 
 int __fxstatat (int version, int dirfd, const char *path, struct stat *s, int flags) {
  	
@@ -4130,6 +4446,80 @@ int __fxstatat (int version, int dirfd, const char *path, struct stat *s, int fl
  
 	return result;
 }
+
+#if (GLIBC_MINOR >= 33)
+int fstatat64 (int dirfd, const char *path, struct stat64 *s, int flags) {
+ 	
+ 	int result;
+ 	instw_t instw;
+ 
+ 	/* If all we are doing is normal open, forgo refcounting, etc. */
+         if(dirfd == AT_FDCWD || *path == '/')
+		{
+		 #if DEBUG
+			debug(2, "fstatat(%d,%s,%p,0%o)\n", dirfd, path, s, flags);
+		 #endif
+
+		 /* If we have AT_SYMLINK_NOFOLLOW then we need  */
+		 /* lstat() behaviour, according to fstatat(2) */
+
+		 if ( flags & AT_SYMLINK_NOFOLLOW ) {
+		    return lstat64(path, s); 
+		 }
+		 else {
+		    return stat64(path, s);
+		 }
+
+		}
+ 
+ 	REFCOUNT;
+ 
+ 	if (!libc_handle)
+ 		initialize();
+ 
+#if DEBUG
+	debug(2, "fstatat(%d,%s,%p,0%o)\n", dirfd, path, s, flags);
+#endif
+ 	
+ 	/* We were asked to work in "real" mode */
+ 	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
+ 	   !(__instw.gstatus & INSTW_OKWRAP)) {
+
+		 /* If we have AT_SYMLINK_NOFOLLOW then we need  */
+		 /* lstat() behaviour, according to fstatat(2) */
+
+		 if ( flags & AT_SYMLINK_NOFOLLOW ) {
+		    return true_lstat64(path, s); 
+		 }
+		 else {
+ 		    return true_stat64(path, s);
+		 }
+	}
+
+	
+ 	instw_new(&instw);
+ 	instw_setpathrel(&instw,dirfd,path);
+ 	
+#if DEBUG
+ 	instw_print(&instw);
+#endif
+
+	/* If we have AT_SYMLINK_NOFOLLOW then we need  */
+	/* lstat() behaviour, according to fstatat(2) */
+
+	if ( flags & AT_SYMLINK_NOFOLLOW ) {
+ 	   result=lstat64(instw.path, s);
+	}
+	else {
+ 	   result=stat64(instw.path, s);
+	}
+ 	
+ 	instw_delete(&instw);
+ 
+	return result;
+
+}
+#endif
 
 int __fxstatat64 (int version, int dirfd, const char *path, struct stat64 *s, int flags) {
  	
@@ -4335,6 +4725,50 @@ READLINKAT_T readlinkat (int dirfd, const char *path,
  
 	return result;
 }
+
+#if (GLIBC_MINOR >= 33)
+int mknodat (int dirfd,const char *path,mode_t mode,dev_t dev) {
+ 	
+ 	int result;
+ 	instw_t instw;
+ 
+ 	/* If all we are doing is normal open, forgo refcounting, etc. */
+         if(dirfd == AT_FDCWD || *path == '/')
+		{
+		 #if DEBUG
+			debug(2, "mknod(%s, mode, dev)\n", path);
+		 #endif
+		 return mknod(path, mode, dev);
+		}
+ 
+ 	REFCOUNT;
+ 
+ 	if (!libc_handle)
+ 		initialize();
+ 
+#if DEBUG
+	debug(2, "mknod(%s, mode, dev)\n", path);
+#endif
+ 	
+ 	/* We were asked to work in "real" mode */
+ 	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
+ 	   !(__instw.gstatus & INSTW_OKWRAP))
+ 		return true_mknod(path, mode, dev);
+	
+ 	instw_new(&instw);
+ 	instw_setpathrel(&instw,dirfd,path);
+ 	
+#if DEBUG
+ 	instw_print(&instw);
+#endif
+ 	
+ 	result=mknod(instw.path, mode, dev);
+ 	
+ 	instw_delete(&instw);
+ 
+	return result;
+}
+#endif
 
 
 int __xmknodat (int version, int dirfd,const char *path,mode_t mode,dev_t *dev) {
