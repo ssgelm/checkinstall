@@ -300,6 +300,7 @@ static int reduce(char *);
 static int make_path(const char *);
 static int copy_path(const char *,const char *);
 static const char *resolve_parent(const char *,char *,size_t);
+static const char *resolve_dir(const char *,char *,size_t);
 static inline int path_excluded(const char *);
 static int unlink_recursive(const char *);
 
@@ -778,6 +779,37 @@ static const char *resolve_parent(const char *path,char *canonical,size_t canons
 #endif
 
 	return canonical;
+}
+
+/* Resolve an existing symlink to a directory, as mkdir() needs for */
+/* aliases such as /lib -> /usr/lib.                                */
+
+static const char *resolve_dir(const char *path,char *canonical,size_t canonsz) {
+	char resolved[PATH_MAX+1];
+	struct stat inode;
+	int s_errno;
+
+	  /* realpath() and the failed stats clobber errno */
+	s_errno=errno;
+
+	if(	true_lstat(path,&inode)==0 && S_ISLNK(inode.st_mode) &&
+		true_stat(path,&inode)==0 && S_ISDIR(inode.st_mode) &&
+		realpath(path,resolved)!=NULL &&
+		strlen(resolved)<canonsz ) {
+
+		strcpy(canonical,resolved);
+		errno=s_errno;
+
+#if DEBUG
+		debug(3,"resolve_dir: %s -> %s\n",path,canonical);
+#endif
+
+		return canonical;
+	}
+
+	errno=s_errno;
+
+	return path;
 }
 
 static int make_path (const char *path) {
@@ -1685,6 +1717,8 @@ static int instw_setmetatransl(instw_t *instw) {
  *               -1 failed. cf errno /
  */
 static int instw_setpath(instw_t *instw,const char *path) {
+	char canonical[PATH_MAX+1];
+	const char *pcanon;
 	size_t relen;
 	size_t trlen = 0;
 	size_t melen;
@@ -1708,11 +1742,19 @@ static int instw_setpath(instw_t *instw,const char *path) {
 		reduce(instw->path);
 		strcpy(instw->truepath,instw->path);
 	}
-	relen=strlen(instw->truepath);
-	
 	/* remove relative elements from the truepath */
 	reduce(instw->truepath);
-	
+
+	  /* Record paths under their real parent directories. Leave the final */
+	  /* component unresolved so operations still see a symlink there.    */
+	pcanon=resolve_parent(instw->truepath,canonical,sizeof(canonical));
+	if(pcanon!=instw->truepath) {
+		strncpy(instw->truepath,pcanon,PATH_MAX);
+		instw->truepath[PATH_MAX]='\0';
+	}
+
+	relen=strlen(instw->truepath);
+
 	  /* 
 	   *   if library is not completely initialized, or if translation 
 	   * is not active, we make things so it is equivalent to the
@@ -2884,6 +2926,7 @@ int link(const char *oldpath, const char *newpath) {
 }
 
 int mkdir(const char *pathname, mode_t mode) {
+	char canonical[PATH_MAX+1];
 	int result;
 	instw_t instw;
 
@@ -2903,8 +2946,10 @@ int mkdir(const char *pathname, mode_t mode) {
 		return result;
 	}
 
+	  /* An existing symlink to a directory is the directory it points */
+	  /* at: creating "/lib" is creating "/usr/lib".                   */
 	instw_new(&instw);
-	instw_setpath(&instw,pathname);
+	instw_setpath(&instw,resolve_dir(pathname,canonical,sizeof(canonical)));
 
 #if DEBUG
 	instw_print(&instw);
