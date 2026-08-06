@@ -1714,9 +1714,9 @@ static int instw_setpathrel(instw_t *instw, int dirfd, const char *relpath) {
 	snprintf(proc_path, PROC_PATH_LEN, "/proc/self/fd/%d", dirfd);
 	if(true_lstat(proc_path, &s) == -1)
 		goto out;
-	if(!(newpath = malloc(s.st_size+strlen(relpath)+2)))
+	if(!(newpath = malloc(PATH_MAX+strlen(relpath)+2)))
 		goto out;
-	if((l = true_readlink(proc_path, newpath, s.st_size)) == -1)
+	if((l = true_readlink(proc_path, newpath, PATH_MAX)) == -1)
 		goto free_out;
 	newpath[l] = '/';
 	strcpy(newpath + l + 1, relpath);
@@ -2547,7 +2547,7 @@ int fchown(int fd, uid_t owner, gid_t group) {
 }
 
 FILE *fopen(const char *pathname, const char *mode) {
-	FILE *result;
+	FILE *result = NULL;
 	instw_t instw;
 	int status=0;
 
@@ -3742,6 +3742,9 @@ int __xstat64(int version,const char *pathname,struct stat64 *info) {
 	instw_t instw;
 	int status;
 
+  if (!libc_handle)
+ 		initialize();
+
 #if DEBUG
 	debug(2,"stat64(%s,%p)\n",pathname,info);
 #endif
@@ -4187,62 +4190,46 @@ int __fxstatat64 (int version, int dirfd, const char *path, struct stat64 *s, in
 
 int linkat (int olddirfd, const char *oldpath,
                   int newdirfd, const char *newpath, int flags) {
- 	
+
  	int result;
  	instw_t instwold;
  	instw_t instwnew;
- 
- 	/* If all we are doing is normal open, forgo refcounting, etc. */
-         if( (olddirfd == AT_FDCWD || *oldpath == '/') &&
-             (newdirfd == AT_FDCWD || *newpath == '/') )
-		{
-		 #if DEBUG
-			debug(2, "linkat(%d, %s, %d, %s, 0%o)\n", olddirfd, oldpath, newdirfd, newpath, flags );
-		 #endif
 
-		 return link(oldpath, newpath); 
-
-/*** FIXME: If we have AT_SYMLINK_NOFOLLOW we need to dereference the links 
-
-		 if ( flags & AT_SYMLINK_NOFOLLOW ) {
-		    return link(oldpath, newpath); 
-		 }
-		 else {
-		    return link(oldpath, newpath);
-		 }
-***************************************************************** FIXME */
-
-		}
- 
  	REFCOUNT;
- 
+
  	if (!libc_handle)
  		initialize();
- 
+
 #if DEBUG
 	debug(2, "linkat(%d, %s, %d, %s, 0%o)\n", olddirfd, oldpath, newdirfd, newpath, flags );
 #endif
- 	
+
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_link(oldpath, newpath);
-	
+		return true_linkat(olddirfd, oldpath, newdirfd, newpath, flags);
+
  	instw_new(&instwold);
  	instw_new(&instwnew);
  	instw_setpathrel(&instwold,olddirfd,oldpath);
  	instw_setpathrel(&instwnew,newdirfd,newpath);
- 	
+
 #if DEBUG
  	instw_print(&instwold);
  	instw_print(&instwnew);
 #endif
- 	
- 	result=link(instwold.path, instwnew.path);
- 	
+
+	backup(instwold.truepath);
+	instw_apply(&instwold);
+	instw_apply(&instwnew);
+
+	result=true_linkat(olddirfd, oldpath, newdirfd, newpath, flags);
+	logg("%d\tlinkat\t%s\t%s\t#%s\n",result,
+	    instwold.reslvpath,instwnew.reslvpath,error(result));
+
  	instw_delete(&instwold);
  	instw_delete(&instwnew);
- 
+
 	return result;
 }
 
