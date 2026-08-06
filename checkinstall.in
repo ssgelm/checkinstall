@@ -2022,7 +2022,8 @@ if [ $ADD_SO -eq 1 ]; then
 # in the postinstall script.
 
 cat ${TMP_DIR}/newfiles | while read libfile; do
-  FILETYPE=`file $libfile` 
+  # Inspect the staged file rather than its final absolute path.
+  FILETYPE=`file "${BUILD_DIR}${libfile}"`
   if echo /$FILETYPE | grep -e ".*ELF.*hared.*bject" &> /dev/null; then
      echo `dirname $libfile` >> ${TMP_DIR}/libdirs
   fi
