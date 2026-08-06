@@ -299,6 +299,7 @@ static int canonicalize(const char *,char *);
 static int reduce(char *);
 static int make_path(const char *);
 static int copy_path(const char *,const char *);
+static const char *resolve_parent(const char *,char *,size_t);
 static inline int path_excluded(const char *);
 static int unlink_recursive(const char *);
 
@@ -706,6 +707,77 @@ static int reduce(char *path) {
 		default:
 			return 0;
 	}
+}
+
+/*
+ * procedure = / result:=resolve_parent(path,canonical,canonsz) /
+ *
+ * task      = / resolve the symlinks found in the directory part of 'path',
+ *               leaving its last component untouched, and store the outcome
+ *               in 'canonical', a buffer of 'canonsz' bytes.
+ *
+ *               This matters when mirroring a path into a directory tree of
+ *               our own, the backup area. We recreate the parent
+ *               directories there with mkdir(), so a file reached through a
+ *               symlinked directory such as /lib on a merged-/usr system
+ *               lands under a real directory named 'lib'. Restore that tree
+ *               over / and the /lib symlink becomes a directory, leaving
+ *               the system unable to run a single binary.
+ *
+ *               The last component stays as it is, on purpose: a symlink
+ *               there has to be saved as a symlink.                        /
+ *
+ * returns   = / 'canonical' on success, 'path' itself if the parent
+ *               directory cannot be resolved or the result does not fit    /
+ */
+
+static const char *resolve_parent(const char *path,char *canonical,size_t canonsz) {
+	char parent[PATH_MAX+1];
+	char resolved[PATH_MAX+1];
+	const char *base;
+	size_t plen,rlen;
+	int s_errno;
+
+	  /* realpath() clobbers errno even when it succeeds */
+	s_errno=errno;
+
+	if((base=strrchr(path,'/'))==NULL) return path;
+	base++;
+
+	  /* the parent is / itself (or path *is* /): nothing to resolve */
+	if((plen=base-path)<=1) return path;
+
+	  /* everything but the trailing '/' */
+	if((plen-1)>PATH_MAX) return path;
+	memcpy(parent,path,plen-1);
+	parent[plen-1]='\0';
+
+	if(realpath(parent,resolved)==NULL) {
+		errno=s_errno;
+		return path;
+	}
+
+	  /* realpath() only yields a trailing '/' for the root directory */
+	rlen=strlen(resolved);
+	if(rlen && resolved[rlen-1]=='/') resolved[--rlen]='\0';
+
+	if((rlen+1+strlen(base))>=canonsz) {
+		errno=s_errno;
+		return path;
+	}
+
+	strcpy(canonical,resolved);
+	canonical[rlen]='/';
+	strcpy(canonical+rlen+1,base);
+
+	errno=s_errno;
+
+#if DEBUG
+	if(strcmp(path,canonical))
+		debug(3,"resolve_parent: %s -> %s\n",path,canonical);
+#endif
+
+	return canonical;
 }
 
 static int make_path (const char *path) {
@@ -2226,6 +2298,7 @@ static int instw_makedirls(instw_t *instw) {
 static int backup(const char *path) {
 	char checkdir[BUFSIZ];
 	char backup_path[BUFSIZ];
+	char canonical[PATH_MAX+1];
 	int	placeholder,
 		i,
 		blen;
@@ -2243,6 +2316,13 @@ static int backup(const char *path) {
 		#endif
 		return 0;
 	}
+
+	/* Mirror the file under the name its parent directories really have, */
+	/* so a symlinked directory never gets recreated here as a real one.  */
+	/* Everything below works on that name, exclusions included: a        */
+	/* symlink leading into /tmp or into the backup area has to be caught */
+	/* just the same.                                                     */
+	path = resolve_parent(path,canonical,sizeof(canonical));
 
 	/* Check if this is inside /dev */
 	if (strstr (path, "/dev") == path) {
