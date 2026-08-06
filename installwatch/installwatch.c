@@ -163,6 +163,17 @@ static int (*true_statx)(int, const char *, int, unsigned int,
                          struct statx *);
 #endif
 
+  /* These functions open their files internally, bypassing open(). */
+static int (*true_mkstemp)(char *);
+static int (*true_mkstemp64)(char *);
+static int (*true_mkostemp)(char *, int);
+static int (*true_mkostemp64)(char *, int);
+static int (*true_mkstemps)(char *, int);
+static int (*true_mkstemps64)(char *, int);
+static int (*true_mkostemps)(char *, int, int);
+static int (*true_mkostemps64)(char *, int, int);
+static char *(*true_mkdtemp)(char *);
+
   /* glibc 2.33 exports these names directly. Keep the __xstat wrappers */
   /* below for binaries built against older glibc.                     */
 #if (GLIBC_MINOR >= 33)
@@ -459,6 +470,16 @@ static void initialize(void) {
 #if (GLIBC_MINOR >= 28)
 	true_statx         = dlsym(libc_handle, "statx");
 #endif
+
+	true_mkstemp       = dlsym(libc_handle, "mkstemp");
+	true_mkstemp64     = dlsym(libc_handle, "mkstemp64");
+	true_mkostemp      = dlsym(libc_handle, "mkostemp");
+	true_mkostemp64    = dlsym(libc_handle, "mkostemp64");
+	true_mkstemps      = dlsym(libc_handle, "mkstemps");
+	true_mkstemps64    = dlsym(libc_handle, "mkstemps64");
+	true_mkostemps     = dlsym(libc_handle, "mkostemps");
+	true_mkostemps64   = dlsym(libc_handle, "mkostemps64");
+	true_mkdtemp       = dlsym(libc_handle, "mkdtemp");
 
 #if (GLIBC_MINOR >= 33)
 	true_stat	 = dlsym(libc_handle, "stat");
@@ -4837,6 +4858,360 @@ int mkdirat (int dirfd, const char *path, mode_t mode) {
 	return result;
 }
 
+
+/* Translate the template before passing it to glibc. */
+
+static int temp_prepare(instw_t *instw,const char *template,
+                        char *translated,size_t translsz) {
+	int status;
+
+	instw_new(instw);
+	instw_setpath(instw,template);
+	instw_apply(instw);
+	instw_getstatus(instw,&status);
+
+	if(!(status&INSTW_TRANSLATED)) return 0;
+	if(strlen(instw->translpath)>=translsz) return 0;
+
+	strcpy(translated,instw->translpath);
+
+	return 1;
+}
+
+/* Copy the six generated characters back to the caller's template. Only  */
+/* the X's differ between the two names, and mkstemps() keeps suffixlen   */
+/* characters after them, so count from the end.                          */
+
+static void temp_commit(char *template,const char *created,int suffixlen) {
+	size_t tlen,clen;
+
+	tlen=strlen(template);
+	clen=strlen(created);
+
+	if(tlen<(size_t)(6+suffixlen) || clen<(size_t)(6+suffixlen)) return;
+
+	memcpy(template+tlen-6-suffixlen,created+clen-6-suffixlen,6);
+}
+
+int mkstemp(char *template) {
+	char translated[PATH_MAX+1];
+	instw_t instw;
+	int result;
+
+	REFCOUNT;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"mkstemp(%s)\n",template);
+#endif
+
+	  /* We were asked to work in "real" mode */
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_mkstemp(template);
+
+	if(!temp_prepare(&instw,template,translated,sizeof(translated))) {
+		instw_delete(&instw);
+		return true_mkstemp(template);
+	}
+
+	result=true_mkstemp(translated);
+	if(result>=0) {
+		temp_commit(template,translated,0);
+		  /* re-read the path: it names a real file now */
+		instw_setpath(&instw,template);
+	}
+	logg("%d\tmkstemp\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int mkstemp64(char *template) {
+	char translated[PATH_MAX+1];
+	instw_t instw;
+	int result;
+
+	REFCOUNT;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"mkstemp64(%s)\n",template);
+#endif
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_mkstemp64(template);
+
+	if(!temp_prepare(&instw,template,translated,sizeof(translated))) {
+		instw_delete(&instw);
+		return true_mkstemp64(template);
+	}
+
+	result=true_mkstemp64(translated);
+	if(result>=0) {
+		temp_commit(template,translated,0);
+		instw_setpath(&instw,template);
+	}
+	logg("%d\tmkstemp\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int mkostemp(char *template,int flags) {
+	char translated[PATH_MAX+1];
+	instw_t instw;
+	int result;
+
+	REFCOUNT;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"mkostemp(%s,0%o)\n",template,flags);
+#endif
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_mkostemp(template,flags);
+
+	if(!temp_prepare(&instw,template,translated,sizeof(translated))) {
+		instw_delete(&instw);
+		return true_mkostemp(template,flags);
+	}
+
+	result=true_mkostemp(translated,flags);
+	if(result>=0) {
+		temp_commit(template,translated,0);
+		instw_setpath(&instw,template);
+	}
+	logg("%d\tmkstemp\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int mkostemp64(char *template,int flags) {
+	char translated[PATH_MAX+1];
+	instw_t instw;
+	int result;
+
+	REFCOUNT;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"mkostemp64(%s,0%o)\n",template,flags);
+#endif
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_mkostemp64(template,flags);
+
+	if(!temp_prepare(&instw,template,translated,sizeof(translated))) {
+		instw_delete(&instw);
+		return true_mkostemp64(template,flags);
+	}
+
+	result=true_mkostemp64(translated,flags);
+	if(result>=0) {
+		temp_commit(template,translated,0);
+		instw_setpath(&instw,template);
+	}
+	logg("%d\tmkstemp\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int mkstemps(char *template,int suffixlen) {
+	char translated[PATH_MAX+1];
+	instw_t instw;
+	int result;
+
+	REFCOUNT;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"mkstemps(%s,%d)\n",template,suffixlen);
+#endif
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_mkstemps(template,suffixlen);
+
+	if(!temp_prepare(&instw,template,translated,sizeof(translated))) {
+		instw_delete(&instw);
+		return true_mkstemps(template,suffixlen);
+	}
+
+	result=true_mkstemps(translated,suffixlen);
+	if(result>=0) {
+		temp_commit(template,translated,suffixlen);
+		instw_setpath(&instw,template);
+	}
+	logg("%d\tmkstemp\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int mkstemps64(char *template,int suffixlen) {
+	char translated[PATH_MAX+1];
+	instw_t instw;
+	int result;
+
+	REFCOUNT;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"mkstemps64(%s,%d)\n",template,suffixlen);
+#endif
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_mkstemps64(template,suffixlen);
+
+	if(!temp_prepare(&instw,template,translated,sizeof(translated))) {
+		instw_delete(&instw);
+		return true_mkstemps64(template,suffixlen);
+	}
+
+	result=true_mkstemps64(translated,suffixlen);
+	if(result>=0) {
+		temp_commit(template,translated,suffixlen);
+		instw_setpath(&instw,template);
+	}
+	logg("%d\tmkstemp\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int mkostemps(char *template,int suffixlen,int flags) {
+	char translated[PATH_MAX+1];
+	instw_t instw;
+	int result;
+
+	REFCOUNT;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"mkostemps(%s,%d,0%o)\n",template,suffixlen,flags);
+#endif
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_mkostemps(template,suffixlen,flags);
+
+	if(!temp_prepare(&instw,template,translated,sizeof(translated))) {
+		instw_delete(&instw);
+		return true_mkostemps(template,suffixlen,flags);
+	}
+
+	result=true_mkostemps(translated,suffixlen,flags);
+	if(result>=0) {
+		temp_commit(template,translated,suffixlen);
+		instw_setpath(&instw,template);
+	}
+	logg("%d\tmkstemp\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int mkostemps64(char *template,int suffixlen,int flags) {
+	char translated[PATH_MAX+1];
+	instw_t instw;
+	int result;
+
+	REFCOUNT;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"mkostemps64(%s,%d,0%o)\n",template,suffixlen,flags);
+#endif
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_mkostemps64(template,suffixlen,flags);
+
+	if(!temp_prepare(&instw,template,translated,sizeof(translated))) {
+		instw_delete(&instw);
+		return true_mkostemps64(template,suffixlen,flags);
+	}
+
+	result=true_mkostemps64(translated,suffixlen,flags);
+	if(result>=0) {
+		temp_commit(template,translated,suffixlen);
+		instw_setpath(&instw,template);
+	}
+	logg("%d\tmkstemp\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+char *mkdtemp(char *template) {
+	char translated[PATH_MAX+1];
+	instw_t instw;
+	char *result;
+	int rcod;
+
+	REFCOUNT;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"mkdtemp(%s)\n",template);
+#endif
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_mkdtemp(template);
+
+	if(!temp_prepare(&instw,template,translated,sizeof(translated))) {
+		instw_delete(&instw);
+		return true_mkdtemp(template);
+	}
+
+	result=true_mkdtemp(translated);
+	rcod=(result==NULL)?-1:0;
+	if(result!=NULL) {
+		temp_commit(template,translated,0);
+		instw_setpath(&instw,template);
+	}
+	logg("%d\tmkdtemp\t%s\t#%s\n",rcod,instw.reslvpath,error(rcod));
+
+	instw_delete(&instw);
+
+	  /* the caller owns the template; hand back their own buffer */
+	return (result==NULL)?NULL:template;
+}
 
   /* Fortified calls bypass the ordinary interposed symbols. */
   /* The caller supplies no mode, so pass one explicitly.    */
