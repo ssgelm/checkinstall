@@ -24,6 +24,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <dlfcn.h>
+#include <stdlib.h>
 
 #include "localdecls.h"
 
@@ -204,52 +205,6 @@ void test_unlink(void) {
 	unlink(TESTFILE);
 }
 
-#if(GLIBC_MINOR >= 1)
-
-void test_creat64(void) {
-	int fd;
-
-	fd = creat64(TESTFILE, 0600);
-	close(fd);
-	unlink(TESTFILE);
-}
-
-void test_fopen64(void) {
-        FILE *fd;
-
-        fd = fopen64(TESTFILE,"w");
-        fclose(fd);
-        unlink(TESTFILE);
-}
-
-void test_ftruncate64(void) {
-	int fd;
-
-	fd = creat64(TESTFILE, 0600);
-	ftruncate64(fd, 0);
-	close(fd);
-	unlink(TESTFILE);
-}
-
-void test_open64(void) {
-	int fd;
-
-	fd = open64(TESTFILE, O_CREAT, O_RDWR, 0700);
-	close(fd);
-	unlink(TESTFILE);
-}
-
-void test_truncate64(void) {
-	int fd;
-
-	fd = creat64(TESTFILE, 0700);
-	close(fd);
-	truncate64(TESTFILE, 0);
-	unlink(TESTFILE);
-}
-
-#endif
-
 int do_test(const char *name, void (*function)(void), int increment) {
 	int old_refcount;
 	
@@ -287,38 +242,23 @@ int main(int argc, char **argv) {
 	puts("Testing installwatch " VERSION);
 	puts("Using " TESTFILE " and " TESTFILE2 " as a test files\n");
 	passed = failed = 0;
-	do_test("chmod", test_chmod, 4);
+	do_test("chmod", test_chmod, 3);
 	do_test("chown", test_chown, 3);
 	do_test("chroot", test_chroot, 1);
 	do_test("creat", test_creat, 2);
-#if(GLIBC_MINOR >= 1)
-	do_test("creat64", test_creat64, 2);
-#endif
 	do_test("fchmod", test_fchmod, 3);
 	do_test("fchown", test_fchown, 3);
 	do_test("fopen",test_fopen,2);
-#if(GLIBC_MINOR >= 1)
-	do_test("fopen64",test_fopen64,2);
-#endif	
 	do_test("ftruncate", test_ftruncate, 3);
-#if(GLIBC_MINOR >= 1)
-	do_test("ftruncate64", test_ftruncate64, 3);
-#endif
 	do_test("lchown", test_lchown, 3);
 	do_test("link", test_link, 4);
 	do_test("mkdir", test_mkdir, 2);
 	/* do_test("mknod", test_mknod, 2); */
 	do_test("open", test_open, 2);
-#if(GLIBC_MINOR >= 1)
-	do_test("open64", test_open64, 2);
-#endif
 	do_test("rename", test_rename, 3);
 	do_test("rmdir", test_mkdir, 2);
 	do_test("symlink", test_symlink, 4);
 	do_test("truncate", test_truncate, 3);
-#if(GLIBC_MINOR >= 1)
-	do_test("truncate64", test_truncate64, 3);
-#endif
 	do_test("unlink", test_unlink, 2);
 
 	putchar('\n');

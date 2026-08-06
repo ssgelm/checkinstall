@@ -46,7 +46,7 @@ tarball: clean
 	tar -czvC .. -f ../installwatch-$(VERSION).tar.gz installwatch-$(VERSION)
 
 test: install
-	gcc -Wall -DVERSION=\"$(VERSION)\" -o test-installwatch test-installwatch.c -ldl
-	$(PREFIX)/bin/installwatch ./test-installwatch
+	gcc -Wall -DVERSION=\"$(VERSION)\" -DLIBDIR=\"$(LIBDIR)\" -o test-installwatch test-installwatch.c -ldl
+	PREFIX=$(PREFIX) $(PREFIX)/bin/installwatch ./test-installwatch
 
 
