@@ -1712,7 +1712,7 @@ static int instw_setpathrel(instw_t *instw, int dirfd, const char *relpath) {
 	if ( dirfd == AT_FDCWD ) return instw_setpath(instw, relpath);
 
 	snprintf(proc_path, PROC_PATH_LEN, "/proc/self/fd/%d", dirfd);
-	if(true_stat(proc_path, &s) == -1)
+	if(true_lstat(proc_path, &s) == -1)
 		goto out;
 	if(!(newpath = malloc(s.st_size+strlen(relpath)+2)))
 		goto out;
