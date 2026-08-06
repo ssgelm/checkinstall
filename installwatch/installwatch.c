@@ -295,7 +295,9 @@ int parse_suffix(char *,char *,const char *);
 #define finalize(code) {rcod=code;goto finalize;}
 
 #if DEBUG
+#ifndef __ARM_32BIT_STATE
 static int __instw_printdirent(struct dirent*);
+#endif
 static int __instw_printdirent64(struct dirent64*);
 #endif
 
@@ -1035,6 +1037,7 @@ int parse_suffix(char *pnp,char *pns,const char *suffix) {
  * *****************************************************************************
  */
 
+#ifndef __ARM_32BIT_STATE
 static int __instw_printdirent(struct dirent *entry) {
 
 	if(entry!=NULL) {
@@ -1058,6 +1061,7 @@ static int __instw_printdirent(struct dirent *entry) {
 
 	return 0;
 }
+#endif
 
 static int __instw_printdirent64(struct dirent64 *entry) {
 
@@ -2473,6 +2477,7 @@ int chroot(const char *path) {
 	return result;
 }
 
+#ifndef __ARM_32BIT_STATE
 int creat(const char *pathname, mode_t mode) {
 /* Is it a system call? */
 	int result;
@@ -2511,6 +2516,7 @@ int creat(const char *pathname, mode_t mode) {
 
 	return result;
 }
+#endif
 
 int fchmod(int filedes, mode_t mode) {
 	int result;
@@ -2546,6 +2552,7 @@ int fchown(int fd, uid_t owner, gid_t group) {
 	return result;
 }
 
+#ifndef __ARM_32BIT_STATE
 FILE *fopen(const char *pathname, const char *mode) {
 	FILE *result = NULL;
 	instw_t instw;
@@ -2618,6 +2625,7 @@ int ftruncate(int fd, TRUNCATE_T length) {
 	logg("%d\tftruncate\t%d\t%d\t#%s\n",result,fd,(int)length,error(result));
 	return result;
 }
+#endif
 
 char *getcwd(char *buffer,size_t size) {
 	char wpath[PATH_MAX+1];
@@ -2843,6 +2851,7 @@ int __xmknod(int version,const char *pathname, mode_t mode,dev_t *dev) {
 	return result;
 }
 
+#ifndef __ARM_32BIT_STATE
 int open(const char *pathname, int flags, ...) {
 /* Eventually, there is a third parameter: it's mode_t mode */
 	va_list ap;
@@ -2897,6 +2906,7 @@ int open(const char *pathname, int flags, ...) {
 
 	return result;
 }
+#endif
 
 /*
  *
@@ -2934,6 +2944,7 @@ DIR *opendir(const char *dirname) {
 	return result;
 }
 
+#ifndef __ARM_32BIT_STATE
 struct dirent *readdir(DIR *dir) {
 	struct dirent *result;
 
@@ -2996,6 +3007,7 @@ ssize_t readlink(const char *path,char *buf,size_t bufsiz) {
 
 	return result;	
 }
+#endif
 
 char *realpath(const char *file_name,char *resolved_name) {
 	char *result;
@@ -3094,6 +3106,7 @@ int rmdir(const char *pathname) {
 	return result;
 }
 
+#ifndef __ARM_32BIT_STATE
 int scandir(	const char *dir,struct dirent ***namelist,
 		int (*select)(const struct dirent *),
 #if (GLIBC_MINOR >= 10)
@@ -3121,6 +3134,7 @@ int scandir(	const char *dir,struct dirent ***namelist,
 
 	return result;
 }		
+#endif
 
 int __xstat(int version,const char *pathname,struct stat *info) {
 	int result;
@@ -3250,6 +3264,7 @@ int symlink(const char *pathname, const char *slink) {
 	return result;
 }
 
+#ifndef __ARM_32BIT_STATE
 int truncate(const char *path, TRUNCATE_T length) {
 	int result;
 	instw_t instw;
@@ -3288,6 +3303,7 @@ int truncate(const char *path, TRUNCATE_T length) {
 
 	return result;
 }
+#endif
 
 int unlink(const char *pathname) {
 	int result;
