@@ -16,10 +16,10 @@ LIBDIR=$(PREFIX)/lib
 all: installwatch.so
 
 installwatch.so: installwatch.o
-	ld -shared -o installwatch.so installwatch.o -ldl -lc
+	ld $(LDFLAGS) -znow -shared -o installwatch.so installwatch.o -ldl -lc
 
 installwatch.o: installwatch.c localdecls.h
-	gcc -Wall -c -D_GNU_SOURCE -DPIC -fPIC -D_REENTRANT -DVERSION=\"$(VERSION)\" installwatch.c
+	gcc $(CPPFLAGS) $(CFLAGS) -Wall -c -D_GNU_SOURCE -DPIC -fPIC -D_REENTRANT -DVERSION=\"$(VERSION)\" installwatch.c
 
 localdecls.h: create-localdecls
 	./create-localdecls
