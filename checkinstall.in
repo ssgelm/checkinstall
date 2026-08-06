@@ -1783,7 +1783,7 @@ if [ $INSTALL_FAILED -gt 0 ]; then
 	   fi
 	   echogn "Should I exclude them from the package? (Saying yes is a good idea) "
 	   if  yorn ; then
-	      grep -v "`pwd`" ${TMP_DIR}/newfiles > /${TMP_DIR}/newfiles.tmp
+	      grep -v "^`pwd`" ${TMP_DIR}/newfiles > /${TMP_DIR}/newfiles.tmp
 	      mv /${TMP_DIR}/newfiles.tmp /${TMP_DIR}/newfiles
 	   fi
 	fi
