@@ -3734,6 +3734,9 @@ int __xstat64(int version,const char *pathname,struct stat64 *info) {
 	instw_setpath(&instw,pathname);
 	instw_getstatus(&instw,&status);
 
+       if (!libc_handle)
+           initialize();
+
 #if DEBUG
 	instw_print(&instw);
 #endif
