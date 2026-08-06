@@ -527,7 +527,7 @@ while [ "$1" != "--" ]; do
          usage;;
       -d)
          shift
-         case `eval echo $1` in
+         case "$1" in
             0) DEBUG=0;;
             1|'') DEBUG=1;;
             2) DEBUG=2;;
@@ -539,101 +539,101 @@ while [ "$1" != "--" ]; do
          ;;
       -A|--arch|--pkgarch)
          shift
-         ARCHITECTURE=`eval echo $1`
+         ARCHITECTURE="$1"
          ;;
       --umask)
          shift
-         CKUMASK=`eval echo $1`
+         CKUMASK="$1"
          ;;
       --pkgname)
          shift
-         NAME=`eval echo $1`
+         NAME="$1"
          ;;
       --pkgversion)
          shift
-         VERSION=`eval echo $1`
+         VERSION="$1"
          ;;
       --pkgrelease)
          shift
-         RELEASE=`eval echo $1`
+         RELEASE="$1"
          ;;
       --pkglicense)
          shift
-         LICENSE=`eval echo $1`
+         LICENSE="$1"
          ;;
       --pkggroup)
          shift
 	 # note: we use PKG_GROUP instead of GROUP since (t)csh sets GROUP.
-         PKG_GROUP=`eval echo $1`
+         PKG_GROUP="$1"
          ;;
       --pkgsource)
          shift
-         SOURCE=`eval echo $1`
+         SOURCE="$1"
          ;;
       --pkgaltsource)
          shift
-         ALTSOURCE=`eval echo $1`
+         ALTSOURCE="$1"
          ;;
       --pakdir)
          shift
-         PAK_DIR=`eval echo $1`
+         PAK_DIR="$1"
          ;;
       --with-tar)
          shift
-         TAR=`eval echo $1`
+         TAR="$1"
          ;;
       --summary)
          shift
-         SUMMARY=`eval echo $1`
+         SUMMARY="$1"
          ;;
       --docdir)
          shift
-         DOC_DIR=`eval echo $1`
+         DOC_DIR="$1"
          ;;
       --provides)
          shift
-         PROVIDES=`eval echo $1`
+         PROVIDES="$1"
          ;;
       --conflicts)
          shift
-         CONFLICTS=`eval echo $1`
+         CONFLICTS="$1"
          ;;
       --replaces)
          shift
-         REPLACES=`eval echo $1`
+         REPLACES="$1"
          ;;
       --requires)
          shift
-         REQUIRES=`eval echo $1`
+         REQUIRES="$1"
          ;;
       --prerequires)
          shift
-         PREREQUIRES=`eval echo $1`
+         PREREQUIRES="$1"
          ;;
       --recommends)
          shift
-         RECOMMENDS=`eval echo $1`
+         RECOMMENDS="$1"
          ;;
       --suggests)
          shift
-         SUGGESTS=`eval echo $1`
+         SUGGESTS="$1"
          ;;
       --maintainer)
          shift
-         MAINTAINER=`eval echo $1`
+         MAINTAINER="$1"
          ;;
       --dpkgflags)
          shift
-         DPKG_FLAGS=`eval echo $1`
+         DPKG_FLAGS="$1"
          ;;
       --rpmflags)
          shift
-         RPM_FLAGS=`eval echo $1`
+         RPM_FLAGS="$1"
          ;;
       -t|--type)
          shift
-         INSTYPE=`echo $1 | tr 'a-z' 'A-Z'`
-         case `eval echo $INSTYPE` in
+         INSTYPE=`echo "$1" | tr 'a-z' 'A-Z'`
+         case "$INSTYPE" in
             RPM|R)
                INSTYPE=R;;
             SLACKWARE|S)
@@ -662,7 +662,7 @@ while [ "$1" != "--" ]; do
           ;;
        --install)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 INSTALL=1;;
              0|no)
@@ -675,7 +675,7 @@ while [ "$1" != "--" ]; do
           SHOW_INSTALL=1;;
        --showinstall)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 SHOW_INSTALL=1;;
              0|no)
@@ -688,7 +688,7 @@ while [ "$1" != "--" ]; do
           SHOW_SLACK_INSTALL=1;;
        --showslack)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 SHOW_SLACK_INSTALL=1;;
              0|no)
@@ -699,7 +699,7 @@ while [ "$1" != "--" ]; do
           ;;
        --deldoc)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 DEL_DOCPAK=1;;
              0|no)
@@ -710,7 +710,7 @@ while [ "$1" != "--" ]; do
           ;;
        --delspec)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 DEL_SPEC=1;;
              0|no)
@@ -721,7 +721,7 @@ while [ "$1" != "--" ]; do
           ;;
        --deldesc)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 DEL_DESC=1;;
              0|no)
@@ -732,7 +732,7 @@ while [ "$1" != "--" ]; do
           ;;
        --strip)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 STRIP_ELF=1;;
              0|no)
@@ -744,7 +744,7 @@ while [ "$1" != "--" ]; do
 
        --addso)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 ADD_SO=1;;
              0|no)
@@ -757,7 +757,7 @@ while [ "$1" != "--" ]; do
 
        --stripso)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 STRIP_SO_ELF=1
                 ;;
@@ -769,7 +769,7 @@ while [ "$1" != "--" ]; do
           ;;
        --gzman)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 COMPRESS_MAN=1;;
              0|no)
@@ -782,7 +782,7 @@ while [ "$1" != "--" ]; do
           BACKUP=1;;
        --backup)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 BACKUP=1;;
              0|no)
@@ -811,7 +811,7 @@ while [ "$1" != "--" ]; do
           REVIEW_CONTROL=1;;
        --spec)
 	  shift
-	  SPEC_PATH=`eval echo $1`
+	  SPEC_PATH="$1"
           if ! [ -f "$SPEC_PATH" ]; then
              echog "Warning: .spec file path \"%s\" not found.\nWarning: Defaulting to \"%s\"." "$SPEC_PATH" "${PKG_BASENAME}.spec"
           fi
@@ -838,7 +838,7 @@ EOF
          exit 0;;
        --autodoinst)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 AUTODOINST=1;;
              0|no)
@@ -849,7 +849,7 @@ EOF
           ;;
        --reset-uids)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 RESET_UIDS=1;;
              0|no)
@@ -860,7 +860,7 @@ EOF
           ;;
         --fstrans)
           shift
-          case `eval echo $1` in
+          case "$1" in
              1|yes|'')
                 TRANSLATE=1;;
              0|no)
@@ -871,11 +871,11 @@ EOF
           ;;
       --exclude)
          shift
-         EXCLUDE=`eval echo $1`
+         EXCLUDE="$1"
          ;;
       --include)
          shift
-         CK_INCLUDE_FILE=`eval echo $1`
+         CK_INCLUDE_FILE="$1"
          ;;
    esac
    shift
@@ -2662,7 +2662,7 @@ Description: $SUMMARY
 EOF
 
 # Add the description
-cat "$DIRECTORIO_FUENTE/description-pak"| egrep -v "$SUMMARY|^[ 	]*$" | while read line; do
+cat "$DIRECTORIO_FUENTE/description-pak"| grep -Fxv "$SUMMARY" | egrep -v "^[ 	]*$" | while read line; do
    echo " "$line >> $BUILD_DIR/DEBIAN/control
 done
 

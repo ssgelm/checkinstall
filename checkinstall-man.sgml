@@ -229,8 +229,10 @@
         <term><option>--maintainer</option>
         </term>
 	<listitem>
-		<para>Set the package maintainer. Be careful to correctly
-			quote/escape the name, to prevent shell expansion</para>
+		<para>Set the package maintainer, for example
+			<option>--maintainer</option>="Jane Doe
+			&lt;jane@example.org&gt;". The value is used as
+			given, with no shell expansion.</para>
         </listitem>
       </varlistentry>
 
