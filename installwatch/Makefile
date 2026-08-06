@@ -13,10 +13,12 @@ VERSION=0.7.0beta7
 BINDIR=$(PREFIX)/bin
 LIBDIR=$(PREFIX)/lib
 
+LIBGCC=`gcc -print-libgcc-file-name`
+
 all: installwatch.so
 
 installwatch.so: installwatch.o
-	ld $(LDFLAGS) -znow -shared -o installwatch.so installwatch.o -ldl -lc
+	ld $(LDFLAGS) -znow -shared -o installwatch.so installwatch.o -ldl -lc $(LIBGCC)
 
 installwatch.o: installwatch.c localdecls.h
 	gcc $(CPPFLAGS) $(CFLAGS) -Wall -c -D_GNU_SOURCE -DPIC -fPIC -D_REENTRANT -DVERSION=\"$(VERSION)\" installwatch.c
