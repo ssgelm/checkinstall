@@ -2052,10 +2052,13 @@ EOF
  echo "echo" >>  "${DIRECTORIO_FUENTE}/postinstall-pak"
 
  cat ${TMP_DIR}/libdirs | while read libdir; do
+   # libdir already has a leading slash.
+   libdir="/${libdir#/}"
    (
-    echo "if ! egrep \"^/${libdir} *$\" /etc/ld.so.conf &> /dev/null; then"
-    echo "   echo \"Adding \"/$libdir\" to /etc/ld.so.conf\"" 
-    echo "   echo /$libdir >> /etc/ld.so.conf"
+    # The generated script runs under /bin/sh, so use POSIX redirection.
+    echo "if ! egrep \"^${libdir} *\$\" /etc/ld.so.conf >/dev/null 2>&1; then"
+    echo "   echo \"Adding \"${libdir}\" to /etc/ld.so.conf\""
+    echo "   echo ${libdir} >> /etc/ld.so.conf"
     echo fi
    ) >> "${DIRECTORIO_FUENTE}/postinstall-pak"
  done
