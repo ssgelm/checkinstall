@@ -607,7 +607,10 @@ installation including configure options, build, etc.
 
 Sometime in the future I will rewrite this in C/Gtk or something, too.
 
-Ideas, bug reports, patches, etc:
+Ideas, bug reports, patches: https://github.com/ssgelm/checkinstall
+
+Upstream's own addresses follow, from before development stopped in 2017.
+They may no longer be read.
 
 - CheckInstall author: \<izto at asic-linux.com.mx>
 

@@ -1,8 +1,7 @@
 # checkinstall tests
 
-Written while fixing the Debian package for
-`1.6.2+git20170426.d24a630-6`, and carried over here with the patches they
-cover.
+Written while fixing the Debian package, and carried over here with the
+patches they cover.
 
 Everything runs unprivileged and installs nothing. The tests drive
 checkinstall with `--fstrans=yes --install=no`, so writes land in a
