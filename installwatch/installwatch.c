@@ -114,6 +114,22 @@ static int (*true_unlink)(const char *);
 static int (*true_utime)(const char *,const struct utimbuf *);
 static int (*true_utimes)(const char *,const struct timeval *);
 static int (*true_utimensat)(int, const char *, const struct timespec *, int);
+
+  /*
+   *   Where time_t is 32 bits, a program built with _TIME_BITS=64 is given
+   * these entry points in place of the ordinary ones, and coreutils among
+   * others is built that way. We never look inside the buffer a caller hands
+   * us, so it stays a void * here and only the path needs translating.
+   */
+#if defined(__TIMESIZE) && __TIMESIZE == 32
+static int (*true_stat64_time64)(const char *, void *);
+static int (*true_lstat64_time64)(const char *, void *);
+static int (*true_fstatat64_time64)(int, const char *, void *, int);
+static int (*true_utime64)(const char *, const void *);
+static int (*true_utimes64)(const char *, const void *);
+static int (*true_utimensat64)(int, const char *, const void *, int);
+#endif
+
 static int (*true_access)(const char *, int);
 static int (*true_setxattr)(const char *,const char *,const void *,
                             size_t, int);
@@ -439,6 +455,16 @@ static void initialize(void) {
 	true_setxattr    = dlsym(libc_handle, "setxattr");
         true_utimes      = dlsym(libc_handle, "utimes");
         true_utimensat   = dlsym(libc_handle, "utimensat");
+
+#if defined(__TIMESIZE) && __TIMESIZE == 32
+	true_stat64_time64    = dlsym(libc_handle, "__stat64_time64");
+	true_lstat64_time64   = dlsym(libc_handle, "__lstat64_time64");
+	true_fstatat64_time64 = dlsym(libc_handle, "__fstatat64_time64");
+	true_utime64          = dlsym(libc_handle, "__utime64");
+	true_utimes64         = dlsym(libc_handle, "__utimes64");
+	true_utimensat64      = dlsym(libc_handle, "__utimensat64");
+#endif
+
         true_access      = dlsym(libc_handle, "access");
 
 
@@ -3776,6 +3802,168 @@ int utimensat (int dirfd, const char *pathname,
 
        return result;
 }
+
+#if defined(__TIMESIZE) && __TIMESIZE == 32
+
+int __stat64_time64(const char *pathname, void *info) {
+	int result;
+	instw_t instw;
+	int status;
+
+	if(!libc_handle)
+		initialize();
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_stat64_time64(pathname,info);
+
+	instw_new(&instw);
+	instw_setpath(&instw,pathname);
+	instw_getstatus(&instw,&status);
+
+	if(status&INSTW_TRANSLATED)
+		result=true_stat64_time64(instw.translpath,info);
+	else
+		result=true_stat64_time64(instw.path,info);
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int __lstat64_time64(const char *pathname, void *info) {
+	int result;
+	instw_t instw;
+	int status;
+
+	if(!libc_handle)
+		initialize();
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_lstat64_time64(pathname,info);
+
+	instw_new(&instw);
+	instw_setpath(&instw,pathname);
+	instw_getstatus(&instw,&status);
+
+	if(status&INSTW_TRANSLATED)
+		result=true_lstat64_time64(instw.translpath,info);
+	else
+		result=true_lstat64_time64(instw.path,info);
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int __fstatat64_time64(int dirfd, const char *path, void *s, int flags) {
+	int result;
+	instw_t instw;
+
+	if(!libc_handle)
+		initialize();
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) ) {
+		if(flags & AT_SYMLINK_NOFOLLOW)
+			return true_lstat64_time64(path,s);
+		return true_stat64_time64(path,s);
+	}
+
+	instw_new(&instw);
+	instw_setpathrel(&instw,dirfd,path);
+
+	  /* instw resolved an absolute path, so the descriptor is spent */
+	if(flags & AT_SYMLINK_NOFOLLOW)
+		result=__lstat64_time64(instw.path,s);
+	else
+		result=__stat64_time64(instw.path,s);
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int __utime64(const char *pathname, const void *newtimes) {
+	int result;
+	instw_t instw;
+
+	if(!libc_handle)
+		initialize();
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_utime64(pathname,newtimes);
+
+	instw_new(&instw);
+	instw_setpath(&instw,pathname);
+
+	backup(instw.truepath);
+	instw_apply(&instw);
+
+	result=true_utime64(instw.translpath,newtimes);
+	logg("%d\tutime\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int __utimes64(const char *pathname, const void *newtimes) {
+	int result;
+	instw_t instw;
+
+	if(!libc_handle)
+		initialize();
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_utimes64(pathname,newtimes);
+
+	instw_new(&instw);
+	instw_setpath(&instw,pathname);
+
+	backup(instw.truepath);
+	instw_apply(&instw);
+
+	result=true_utimes64(instw.translpath,newtimes);
+	logg("%d\tutimes\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int __utimensat64(int dirfd, const char *pathname, const void *times, int flags) {
+	int result;
+	instw_t instw;
+
+	if(!libc_handle)
+		initialize();
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_utimensat64(dirfd,pathname,times,flags);
+
+	if(pathname==NULL)
+		return true_utimensat64(dirfd,pathname,times,flags);
+
+	instw_new(&instw);
+	instw_setpathrel(&instw,dirfd,pathname);
+
+	backup(instw.truepath);
+	instw_apply(&instw);
+
+	result=true_utimensat64(AT_FDCWD,instw.translpath,times,flags);
+	logg("%d\tutimensat\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+#endif
 
 int access (const char *pathname, int type) {
        int result;
