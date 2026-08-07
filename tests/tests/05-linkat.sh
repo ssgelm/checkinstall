@@ -21,12 +21,22 @@ fi
 # 2. AT_EMPTY_PATH: the source is an O_TMPFILE descriptor with no name
 gcc -Wall -o "$WORK/tmpfile-link" "$(dirname "$0")/../src/tmpfile-link.c" 2>/dev/null || {
 	fail "could not build tmpfile-link"; finish; }
+# linkat(AT_EMPTY_PATH) wants CAP_DAC_READ_SEARCH and returns ENOENT without
+# it, so an unprivileged run cannot do this at all on some kernels. Find out
+# whether this machine permits it before reading a failure as a translation
+# bug: run the helper once with nothing interposed.
+"$WORK/tmpfile-link" "$WORK" "$WORK/probe" >/dev/null 2>&1
+probe=$?
+rm -f "$WORK/probe"
+
 target=$WORK/materialised
 run_iw "$WORK/root-tf" 1 "$WORK/tmpfile-link" "$WORK" "$target"
 rc=$?
 transl=$WORK/root-tf/TRANSL$target
-if [ "$rc" -eq 77 ]; then
+if [ "$probe" -eq 77 ]; then
 	skip "O_TMPFILE unsupported on this filesystem"
+elif [ "$probe" -ne 0 ]; then
+	skip "linkat(AT_EMPTY_PATH) not permitted here, nothing to translate"
 elif [ "$rc" -ne 0 ]; then
 	fail "linkat(AT_EMPTY_PATH) failed under translation"
 elif [ -e "$target" ]; then
