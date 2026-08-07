@@ -4313,6 +4313,7 @@ int truncate64(const char *path, __off64_t length) {
  */
 
  
+#ifndef __USE_FILE_OFFSET64
 int openat (int dirfd, const char *path, int flags, ...) {
  	mode_t mode = 0;
  	va_list arg;
@@ -4356,6 +4357,25 @@ int openat (int dirfd, const char *path, int flags, ...) {
  
 	return result;
 }
+#endif
+
+  /* Programs built for large files call this one, and on a 32-bit system
+   * that is most of them. Left unwrapped, their writes went straight to
+   * the real filesystem. */
+
+int openat64 (int dirfd, const char *path, int flags, ...) {
+	mode_t mode = 0;
+	va_list arg;
+
+	if(flags & O_CREAT) {
+		va_start(arg, flags);
+		mode = va_arg(arg, int /*promoted from mode_t*/);
+		va_end (arg);
+	}
+
+	return openat(dirfd, path, flags, mode);
+}
+
 
 int fchmodat (int dirfd, const char *path, mode_t mode, int flag) {
  	
