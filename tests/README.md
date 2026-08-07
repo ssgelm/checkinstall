@@ -52,6 +52,7 @@ run from there.
 | `11-workdir-exclusion.sh` | the anchored build-directory exclusion, as a source check |
 | `12-deb-compression.sh` | `--debcompression` reaching dpkg-deb, and a bad value stopping the run early |
 | `13-filename-spaces.sh` | names and parent directories containing spaces, and a source directory with one |
+| `14-symlink-modes.sh` | a mode set on a symlink staying off the file it points at |
 
 `src/` holds two small C helpers: one that materialises an `O_TMPFILE`
 through `linkat`, and one that calls the LFS64 temporary-file functions

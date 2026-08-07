@@ -4622,8 +4622,14 @@ int fchmodat (int dirfd, const char *path, mode_t mode, int flag) {
  	int result;
  	instw_t instw;
  
+ 	  /* Without AT_SYMLINK_NOFOLLOW this is chmod() on a path, and the
+ 	   * chmod() wrapper below does the translating. The flag has to be
+ 	   * carried when it is set, because chmod() follows the link and the
+ 	   * mode then lands on the target: a dangling link fails with ENOENT,
+ 	   * and a live one has the link's permissions written over its own.
+ 	   * tar sets the flag for every symlink it extracts. */
  	/* If all we are doing is normal open, forgo refcounting, etc. */
-         if(dirfd == AT_FDCWD || *path == '/')
+         if(!(flag & AT_SYMLINK_NOFOLLOW) && (dirfd == AT_FDCWD || *path == '/'))
 		{
 		 #if DEBUG
 			debug(2, "fchmodat(%d,%s,0%o)\n", dirfd, path, mode);
@@ -4643,7 +4649,7 @@ int fchmodat (int dirfd, const char *path, mode_t mode, int flag) {
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_chmod(path,mode);
+ 		return true_fchmodat(dirfd,path,mode,flag);
 	
  	instw_new(&instw);
  	instw_setpathrel(&instw,dirfd,path);
@@ -4652,7 +4658,16 @@ int fchmodat (int dirfd, const char *path, mode_t mode, int flag) {
  	instw_print(&instw);
 #endif
  	
- 	result=chmod(instw.path,mode);
+	if(flag & AT_SYMLINK_NOFOLLOW) {
+		  /* Nothing is backed up here: this changes the link rather
+		   * than the file it names. */
+		instw_apply(&instw);
+		result=true_fchmodat(AT_FDCWD,instw.translpath,mode,flag);
+		logg("%d\tfchmodat\t%s\t0%04o\t#%s\n",result,
+		    instw.reslvpath,mode,error(result));
+	} else {
+		result=chmod(instw.path,mode);
+	}
  	
  	instw_delete(&instw);
  
