@@ -4170,6 +4170,9 @@ int lstat64(const char *pathname,struct stat64 *info) {
 	instw_t instw;
 	int status;
 
+	if(!libc_handle)
+		initialize();
+
 #if DEBUG
 	debug(2,"lstat64(%s,%p)\n",pathname,info);
 #endif
@@ -4209,6 +4212,9 @@ int __lxstat64(int version,const char *pathname,struct stat64 *info) {
 	int result;
 	instw_t instw;
 	int status;
+
+	if(!libc_handle)
+		initialize();
 
 #if DEBUG
 	debug(2,"lstat64(%s,%p)\n",pathname,info);
@@ -5486,6 +5492,9 @@ int renameat (int olddirfd, const char *oldpath,
 /* Note that this only implements RENAME_NOREPLACE */
 int renameat2 (int olddirfd, const char *oldpath,
                   int newdirfd, const char *newpath, unsigned int flags) {
+  if (!libc_handle)
+    initialize();
+
   if ( (flags & RENAME_NOREPLACE) == RENAME_NOREPLACE ) {
     instw_t instwnew;
     instw_new(&instwnew);
