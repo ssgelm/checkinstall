@@ -8,17 +8,9 @@ CONFDIR=$(PREFIX)/lib/checkinstall
 
 all:
 	for file in locale/checkinstall-*.po ; do \
-		case $${file} in \
-			locale/checkinstall-template.po)  ;; \
-			*) \
-				out=`echo $$file | sed -s 's/po/mo/'` ; \
-				msgfmt -o $${out} $${file} ; \
-				if [ $$? != 0 ] ; then \
-					exit 1 ; \
-				fi ; \
-			;; \
-		esac ; \
-	done	
+		out=`echo $$file | sed -s 's/po/mo/'` ; \
+		msgfmt -o $${out} $${file} || exit 1 ; \
+	done
 	sed 's%MAKEFILE_PREFIX%$(PREFIX)%g' checkinstall.in > checkinstall
 	$(MAKE) -C installwatch
 	
