@@ -23,8 +23,16 @@ case $here in
 esac
 
 CK_DEB=${CHECKINSTALL_DEB:-}
+CK_INSTALLED=${CHECKINSTALL_INSTALLED:-}
 
-if [ -n "$CK_DEB" ]; then
+if [ -n "$CK_INSTALLED" ]; then
+	# Drive whatever is installed on this machine, under the prefix the
+	# package used. CHECKINSTALL_INSTALLED=1 means the usual /usr.
+	[ "$CK_INSTALLED" = 1 ] && CK_INSTALLED=/usr
+	echo "checkinstall installed under: $CK_INSTALLED"
+	# 01 needs the source of test-installwatch.c and skips without it
+	[ -f "${CK_SRC:-}/installwatch/test-installwatch.c" ] || CK_SRC=""
+elif [ -n "$CK_DEB" ]; then
 	[ -f "$CK_DEB" ] || { echo "error: no such package: $CK_DEB"; exit 2; }
 	echo "checkinstall package: $CK_DEB"
 	# 01 needs the source of test-installwatch.c and skips without it
@@ -54,7 +62,12 @@ write_rc() {
 	    "$1" > "$TESTTMP/checkinstallrc"
 }
 
-if [ -n "$CK_DEB" ]; then
+if [ -n "$CK_INSTALLED" ]; then
+	rm -rf "$CKPREFIX"
+	CKPREFIX=$CK_INSTALLED
+	write_rc "${CK_INSTALLED%/usr}/etc/checkinstallrc"
+	trap 'rm -rf "$TESTTMP"' EXIT
+elif [ -n "$CK_DEB" ]; then
 	echo -n "unpacking... "
 	dpkg-deb -x "$CK_DEB" "$CKPREFIX/root" || exit 2
 	# the package puts everything under /usr, and both scripts take their

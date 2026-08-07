@@ -14,6 +14,7 @@ the real filesystem was left alone.
     tests/run-tests.sh tests/tests/05-linkat.sh   # one
     CHECKINSTALL_SRC=/path/to/checkinstall tests/run-tests.sh
     CHECKINSTALL_DEB=/path/to/package.deb tests/run-tests.sh
+    CHECKINSTALL_INSTALLED=1 tests/run-tests.sh
 
 `CHECKINSTALL_SRC` defaults to the repository this lives in. The runner
 builds that tree into a throwaway prefix and points the tests at it, so
@@ -21,6 +22,10 @@ whichever tree you name decides what is under test. To watch the tests fail,
 name a checkout from before the fixes landed. Note that such a tree will not
 build against glibc 2.33 or later at all, since the `_STAT_VER` definitions
 arrived with these commits.
+
+`CHECKINSTALL_INSTALLED=1` drives whatever is installed on this machine,
+under /usr. Give it a prefix instead of `1` if the package used another one.
+This is the mode for testing a distribution's package after installing it.
 
 `CHECKINSTALL_DEB` unpacks a built package instead of building, and runs the
 tests against the scripts and installwatch.so it ships. Both shipped scripts
