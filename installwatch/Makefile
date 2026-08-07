@@ -17,10 +17,10 @@ LIBGCC=`gcc -print-libgcc-file-name`
 all: installwatch.so
 
 installwatch.so: installwatch.o
-	ld $(LDFLAGS) -znow -shared -o installwatch.so installwatch.o -ldl -lc $(LIBGCC)
+	ld -znow -shared -o installwatch.so installwatch.o -ldl -lc $(LIBGCC)
 
 installwatch.o: installwatch.c localdecls.h
-	gcc $(CPPFLAGS) $(CFLAGS) -Wall -c -D_GNU_SOURCE -DPIC -fPIC -D_REENTRANT -DVERSION=\"$(VERSION)\" installwatch.c
+	gcc $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -Wall -c -g -D_GNU_SOURCE -DPIC -fPIC -D_REENTRANT -DVERSION=\"$(VERSION)\" installwatch.c
 
 localdecls.h: create-localdecls
 	./create-localdecls
