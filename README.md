@@ -48,8 +48,8 @@ Three licences apply here, and they differ:
 | `makepak` | BSD-1-Clause, Slackware's own notice at the top of the file |
 
 `checkinstall.in` carries no "or later" clause, so the program as a whole is
-GPL-2.0-only even though most of the tree allows later versions. Anything
-describing this source as GPL-2+ has overstated what the main script grants.
+GPL-2.0-only even though most of the tree allows later versions. That is the
+licence to name when redistributing it.
 
 Files that carry a licence header also carry an `SPDX-License-Identifier`
 line. `COPYING` holds the GPL-2 text.
