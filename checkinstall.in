@@ -1892,16 +1892,25 @@ if [ $INSTALL_FAILED -gt 0 ]; then
 	   else
 	       echogn "Stripping ELF binaries..."
 	   fi
-	   for f in `find ${BUILD_DIR} -type f \( -perm -0100 -or -perm -0010 -or -perm -0001 \)` ; do
+	   # No execute bit is required: a shared library is installed 0644
+	   # and still wants stripping.
+	   for f in `find ${BUILD_DIR} -type f` ; do
+	       ftype=`file "$f"`
 
-	       if [ $STRIP_SO_ELF -eq "0" -a "`file $f | grep -v ' shared object,'`" = "" ]; then
-	       #if this is a *.so* file and we don't have to strip it, then filter 'em
-		   continue
+	       # Only ELF objects that still carry their symbols
+	       case "$ftype" in
+		  *ELF*not\ stripped*) ;;
+		  *) continue;;
+	       esac
+
+	       # Shared objects only when we were asked for them
+	       if [ $STRIP_SO_ELF -eq 0 ]; then
+		  case "$ftype" in
+		     *\ shared\ object,*) continue;;
+		  esac
 	       fi
-	       if [ "`file $f | sed -n -e 's/^\(.*\):[  ]*ELF.*, not stripped/\1/p'`" = "" ]; then
-		   continue
-	       fi
-	       strip -p $f || :
+
+	       strip -p "$f" || :
 	   done
 	   okfail
 	fi
