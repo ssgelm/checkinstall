@@ -176,6 +176,7 @@ function usage() {
    echog "--autodoinst=<yes|no>          Toggle the creation of a doinst.sh script"
    echog "--strip=<yes|no>               Strip any ELF binaries found inside the package"
    echog "--stripso=<yes|no>             Strip any ELF binary libraries (.so files)" 
+   echog "--autodeps=<yes|no>            Work out the shared library dependencies of\n                               the installed binaries with dpkg-shlibdeps"
    echog "--addso=<yes|no>               Search for any shared libs and add"
    echog "                               them to /etc/ld.so.conf"
    echog "--reset-uids=<yes|no>          Reset perms for all files to o=g, dirs to 755 and"
@@ -515,7 +516,7 @@ fi
 # Arguments parsing
 
 CKNAME=`basename "$0"`
-PARAMS=`getopt -a -n $CKNAME -o +d:DA:t:RShHy -l arch:,type:,si,showinstall::,ss,showslack::,deldoc::,delspec::,deldesc::,strip::,addso::,install::,stripso::,gzman::,bk,backup::,autodoinst::,reset-uids::,fstrans::,spec:,exclude:,include:,pkgname:,pkgversion:,pkgrelease:,pkglicense:,pkggroup:,pkgsource:,pkgaltsource:,pakdir:,docdir:,requires:,prerequires:,recommends:,suggests:,provides:,conflicts:,replaces:,maintainer:,dpkgflags:,rpmflags:,pkgarch:,umask:,with-tar:,summary:,inspect,review-spec,review-control,newslack,help,nodoc,rpmi,rpmu,version,copyright,default -- "$@"`
+PARAMS=`getopt -a -n $CKNAME -o +d:DA:t:RShHy -l arch:,type:,si,showinstall::,ss,showslack::,deldoc::,delspec::,deldesc::,strip::,addso::,autodeps::,install::,stripso::,gzman::,bk,backup::,autodoinst::,reset-uids::,fstrans::,spec:,exclude:,include:,pkgname:,pkgversion:,pkgrelease:,pkglicense:,pkggroup:,pkgsource:,pkgaltsource:,pakdir:,docdir:,requires:,prerequires:,recommends:,suggests:,provides:,conflicts:,replaces:,maintainer:,dpkgflags:,rpmflags:,pkgarch:,umask:,with-tar:,summary:,inspect,review-spec,review-control,newslack,help,nodoc,rpmi,rpmu,version,copyright,default -- "$@"`
 
 [ $? -gt 0 ] && help_notice
 
@@ -742,6 +743,17 @@ while [ "$1" != "--" ]; do
           esac
           ;;
 
+       --autodeps)
+          shift
+          case "$1" in
+             1|yes|'')
+                AUTODEPS=1;;
+             0|no)
+                AUTODEPS=0;;
+             *)
+                boolean_usage "--autodeps" "$1"
+          esac
+          ;;
        --addso)
           shift
           case "$1" in
@@ -951,6 +963,9 @@ shift
 
 # Backup all files modified by the install command supplied by the user
 ! [ "$BACKUP" ] && BACKUP=1 
+
+# Work out the library dependencies unless told otherwise
+! [ "$AUTODEPS" ] && AUTODEPS=1
 
 # Write description installing code to doinst.sh
 ! [ "$AUTODOINST" ] && AUTODOINST=1 
@@ -2650,6 +2665,43 @@ fi  # End of the "no rpm in the path" if
 d|D)
 
 # As we said before:
+# Work out the shared library dependencies the way a regular package does.
+# The binaries are staged by now, so this cannot happen before the summary.
+AUTOREQUIRES=""
+if [ $AUTODEPS -gt 0 ] && [ -x "`which dpkg-shlibdeps 2> /dev/null`" ]; then
+   echogn "Looking for shared library dependencies..."
+
+   SHLIB_BINARIES=`find "$BUILD_DIR" -type f | while read f; do
+       file "$f" | egrep -q 'ELF.*(executable|shared object)' && echo "$f"
+    done`
+
+   if [ -n "$SHLIB_BINARIES" ]; then
+      # Point dpkg-shlibdeps at the libraries the package itself ships. It
+      # stops at the first library it cannot account for otherwise.
+      SHLIB_DIRS=""
+      for d in `find "$BUILD_DIR" -name '*.so*' -type f | while read f; do dirname "$f"; done | sort -u`; do
+         SHLIB_DIRS="$SHLIB_DIRS -l$d"
+      done
+
+      mkdir -p "${TMP_DIR}/shlibdeps/debian"
+      : > "${TMP_DIR}/shlibdeps/debian/control"
+      AUTOREQUIRES=`cd "${TMP_DIR}/shlibdeps" &&
+         dpkg-shlibdeps -O --ignore-missing-info $SHLIB_DIRS $SHLIB_BINARIES \
+            2> ${TMP_DIR}/shlibdeps.log | sed -e 's/^shlibs:Depends=//'`
+
+      if [ -n "$AUTOREQUIRES" ]; then
+         if [ -n "$REQUIRES" ]; then
+            REQUIRES="$REQUIRES, $AUTOREQUIRES"
+         else
+            REQUIRES="$AUTOREQUIRES"
+         fi
+      fi
+   fi
+
+   okfail
+   [ -n "$AUTOREQUIRES" ] && echog "Depends: %s" "$AUTOREQUIRES"
+fi
+
 PKG_BASENAME="$NAME"
 # maybe PKG_BASENAME should be defined locally for all the install
 # types, and not only on debian...

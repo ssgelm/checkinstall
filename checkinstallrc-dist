@@ -90,6 +90,10 @@ STRIP_ELF=1
 # Note: this setting will automatically be set to "0" if STRIP_ELF=0
 STRIP_SO_ELF=1
 
+# Work out the shared library dependencies of the installed binaries with
+# dpkg-shlibdeps and record them in the package. Debian packages only.
+AUTODEPS=1
+
 # Automatically search for shared libraries and add them to /etc/ld.so.conf?
 # This is experimental and could mess up your dynamic loader configuration.
 # Use it only if you know what you are doing.

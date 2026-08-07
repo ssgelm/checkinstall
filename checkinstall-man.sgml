@@ -356,6 +356,16 @@
       </varlistentry>
 
       <varlistentry>
+        <term><option>--autodeps</option>
+        </term>
+	<listitem><para>Work out the shared library dependencies of the
+		installed binaries with dpkg-shlibdeps and record them in the
+		package, as a normally packaged program would. Debian packages
+		only. On by default.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
         <term><option>--addso</option>
         </term>
 	<listitem><para>Search for any shared libs and add them to /etc/ld.so.conf</para>
