@@ -120,8 +120,16 @@ static int (*true_utimensat)(int, const char *, const struct timespec *, int);
    * these entry points in place of the ordinary ones, and coreutils among
    * others is built that way. We never look inside the buffer a caller hands
    * us, so it stays a void * here and only the path needs translating.
+   *   Build installwatch itself that way, as armhf does by default, and
+   * glibc renames the wrappers below to these same symbols. Defining them
+   * again is then a duplicate, so leave that to the renaming.
    */
-#if defined(__TIMESIZE) && __TIMESIZE == 32
+#if defined(__TIMESIZE) && __TIMESIZE == 32 && \
+    !defined(__USE_TIME_BITS64) && !defined(__USE_TIME64_REDIRECTS)
+#define WRAP_TIME64_ENTRY_POINTS
+#endif
+
+#ifdef WRAP_TIME64_ENTRY_POINTS
 static int (*true_stat64_time64)(const char *, void *);
 static int (*true_lstat64_time64)(const char *, void *);
 static int (*true_fstatat64_time64)(int, const char *, void *, int);
@@ -456,7 +464,7 @@ static void initialize(void) {
         true_utimes      = dlsym(libc_handle, "utimes");
         true_utimensat   = dlsym(libc_handle, "utimensat");
 
-#if defined(__TIMESIZE) && __TIMESIZE == 32
+#ifdef WRAP_TIME64_ENTRY_POINTS
 	true_stat64_time64    = dlsym(libc_handle, "__stat64_time64");
 	true_lstat64_time64   = dlsym(libc_handle, "__lstat64_time64");
 	true_fstatat64_time64 = dlsym(libc_handle, "__fstatat64_time64");
@@ -3803,7 +3811,7 @@ int utimensat (int dirfd, const char *pathname,
        return result;
 }
 
-#if defined(__TIMESIZE) && __TIMESIZE == 32
+#ifdef WRAP_TIME64_ENTRY_POINTS
 
 int __stat64_time64(const char *pathname, void *info) {
 	int result;
