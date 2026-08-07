@@ -14,6 +14,33 @@
 #                                                                            #
 ##############################################################################
 
+====== ABOUT THIS FORK ======
+
+checkinstall was written by Felipe Eduardo Sanchez Diaz Duran. Upstream
+development ended with the last commit in April 2017, and the bug tracker
+the source points at is gone.
+
+This fork continues from there. It starts at that last upstream commit and
+adds the patches Debian had accumulated, which by 2026 came to around
+forty. Most of them matter on any distribution:
+
+  - Filesystem translation, which lets "checkinstall make install" run
+    without scattering files over your system, had stopped seeing most of
+    what an install does. glibc 2.33 turned stat() and its relatives into
+    ordinary exported functions, and the interposed library was still
+    looking for the old ones.
+
+  - A failed install could replace /lib with a directory, leaving a
+    merged-/usr system unable to run a single binary.
+
+  - Built packages carried no dependencies, and put files under /lib
+    rather than /usr/lib.
+
+The tests/ directory holds a suite covering these. Changes that belong to
+Debian's packaging rather than to checkinstall itself stay in Debian.
+
+Bugs and patches: https://github.com/ssgelm/checkinstall
+
 ====== CONTENTS ======
 
 1. Introduction
