@@ -1739,7 +1739,7 @@ if [ $INSTALL_FAILED -gt 0 ]; then
 	   mkdir -p "${BUILD_DIR}/${doc_dir}"
 	   copy_dir_hierarchy . "$DIRECTORIO_FUENTE/doc-pak" \
                "${BUILD_DIR}/${doc_dir}"
-	   chown -R root.root "${BUILD_DIR}/${doc_dir}"
+	   chown -R root:root "${BUILD_DIR}/${doc_dir}"
 	fi
 	
 	# If we have a --include list file, copy the files listed there to /
@@ -1922,7 +1922,7 @@ if [ $INSTALL_FAILED -gt 0 ]; then
 	# similar option in Slackware's makepkg.
 
 	if [ $RESET_UIDS -gt 0 ]; then
-	   find "$BUILD_DIR" -exec chown root.root {} \;
+	   find "$BUILD_DIR" -exec chown root:root {} \;
 	   find "$BUILD_DIR" -type d -exec chmod 755 {} \;
 	   find "$BUILD_DIR" -type f -exec chmod o=g {} \;
 	fi

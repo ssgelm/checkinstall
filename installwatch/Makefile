@@ -17,7 +17,9 @@ LIBGCC=`gcc -print-libgcc-file-name`
 all: installwatch.so
 
 installwatch.so: installwatch.o
-	ld -znow -shared -o installwatch.so installwatch.o -ldl -lc $(LIBGCC)
+	# --build-id: linking with ld rather than gcc means nothing adds the
+	# note otherwise, and without it there are no separate debug symbols.
+	ld --build-id -znow -shared -o installwatch.so installwatch.o -ldl -lc $(LIBGCC)
 
 installwatch.o: installwatch.c localdecls.h
 	gcc $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -Wall -c -g -D_GNU_SOURCE -DPIC -fPIC -D_REENTRANT -DVERSION=\"$(VERSION)\" installwatch.c
