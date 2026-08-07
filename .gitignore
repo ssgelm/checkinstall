@@ -1,0 +1,9 @@
+# build products
+/checkinstall
+locale/*.mo
+installwatch/*.o
+installwatch/installwatch.so
+installwatch/localdecls.h
+installwatch/libctest
+installwatch/libcfiletest
+installwatch/test-installwatch
