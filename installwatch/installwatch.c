@@ -335,7 +335,7 @@ int parse_suffix(char *,char *,const char *);
 #define finalize(code) {rcod=code;goto finalize;}
 
 #if DEBUG
-#ifndef __ARM_32BIT_STATE
+#ifndef __USE_FILE_OFFSET64
 static int __instw_printdirent(struct dirent*);
 #endif
 static int __instw_printdirent64(struct dirent64*);
@@ -1204,7 +1204,7 @@ int parse_suffix(char *pnp,char *pns,const char *suffix) {
  * *****************************************************************************
  */
 
-#ifndef __ARM_32BIT_STATE
+#ifndef __USE_FILE_OFFSET64
 static int __instw_printdirent(struct dirent *entry) {
 
 	if(entry!=NULL) {
@@ -2662,7 +2662,7 @@ int chroot(const char *path) {
 	return result;
 }
 
-#ifndef __ARM_32BIT_STATE
+#ifndef __USE_FILE_OFFSET64
 int creat(const char *pathname, mode_t mode) {
 /* Is it a system call? */
 	int result;
@@ -2737,7 +2737,7 @@ int fchown(int fd, uid_t owner, gid_t group) {
 	return result;
 }
 
-#ifndef __ARM_32BIT_STATE
+#ifndef __USE_FILE_OFFSET64
 FILE *fopen(const char *pathname, const char *mode) {
 	FILE *result = NULL;
 	instw_t instw;
@@ -3079,7 +3079,7 @@ int __xmknod(int version,const char *pathname, mode_t mode,dev_t *dev) {
 	return result;
 }
 
-#ifndef __ARM_32BIT_STATE
+#ifndef __USE_FILE_OFFSET64
 int open(const char *pathname, int flags, ...) {
 /* Eventually, there is a third parameter: it's mode_t mode */
 	va_list ap;
@@ -3172,7 +3172,7 @@ DIR *opendir(const char *dirname) {
 	return result;
 }
 
-#ifndef __ARM_32BIT_STATE
+#ifndef __USE_FILE_OFFSET64
 struct dirent *readdir(DIR *dir) {
 	struct dirent *result;
 
@@ -3334,7 +3334,7 @@ int rmdir(const char *pathname) {
 	return result;
 }
 
-#ifndef __ARM_32BIT_STATE
+#ifndef __USE_FILE_OFFSET64
 int scandir(	const char *dir,struct dirent ***namelist,
 		int (*select)(const struct dirent *),
 #if (GLIBC_MINOR >= 10)
@@ -3365,6 +3365,7 @@ int scandir(	const char *dir,struct dirent ***namelist,
 #endif
 
 #if (GLIBC_MINOR >= 33)
+#ifndef __USE_FILE_OFFSET64
 int stat(const char *pathname, struct stat *info) {
 	int result;
 	instw_t instw;
@@ -3404,6 +3405,7 @@ int stat(const char *pathname, struct stat *info) {
 
 	return result;	
 }
+#endif
 
 #endif
 
@@ -3450,6 +3452,7 @@ int __xstat(int version,const char *pathname,struct stat *info) {
 }
 
 #if (GLIBC_MINOR >= 33)
+#ifndef __USE_FILE_OFFSET64
 int lstat(const char *pathname,struct stat *info) {
 	int result;
 	instw_t instw;
@@ -3491,6 +3494,7 @@ int lstat(const char *pathname,struct stat *info) {
 
 	return result;	
 }
+#endif
 #endif
 
 int __lxstat(int version,const char *pathname,struct stat *info) {
@@ -3579,7 +3583,7 @@ int symlink(const char *pathname, const char *slink) {
 	return result;
 }
 
-#ifndef __ARM_32BIT_STATE
+#ifndef __USE_FILE_OFFSET64
 int truncate(const char *path, TRUNCATE_T length) {
 	int result;
 	instw_t instw;
@@ -4461,6 +4465,7 @@ int fchownat (int dirfd, const char *path,uid_t owner,gid_t group,int flags) {
 }
 
 #if (GLIBC_MINOR >= 33)
+#ifndef __USE_FILE_OFFSET64
 int fstatat (int dirfd, const char *path, struct stat *s, int flags) {
  	
  	int result;
@@ -4533,6 +4538,7 @@ int fstatat (int dirfd, const char *path, struct stat *s, int flags) {
  
 	return result;
 }
+#endif
 #endif
 
 int __fxstatat (int version, int dirfd, const char *path, struct stat *s, int flags) {
@@ -4893,6 +4899,7 @@ static void temp_commit(char *template,const char *created,int suffixlen) {
 	memcpy(template+tlen-6-suffixlen,created+clen-6-suffixlen,6);
 }
 
+#ifndef __USE_FILE_OFFSET64
 int mkstemp(char *template) {
 	char translated[PATH_MAX+1];
 	instw_t instw;
@@ -4929,6 +4936,7 @@ int mkstemp(char *template) {
 
 	return result;
 }
+#endif
 
 int mkstemp64(char *template) {
 	char translated[PATH_MAX+1];
@@ -4965,6 +4973,7 @@ int mkstemp64(char *template) {
 	return result;
 }
 
+#ifndef __USE_FILE_OFFSET64
 int mkostemp(char *template,int flags) {
 	char translated[PATH_MAX+1];
 	instw_t instw;
@@ -4999,6 +5008,7 @@ int mkostemp(char *template,int flags) {
 
 	return result;
 }
+#endif
 
 int mkostemp64(char *template,int flags) {
 	char translated[PATH_MAX+1];
@@ -5035,6 +5045,7 @@ int mkostemp64(char *template,int flags) {
 	return result;
 }
 
+#ifndef __USE_FILE_OFFSET64
 int mkstemps(char *template,int suffixlen) {
 	char translated[PATH_MAX+1];
 	instw_t instw;
@@ -5069,6 +5080,7 @@ int mkstemps(char *template,int suffixlen) {
 
 	return result;
 }
+#endif
 
 int mkstemps64(char *template,int suffixlen) {
 	char translated[PATH_MAX+1];
@@ -5105,6 +5117,7 @@ int mkstemps64(char *template,int suffixlen) {
 	return result;
 }
 
+#ifndef __USE_FILE_OFFSET64
 int mkostemps(char *template,int suffixlen,int flags) {
 	char translated[PATH_MAX+1];
 	instw_t instw;
@@ -5139,6 +5152,7 @@ int mkostemps(char *template,int suffixlen,int flags) {
 
 	return result;
 }
+#endif
 
 int mkostemps64(char *template,int suffixlen,int flags) {
 	char translated[PATH_MAX+1];
@@ -5216,17 +5230,21 @@ char *mkdtemp(char *template) {
   /* Fortified calls bypass the ordinary interposed symbols. */
   /* The caller supplies no mode, so pass one explicitly.    */
 
+#ifndef __USE_FILE_OFFSET64
 int __open_2(const char *pathname, int flags) {
 	return open(pathname, flags, 0);
 }
+#endif
 
 int __open64_2(const char *pathname, int flags) {
 	return open64(pathname, flags, 0);
 }
 
+#ifndef __USE_FILE_OFFSET64
 int __openat_2(int dirfd, const char *pathname, int flags) {
 	return openat(dirfd, pathname, flags, 0);
 }
+#endif
 
 int __openat64_2(int dirfd, const char *pathname, int flags) {
 	return openat(dirfd, pathname, flags, 0);
