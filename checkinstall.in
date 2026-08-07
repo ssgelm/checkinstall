@@ -177,6 +177,7 @@ function usage() {
    echog "--strip=<yes|no>               Strip any ELF binaries found inside the package"
    echog "--stripso=<yes|no>             Strip any ELF binary libraries (.so files)" 
    echog "--autodeps=<yes|no>            Work out the shared library dependencies of\n                               the installed binaries with dpkg-shlibdeps"
+   echog "--debcompression=<type>        Compression for the .deb: gzip, xz, zstd or\n                               none. Leave it unset and dpkg-deb chooses"
    echog "--addso=<yes|no>               Search for any shared libs and add"
    echog "                               them to /etc/ld.so.conf"
    echog "--reset-uids=<yes|no>          Reset perms for all files to o=g, dirs to 755 and"
@@ -516,7 +517,7 @@ fi
 # Arguments parsing
 
 CKNAME=`basename "$0"`
-PARAMS=`getopt -a -n $CKNAME -o +d:DA:t:RShHy -l arch:,type:,si,showinstall::,ss,showslack::,deldoc::,delspec::,deldesc::,strip::,addso::,autodeps::,install::,stripso::,gzman::,bk,backup::,autodoinst::,reset-uids::,fstrans::,spec:,exclude:,include:,pkgname:,pkgversion:,pkgrelease:,pkglicense:,pkggroup:,pkgsource:,pkgaltsource:,pakdir:,docdir:,requires:,prerequires:,recommends:,suggests:,provides:,conflicts:,replaces:,maintainer:,dpkgflags:,rpmflags:,pkgarch:,umask:,with-tar:,summary:,inspect,review-spec,review-control,newslack,help,nodoc,rpmi,rpmu,version,copyright,default -- "$@"`
+PARAMS=`getopt -a -n $CKNAME -o +d:DA:t:RShHy -l arch:,type:,si,showinstall::,ss,showslack::,deldoc::,delspec::,deldesc::,strip::,addso::,autodeps::,debcompression:,install::,stripso::,gzman::,bk,backup::,autodoinst::,reset-uids::,fstrans::,spec:,exclude:,include:,pkgname:,pkgversion:,pkgrelease:,pkglicense:,pkggroup:,pkgsource:,pkgaltsource:,pakdir:,docdir:,requires:,prerequires:,recommends:,suggests:,provides:,conflicts:,replaces:,maintainer:,dpkgflags:,rpmflags:,pkgarch:,umask:,with-tar:,summary:,inspect,review-spec,review-control,newslack,help,nodoc,rpmi,rpmu,version,copyright,default -- "$@"`
 
 [ $? -gt 0 ] && help_notice
 
@@ -754,6 +755,20 @@ while [ "$1" != "--" ]; do
                 boolean_usage "--autodeps" "$1"
           esac
           ;;
+       --debcompression)
+          shift
+          case "$1" in
+             gzip|xz|zstd|none)
+                DEB_COMPRESSION="$1";;
+             *)
+                echo
+                echog "%s is an invalid value for %s" "$1" "--debcompression"
+                echog "Use gzip, xz, zstd or none."
+                help_notice
+                exit 1
+          esac
+          ;;
+
        --addso)
           shift
           case "$1" in
@@ -2787,13 +2802,17 @@ DEBPKG="${DIRECTORIO_FUENTE}/${NAME}_`echo ${VERSION} | sed -e 's/^[0123456789]*
 # This one is for 2.2 "Potato" (or older) style packages
 #DEBPKG="${DIRECTORIO_FUENTE}/${NAME}_${VERSION}-${RELEASE}.deb"
 
+# Leave dpkg-deb to pick for itself unless the user named a compression
+DEB_COMPRESSION_FLAG=""
+[ "$DEB_COMPRESSION" ] && DEB_COMPRESSION_FLAG="-Z$DEB_COMPRESSION"
+
 if [ $DEBUG -gt 0 ]; then
   echo
   echo debug: PKG_BASENAME=${PKG_BASENAME}
   echo debug: BUILD_DIR=${BUILD_DIR}
   echo debug: DEBPKG=${DEBPKG}
   echo debug: dpkg command:
-  echo "   \"dpkg-deb -b $BUILD_DIR $DEBPKG &> ${TMP_DIR}/dpkgbuild.log\""
+  echo "   \"dpkg-deb $DEB_COMPRESSION_FLAG -b $BUILD_DIR $DEBPKG &> ${TMP_DIR}/dpkgbuild.log\""
 fi
 
 # If requested with --review-control, we run an editor on the control file
@@ -2808,7 +2827,7 @@ fi
 
 echo
 echogn "Building Debian package..."
-dpkg-deb -b $BUILD_DIR "$DEBPKG" &> ${TMP_DIR}/dpkgbuild.log
+dpkg-deb $DEB_COMPRESSION_FLAG -b $BUILD_DIR "$DEBPKG" &> ${TMP_DIR}/dpkgbuild.log
 okfail
       
 if [ $? -gt 0 ]; then

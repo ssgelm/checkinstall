@@ -51,6 +51,7 @@ run from there.
 | `09-package-metadata.sh` | `--maintainer`, `--requires` and `--summary` surviving shell metacharacters |
 | `10-addso.sh` | `--addso=yes` finding staged libraries, and its ld.so.conf guard holding under `/bin/sh` |
 | `11-workdir-exclusion.sh` | the anchored build-directory exclusion, as a source check |
+| `12-deb-compression.sh` | `--debcompression` reaching dpkg-deb, and a bad value stopping the run early |
 
 `src/` holds two small C helpers: one that materialises an `O_TMPFILE`
 through `linkat`, and one that calls the LFS64 temporary-file functions

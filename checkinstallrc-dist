@@ -63,6 +63,11 @@ RPM_FLAGS=" --force --nodeps --replacepkgs "
 # dpkg optional flags
 DPKG_FLAGS=""
 
+# Compression for the Debian package: gzip, xz, zstd or none.
+# Leave it empty and dpkg-deb chooses. On a large package gzip and zstd
+# finish much faster than xz, and produce a bigger file.
+DEB_COMPRESSION=""
+
 
 ## These are boolean. Set them to 1 or 0
 

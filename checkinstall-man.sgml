@@ -366,6 +366,16 @@
       </varlistentry>
 
       <varlistentry>
+        <term><option>--debcompression</option>
+        </term>
+	<listitem><para>Compression to use when building a Debian package:
+		gzip, xz, zstd or none. Leave it unset and dpkg-deb chooses.
+		On a large package gzip and zstd finish much faster than xz,
+		and produce a bigger file.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
         <term><option>--addso</option>
         </term>
 	<listitem><para>Search for any shared libs and add them to /etc/ld.so.conf</para>
