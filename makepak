@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: BSD-1-Clause
 # Copyright 1994, 1998  Patrick Volkerding, Moorhead, Minnesota USA 
 # All rights reserved.
 #

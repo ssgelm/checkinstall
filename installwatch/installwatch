@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-2.0-or-later
 #$Id: installwatch,v 0.6.7.0 2007/12/04 07:35:04 gna Exp $
 
 #set -x
@@ -193,8 +194,7 @@ Copyright (C) 2010 Felipe Eduardo Sanchez Diaz Duran <izto@asic-linux.com.mx>
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+    along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 EOF
 			exit 0

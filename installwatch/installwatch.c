@@ -1,5 +1,7 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 /*
  * Copyright (C) 1998-9 Pancrazio `Ezio' de Mauro <p@demauro.net>
+ * Copyright (C) 2026 Stephen Gelman <ssgelm@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,8 +14,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * along with this program; if not, see <https://www.gnu.org/licenses/>.
  *
  * $Id: installwatch.c,v 0.7.0.11 2008/11/09 07:47:00 izto Exp $
  * 
