@@ -1,3 +1,9 @@
+This file is a dump of the commit log, kept by hand up to 1.6.2. It stops
+there. Everything since is in git, which says the same thing without going
+stale:
+
+    git log
+
 ========== Checkinstall 1.6.2 is released ===========
 
 commit 3af2ebd909675c7e6c75dfc8516894208c8b9797
