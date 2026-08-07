@@ -1310,7 +1310,29 @@ fi
 
       # Some sanity checks
       ! [ "$SUMMARY" ] && SUMMARY=`head -1 description-pak`
-      ! [ "$NAME" ] && NAME=`echo "$PKG_BASENAME" | rev | cut -f2- -d"-" | rev`
+      # An out-of-source build runs in a subdirectory, so guess from the
+      # source directory above it rather than from "build" itself.
+      PKG_GUESS="$PKG_BASENAME"
+      case "$PKG_GUESS" in
+	 build|_build|builddir)
+	    PKG_GUESS=$(basename "$(dirname "$DIRECTORIO_FUENTE")")
+	    [ "$PKG_GUESS" = "/" ] && PKG_GUESS="$PKG_BASENAME"
+	    ;;
+      esac
+
+      # Split a trailing field off as the version only when it looks like
+      # one. Without that, a directory named gr-binviz gives the package
+      # gr, version binviz.
+      PKG_TAIL=$(echo "$PKG_GUESS" | rev | cut -f1 -d"-" | rev)
+      case "$PKG_TAIL" in
+	 *[0-9]*)
+	    ! [ "$NAME" ] && NAME=`echo "$PKG_GUESS" | rev | cut -f2- -d"-" | rev`
+	    ! [ "$VERSION" ] && VERSION="$PKG_TAIL"
+	    ;;
+	 *)
+	    ! [ "$NAME" ] && NAME="$PKG_GUESS"
+	    ;;
+      esac
 
       echo "$NAME" | grep -e "[[:blank:]]" &> /dev/null
       if [ $? -eq 0 ]; then
@@ -1344,21 +1366,17 @@ fi
       fi
 
 
-      ! [ "$VERSION" ] && VERSION=`echo "$PKG_BASENAME" | rev | cut -f1 -d"-" | rev`
-
       ## Did we get a usable version?
 
-      if [  "$VERSION" = "$PKG_BASENAME" ]; then
+      if ! [ "$VERSION" ]; then
 
          # If we did not then try getting it from the config.log file
          if [ -f "$DIRECTORIO_FUENTE/config.log" ]; then
             VERSION=`grep '#define VERSION' config.log| awk -F \" '{print $ 2}'`
-
-         else
-
-            # We use the current that if everything else fails
-            VERSION=`date +%Y%m%d` 
          fi
+
+         # We use the current date if everything else fails
+         ! [ "$VERSION" ] && VERSION=`date +%Y%m%d`
       fi
 
 
