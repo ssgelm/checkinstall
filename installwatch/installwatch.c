@@ -113,6 +113,7 @@ static int (*true_truncate)(const char *, TRUNCATE_T);
 static int (*true_unlink)(const char *);
 static int (*true_utime)(const char *,const struct utimbuf *);
 static int (*true_utimes)(const char *,const struct timeval *);
+static int (*true_utimensat)(int, const char *, const struct timespec *, int);
 static int (*true_access)(const char *, int);
 static int (*true_setxattr)(const char *,const char *,const void *,
                             size_t, int);
@@ -437,6 +438,7 @@ static void initialize(void) {
 	true_utime       = dlsym(libc_handle, "utime");
 	true_setxattr    = dlsym(libc_handle, "setxattr");
         true_utimes      = dlsym(libc_handle, "utimes");
+        true_utimensat   = dlsym(libc_handle, "utimensat");
         true_access      = dlsym(libc_handle, "access");
 
 
@@ -3728,6 +3730,47 @@ int utimes (const char *pathname, const struct timeval *newtimes) {
 
        result=true_utimes(instw.translpath,newtimes);
        logg("%d\tutimes\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+       instw_delete(&instw);
+
+       return result;
+}
+
+int utimensat (int dirfd, const char *pathname,
+               const struct timespec times[2], int flags) {
+       int result;
+       instw_t instw;
+
+       if (!libc_handle)
+               initialize();
+
+#if DEBUG
+       debug(2,"utimensat(%d,%s,times,0%o)\n",dirfd,pathname,flags);
+#endif
+
+         /* We were asked to work in "real" mode */
+       if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+           !(__instw.gstatus & INSTW_OKWRAP) )
+               return true_utimensat(dirfd,pathname,times,flags);
+
+         /* A null path means the descriptor itself, which needs no */
+         /* translating: it already refers to the translated file.  */
+       if(pathname==NULL)
+               return true_utimensat(dirfd,pathname,times,flags);
+
+       instw_new(&instw);
+       instw_setpathrel(&instw,dirfd,pathname);
+
+#if DEBUG
+       instw_print(&instw);
+#endif
+
+       backup(instw.truepath);
+       instw_apply(&instw);
+
+         /* instw resolved an absolute path, so the descriptor is spent */
+       result=true_utimensat(AT_FDCWD,instw.translpath,times,flags);
+       logg("%d\tutimensat\t%s\t#%s\n",result,instw.reslvpath,error(result));
 
        instw_delete(&instw);
 
