@@ -4,626 +4,1223 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: checkinstall-ja\n"
-"POT-Creation-Date: 2002-11-27 00:58-0600\n"
+"Report-Msgid-Bugs-To: https://github.com/ssgelm/checkinstall/issues\n"
+"POT-Creation-Date: 2026-08-07 02:20-0500\n"
 "PO-Revision-Date: 2003-05-24 03:20+0900\n"
 "Last-Translator: UTUMI Hirosi <utuhiro@mx12.freecom.ne.jp>\n"
 "Language-Team:  <ja@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.0.1\n"
 
+#: checkinstall.in:83 checkinstall.in:337
+msgid "Bye."
+msgstr "Bye."
+
+#: checkinstall.in:110
 msgid "           This software is released under the GNU GPL."
 msgstr "           このソフトウェアはGNU GPLの下でリリースしています。"
 
+#: checkinstall.in:124
 msgid "Usage: checkinstall [options] [command [command arguments]]"
 msgstr "使いかた: checkinstall [options] [command [command arguments]]"
 
+#: checkinstall.in:125
 msgid "Options:"
 msgstr "オプション:"
 
+#: checkinstall.in:127
 msgid "*Package type selection*"
 msgstr "*パッケージの種類の選択*"
 
+#: checkinstall.in:129
 msgid "-t,--type=<slackware|rpm|debian> Choose packaging system"
 msgstr "-t,--type=<slackware|rpm|debian> パッケージングシステムを選択"
 
+#: checkinstall.in:130
 msgid "-S                               Build a Slackware package"
 msgstr "-S                               Slackwareのパッケージを作成"
 
+#: checkinstall.in:131
 msgid "-R                               Build a RPM package"
 msgstr "-R                               RPMのパッケージを作成"
 
+#: checkinstall.in:132
 msgid "-D                               Build a Debian package"
 msgstr "-D                               Debianのパッケージを作成"
 
+#: checkinstall.in:134
 msgid "*Install options*"
 msgstr "*インストールのオプション*"
 
+#: checkinstall.in:136
 msgid "--install=<yes|no>             Toggle created package installation"
-msgstr "--install=<yes|no>             パッケージをインストールする/しないの選択"
+msgstr ""
+"--install=<yes|no>             パッケージをインストールする/しないの選択"
 
+#: checkinstall.in:137
+#, fuzzy
+#| msgid "--delspec=<yes|no>             Delete spec file upon termination"
+msgid ""
+"--fstrans=<yes|no>             Enable/disable the filesystem translation code"
+msgstr "--delspec=<yes|no>             最後にspecファイルを削除する/しない"
+
+#: checkinstall.in:139
 msgid "*Scripting options*"
 msgstr "*スクリプトのオプション*"
 
+#: checkinstall.in:141
 msgid "-y, --default                  Accept default answers to all questions"
 msgstr "-y, --default                  全ての質問にデフォルトの返答を行う"
 
+#: checkinstall.in:142
 msgid "--pkgname=<name>               Set name"
 msgstr "--pkgname=<name>               名前を指定する"
 
+#: checkinstall.in:143
 msgid "--pkgversion=<version>         Set version"
 msgstr "--pkgversion=<version>         バージョンを指定する"
 
+#: checkinstall.in:144
 msgid "-A, --arch, --pkgarch=<arch>   Set architecture"
 msgstr "-A, --arch, --pkgarch=<arch>   アーキテクチャを指定する"
 
+#: checkinstall.in:145
 msgid "--pkgrelease=<release>         Set release"
 msgstr "--pkgrelease=<release>         リリースを指定する"
 
+#: checkinstall.in:146
 msgid "--pkglicense=<license>         Set license"
 msgstr "--pkglicense=<license>         ライセンスを指定する"
 
+#: checkinstall.in:147
 msgid "--pkggroup=<group>             Set software group"
 msgstr "--pkggroup=<group>             ソフトウェアのグループを指定する"
 
+#: checkinstall.in:148
 msgid "--pkgsource=<source>           Set source location"
 msgstr "--pkgsource=<source>           ソースの配布場所を指定する"
 
+#: checkinstall.in:149
 msgid "--pkgaltsource=<altsource>     Set alternate source location"
 msgstr "--pkgaltsource=<altsource>     ソースの別の配布場所を指定する"
 
+#: checkinstall.in:150
 msgid "--pakdir=<directory>           The new package will be saved here"
 msgstr "--pakdir=<directory>           新しいパッケージをここに保存する"
 
+#: checkinstall.in:151
 msgid "--maintainer=<email addr>      The package maintainer (.deb)"
 msgstr "--maintainer=<email addr>      パッケージのメンテナ(.deb)"
 
-msgid "--provides=<list>              Features provided by this package (.rpm)"
+#: checkinstall.in:152
+#, fuzzy
+#| msgid ""
+#| "--provides=<list>              Features provided by this package (.rpm)"
+msgid "--provides=<list>              Features provided by this package"
 msgstr "--provides=<list>              このパッケージが提供するもの(.rpm)"
 
-msgid "--requires=<list>              Features required by this package (.rpm)"
+#: checkinstall.in:153
+#, fuzzy
+#| msgid ""
+#| "--requires=<list>              Features required by this package (.rpm)"
+msgid "--requires=<list>              Features required by this package"
 msgstr "--requires=<list>              このパッケージが必要とするもの(.rpm)"
 
+#: checkinstall.in:154
+#, fuzzy
+#| msgid ""
+#| "--requires=<list>              Features required by this package (.rpm)"
+msgid ""
+"--prerequires=<list>           Packages that must be installed and "
+"configured before this package"
+msgstr "--requires=<list>              このパッケージが必要とするもの(.rpm)"
+
+#: checkinstall.in:155
+#, fuzzy
+#| msgid ""
+#| "--provides=<list>              Features provided by this package (.rpm)"
+msgid "--recommends=<list>            Features recommended by this package"
+msgstr "--provides=<list>              このパッケージが提供するもの(.rpm)"
+
+#: checkinstall.in:156
+#, fuzzy
+#| msgid ""
+#| "--requires=<list>              Features required by this package (.rpm)"
+msgid "--suggests=<list>              Features suggested by this package"
+msgstr "--requires=<list>              このパッケージが必要とするもの(.rpm)"
+
+#: checkinstall.in:157
+#, fuzzy
+#| msgid "--rpmflags=<flags>             Pass this flags to the rpm installer"
+msgid ""
+"--conflicts=<list>             Packages that this package cannot be "
+"installed with (.deb)"
+msgstr "--rpmflags=<flags>             rpmインストーラにこのフラグを渡す"
+
+#: checkinstall.in:158
+#, fuzzy
+#| msgid ""
+#| "--requires=<list>              Features required by this package (.rpm)"
+msgid ""
+"--replaces=<list>              Packages that this package replaces (.deb)"
+msgstr "--requires=<list>              このパッケージが必要とするもの(.rpm)"
+
+#: checkinstall.in:159
 msgid "--rpmflags=<flags>             Pass this flags to the rpm installer"
 msgstr "--rpmflags=<flags>             rpmインストーラにこのフラグを渡す"
 
+#: checkinstall.in:160
+#, fuzzy
+#| msgid ""
+#| "--review-spec                  Review the spec file before creating a .rpm"
+msgid ""
+"--rpmi                         Use the -i flag for rpm when installing a .rpm"
+msgstr "--review-spec                  rpmを作成する前にspecファイルを見る"
+
+#: checkinstall.in:161
+#, fuzzy
+#| msgid ""
+#| "--review-spec                  Review the spec file before creating a .rpm"
+msgid ""
+"--rpmu                         Use the -U flag for rpm when installing a .rpm"
+msgstr "--review-spec                  rpmを作成する前にspecファイルを見る"
+
+#: checkinstall.in:162
 msgid "--dpkgflags=<flags>            Pass this flags to the dpkg installer"
 msgstr "--dpkgflags=<flags>            dpkgインストーラにこのフラグを渡す"
 
+#: checkinstall.in:163
 msgid "--spec=<path>                  .spec file location"
 msgstr "--spec=<path>                  specファイルの場所"
 
+#: checkinstall.in:164
 msgid "--nodoc                        Do not include documentation files"
 msgstr "--nodoc                        ドキュメンテーションファイルは除外する"
 
+#: checkinstall.in:166
 msgid "*Info display options*"
 msgstr "*情報を表示するオプション*"
 
+#: checkinstall.in:168
 msgid "-d<0|1|2>                      Set debug level"
 msgstr "-d<0|1|2>                      デバッグレベルを指定する"
 
+#: checkinstall.in:169
 msgid "-si                            Run an interactive install command"
 msgstr "-si                            インストールコマンドの状況を表示する"
 
+#: checkinstall.in:170
 msgid "--showinstall=<yes|no>         Toggle interactive install command"
-msgstr "--showinstall=<yes|no>         インストールコマンドの状況を表示する/しない"
+msgstr ""
+"--showinstall=<yes|no>         インストールコマンドの状況を表示する/しない"
 
+#: checkinstall.in:171
 msgid ""
 "-ss                            Run an interactive Slackware installation "
 "script"
 msgstr ""
-"-ss                            Slackwareのインストールスクリプトの状況を"
-"表示する"
+"-ss                            Slackwareのインストールスクリプトの状況を表示"
+"する"
 
+#: checkinstall.in:172
 msgid ""
 "--showslack=<yes|no>           Toggle interactive Slackware installation "
 "script"
 msgstr ""
-"--showslack=<yes|no>           Slackwareのインストールスクリプトの状況を"
-"表示する/しない"
+"--showslack=<yes|no>           Slackwareのインストールスクリプトの状況を表示"
+"する/しない"
 
+#: checkinstall.in:174
 msgid "*Package tuning options*"
 msgstr "*パッケージのチューニングオプション*"
 
-msgid "--autodoinst=<yes|no>          Toggle the creation of a doinst.sh script"
+#: checkinstall.in:176
+msgid ""
+"--autodoinst=<yes|no>          Toggle the creation of a doinst.sh script"
 msgstr "--autodoinst=<yes|no>          doinst.shスクリプトを作成する/しない"
 
+#: checkinstall.in:177
 msgid ""
 "--strip=<yes|no>               Strip any ELF binaries found inside the "
 "package"
-msgstr "--strip=<yes|no>               パッケージ内のELFバイナリを除去する/しない"
-
-msgid "--stripso=<yes|no>             Strip any ELF binary libraries (.so files)"
 msgstr ""
-"--stripso=<yes|no>             パッケージ内のELFバイナリを除去する/しない"
-"(.soファイル)"
+"--strip=<yes|no>               パッケージ内のELFバイナリを除去する/しない"
 
+#: checkinstall.in:178
+msgid ""
+"--stripso=<yes|no>             Strip any ELF binary libraries (.so files)"
+msgstr ""
+"--stripso=<yes|no>             パッケージ内のELFバイナリを除去する/しない(.so"
+"ファイル)"
+
+#: checkinstall.in:179
+msgid ""
+"--autodeps=<yes|no>            Work out the shared library dependencies "
+"of\\n                               the installed binaries with dpkg-"
+"shlibdeps"
+msgstr ""
+
+#: checkinstall.in:180
+#, fuzzy
+#| msgid ""
+#| "--strip=<yes|no>               Strip any ELF binaries found inside the "
+#| "package"
+msgid "--addso=<yes|no>               Search for any shared libs and add"
+msgstr ""
+"--strip=<yes|no>               パッケージ内のELFバイナリを除去する/しない"
+
+#: checkinstall.in:181
+#, fuzzy
+#| msgid "-si                            Run an interactive install command"
+msgid "                               them to /etc/ld.so.conf"
+msgstr "-si                            インストールコマンドの状況を表示する"
+
+#: checkinstall.in:182
+msgid ""
+"--reset-uids=<yes|no>          Reset perms for all files to o=g, dirs to 755 "
+"and"
+msgstr ""
+
+#: checkinstall.in:183
+msgid ""
+"                               the owner/group for all dirs to root.root"
+msgstr ""
+
+#: checkinstall.in:184
 msgid ""
 "--gzman=<yes|no>               Compress any man pages found inside the "
 "package"
-msgstr "--gzman=<yes|no>               パッケージ内のmanページを圧縮する/しない"
+msgstr ""
+"--gzman=<yes|no>               パッケージ内のmanページを圧縮する/しない"
 
+#: checkinstall.in:185
 msgid "--docdir=<path>                Where to put documentation files"
-msgstr "--docdir=<path>                ドキュメンテーションファイルの置き場所を指定する"
+msgstr ""
+"--docdir=<path>                ドキュメンテーションファイルの置き場所を指定す"
+"る"
 
+#: checkinstall.in:186
+#, fuzzy
+#| msgid "-si                            Run an interactive install command"
+msgid ""
+"                               The package name+version gets automatically "
+"appended."
+msgstr "-si                            インストールコマンドの状況を表示する"
+
+#: checkinstall.in:187
+#, fuzzy
+#| msgid "-D                               Build a Debian package"
+msgid ""
+"                               To avoid that prefix the path with a colon "
+"(:)."
+msgstr "-D                               Debianのパッケージを作成"
+
+#: checkinstall.in:188
 msgid "--umask=<mask>                 Set the umask value"
 msgstr "--umask=<mask>                 umaskの内容を指定する"
 
+#: checkinstall.in:189
 msgid ""
 "--exclude=<file|dir[,...]>     Exclude these files/directories from the "
 "package"
 msgstr ""
-"--exclude=<file|dir[,...]>     以下のファイル/ディレクトリをパッケージから"
-"除外する"
+"--exclude=<file|dir[,...]>     以下のファイル/ディレクトリをパッケージから除"
+"外する"
 
-msgid "--include=<listfile>           Force the inclusion in the package of the"
+#: checkinstall.in:190
+msgid ""
+"--include=<listfile>           Force the inclusion in the package of the"
 msgstr "--include=<listfile>           以下のファイルをパッケージに収める"
 
+#: checkinstall.in:191
+#, fuzzy
+#| msgid "-D                               Build a Debian package"
+msgid "                               files/dirs listed in \"listfile\""
+msgstr "-D                               Debianのパッケージを作成"
+
+#: checkinstall.in:192
 msgid "--inspect                      Inspect the package's file list"
 msgstr "--inspect                      パッケージのファイルリストを検査する"
 
-msgid "--review-spec                  Review the spec file before creating a .rpm"
+#: checkinstall.in:193
+msgid ""
+"--review-spec                  Review the spec file before creating a .rpm"
 msgstr "--review-spec                  rpmを作成する前にspecファイルを見る"
 
-msgid "--review-control               Review the control file before creating a .deb"
+#: checkinstall.in:194
+msgid ""
+"--review-control               Review the control file before creating a .deb"
 msgstr "--review-control               debを作成する前にcontrolファイルを見る"
 
+#: checkinstall.in:195
 msgid ""
 "--newslack                     Use the new (8.1+) Slackware description "
 "format"
-msgstr "--newslack                     Slackwareの新しい(8.1以降)形式の説明を使う"
+msgstr ""
+"--newslack                     Slackwareの新しい(8.1以降)形式の説明を使う"
 
+#: checkinstall.in:196
 msgid "                               (\"--newslack\" implies \"-S\")"
 msgstr "                               (--newslack は -S と略記可能)"
 
+#: checkinstall.in:197
+msgid "--with-tar=/path/to/tar        Manually set the path to the tar binary"
+msgstr ""
+
+#: checkinstall.in:198
+#, fuzzy
+#| msgid "-R                               Build a RPM package"
+msgid "                               in this system"
+msgstr "-R                               RPMのパッケージを作成"
+
+#: checkinstall.in:200
 msgid "*Cleanup options*"
 msgstr "*クリーンアップのオプション*"
 
+#: checkinstall.in:202
 msgid "--deldoc=<yes|no>              Delete doc-pak upon termination"
 msgstr "--deldoc=<yes|no>              最後にdoc-pakを削除する/しない"
 
+#: checkinstall.in:203
 msgid "--deldesc=<yes|no>             Delete description-pak upon termination"
 msgstr "--deldesc=<yes|no>             最後にdescription-pakを削除する/しない"
 
+#: checkinstall.in:204
 msgid "--delspec=<yes|no>             Delete spec file upon termination"
 msgstr "--delspec=<yes|no>             最後にspecファイルを削除する/しない"
 
+#: checkinstall.in:205
 msgid "--bk                           Backup any overwritten files"
-msgstr "--bk                           ファイルを上書きする前にバックアップを取る"
+msgstr ""
+"--bk                           ファイルを上書きする前にバックアップを取る"
 
+#: checkinstall.in:206
 msgid "--backup=<yes|no>              Toggle backup"
 msgstr "--backup=<yes|no>              バックアップをする/しない"
 
+#: checkinstall.in:208
 msgid "*About CheckInstall*"
 msgstr "*CheckInstallについて*"
 
+#: checkinstall.in:210
 msgid "--help, -h                     Show this message"
 msgstr "--help, -h                     このメッセージを表示する"
 
+#: checkinstall.in:211
 msgid "--copyright                    Show Copyright information"
 msgstr "--copyright                    著作権情報を表示する"
 
+#: checkinstall.in:212
 msgid "--version                      Show version information"
 msgstr "--version                      バージョンを表示する"
 
+#: checkinstall.in:220
 msgid "Use --help or -h to get more information"
 msgstr "詳しくは --help か -h で確認してください"
 
-msgid "is an invalid value for"
+#: checkinstall.in:228
+#, fuzzy, sh-printf-format
+#| msgid "is an invalid value for"
+msgid "%s is an invalid value for %s"
 msgstr "is an invalid value for"
 
+#: checkinstall.in:279
+msgid " FAILED!"
+msgstr ""
+
+#: checkinstall.in:282
+msgid "OK"
+msgstr ""
+
+#: checkinstall.in:297
 msgid "Restoring overwritten files from backup..."
 msgstr "上書きしたファイルをバックアップから復元.."
 
+#: checkinstall.in:310
 msgid "*** SIGINT received ***"
 msgstr "*** SIGINT received ***"
 
+#: checkinstall.in:317
 msgid "Cleaning up..."
 msgstr "クリーンアップ.."
 
-msgid "Bye."
-msgstr "Bye."
-
-msgid "The checkinstallrc file was not found at:"
-msgstr "checkinstallrcファイルが以下にありません:"
-
+#: checkinstall.in:509
 msgid "Assuming default values."
 msgstr "デフォルトの内容を使うものとします"
 
-msgid "I can't find $INSTALLWATCH."
-msgstr "$INSTALLWATCH がありません"
+#: checkinstall.in:828
+#, sh-printf-format
+msgid ""
+"Warning: .spec file path \"%s\" not found.\\nWarning: Defaulting to \"%s\"."
+msgstr ""
 
-msgid "I can't continue. Either install installwatch or"
-msgstr "続けられません。installwatchをインストールするか、"
+#: checkinstall.in:1072
+#, sh-printf-format
+msgid ""
+"Warning: The path to tar specified in the command line is invalid."
+"\\nWarning: It has been set to %s"
+msgstr ""
 
-msgid "modify the INSTALLWATCH variable in this script,"
-msgstr "このスクリプトのINSTALLWATCH変数を変更してください。"
+#: checkinstall.in:1100
+msgid ""
+"I can't continue. Either install installwatch or\\nmodify the INSTALLWATCH "
+"variable in this script,\\nthen run checkinstall again."
+msgstr ""
 
-msgid "then run checkinstall again."
-msgstr "その後でcheckinstallを再実行してください。"
+#: checkinstall.in:1123
+#, fuzzy, sh-printf-format
+#| msgid "is an unacceptable value for the temp dir. Please"
+msgid ""
+"%s is an unacceptable value for the temp dir. Please \\nedit the variable "
+"definition for %s and try again."
+msgstr "はtempディレクトリには不適切です。Please"
 
-msgid "My temp dir exists already."
-msgstr "tempディレクトリは既にあります。"
-
-msgid "This looks like a symlink attack!"
-msgstr "symlink attackのようです。"
-
+#: checkinstall.in:1125
 msgid "*** Aborting"
 msgstr "*** 中止"
 
-msgid "is an unacceptable value for the temp dir. Please"
-msgstr "はtempディレクトリには不適切です。Please"
+#: checkinstall.in:1132
+#, sh-printf-format
+msgid ""
+"**** Failed to create temp dir! \\n**** Do you have write permission for %s? "
+"\\n\\n**** Aborting installation."
+msgstr ""
 
-msgid "edit the variable definition for"
-msgstr "edit the variable definition for"
+#: checkinstall.in:1155
+#, fuzzy
+#| msgid "The package documentation directory ./doc-pak does not exist."
+msgid ""
+"The package documentation directory ./doc-pak does not exist. \\nShould I "
+"create a default set of package docs? "
+msgstr ""
+"このパッケージのドキュメンテーションのディレクトリ'./doc-pak'はありません。"
 
-msgid "and try again."
-msgstr "and try again."
-
-msgid "**** Failed to create temp dir!"
-msgstr "**** tempディレクトリの作成に失敗しました"
-
-msgid "**** Do you have write permission for ${BASE_TMP_DIR}?"
-msgstr "**** ${BASE_TMP_DIR}への書き込み権限はありますか？"
-
-msgid "The package documentation directory ./doc-pak does not exist."
-msgstr "このパッケージのドキュメンテーションのディレクトリ'./doc-pak'はありません。"
-
-msgid "Should I create a default set of package docs? "
-msgstr "パッケージdocsのデフォルトのセットを作成しますか？"
-
+#: checkinstall.in:1158
 msgid "Preparing package documentation..."
 msgstr "パッケージのドキュメンテーションを準備.."
 
-msgid "*** No known documentation files were found. The new package"
-msgstr "*** 既知のドキュメンテーションファイルはありません。新しいパッケージには"
+#: checkinstall.in:1174
+#, fuzzy
+#| msgid "*** No known documentation files were found. The new package"
+msgid ""
+"*** No known documentation files were found. The new package \\n*** won't "
+"include a documentation directory."
+msgstr ""
+"*** 既知のドキュメンテーションファイルはありません。新しいパッケージには"
 
-msgid "*** won't include a documentation directory."
-msgstr "*** ドキュメンテーションのディレクトリは作成されません。"
-
-msgid "Copying documentation directory..."
-msgstr "ドキュメンテーションのディレクトリをコピー.."
-
-msgid "Installing with"
-msgstr "以下のコマンドでインストール"
-
-msgid "========================= Installation results ==========================="
-msgstr "========================= インストールの結果 ==========================="
-
-msgid "======================== Installation successful =========================="
-msgstr "======================== インストールに成功しました =========================="
-
-msgid "****  Installation failed. Aborting package creation."
-msgstr "****  インストールは失敗しました。パッケージの作成を中断します"
-
-msgid "Do you want to view the installation log file? "
-msgstr "インストールのログファイルを見ますか？"
-
-msgid "Some of the files created by the installation are inside the build"
-msgstr "このインストールで作成したファイルの一部はパッケージ内にあります"
-
-msgid "directory: `pwd`"
-msgstr "ディレクトリ: `pwd`"
-
-msgid "You probably don't want them to be included in the package,"
-msgstr "おそらくパッケージにこれらを含もうとは思わないでしょう。"
-
-msgid "especially if they are inside your home directory."
-msgstr "特にそれらがホームディレクトリの中にある場合は。"
-
-msgid "Do you want me to list them? "
-msgstr "それらを表示しますか？"
-
-msgid "Should I exclude them from the package? (Saying yes is a good idea) "
-msgstr "それらをパッケージから除外しますか？(yesと答えることをおすすめします)"
-
-msgid "You requested to review the list of files that will be"
-msgstr "このパッケージに含まれるファイルのリストを"
-
-msgid "included in this package."
-msgstr "表示するよう選択しました。"
-
-msgid "Now you'll have the chance to review and optionally modify it."
-msgstr "閲覧して変更することができます。"
-
-msgid "Now you'll have the chance to review and optionally modify this file."
-msgstr "閲覧してこのファイルを変更することができます。"
-
-msgid "Press ENTER to continue."
-msgstr "Enterキーを押すと続けます。"
-
-msgid "Copying files to the temporary directory..."
-msgstr "tempディレクトリにファイルをコピー.."
-
-msgid "Striping ELF binaries and libraries..."
-msgstr "ELFバイナリとライブラリを除去.."
-
-msgid "Striping ELF binaries..."
-msgstr "ELFバイナリを除去.."
-
-msgid "Compressing man pages..."
-msgstr "manページを圧縮.."
-
-msgid "Building file list..."
-msgstr "ファイルリストを作成.."
-
+#: checkinstall.in:1192
 msgid "Please choose the packaging method you want to use."
 msgstr "使用するパッケージ方式を選んでください。"
 
+#: checkinstall.in:1193
 msgid "Slackware [S], RPM [R] or Debian [D]? "
 msgstr "Slackwareなら[S], RPMなら[R], Debianなら[D]を入力"
 
+#: checkinstall.in:1213
+msgid "*** Invalid type."
+msgstr ""
+
+#: checkinstall.in:1237
 msgid "Please write a description for the package."
 msgstr "このパッケージの説明を書いてください"
 
-msgid " Remember that pkgtool shows"
-msgstr " Remember that pkgtool shows"
-
-msgid "only the first one when listing packages so make that one descriptive."
+#: checkinstall.in:1242
+#, fuzzy
+#| msgid ""
+#| "only the first one when listing packages so make that one descriptive."
+msgid ""
+" Remember that pkgtool shows\\nonly the first one when listing packages so "
+"make that one descriptive."
 msgstr "only the first one when listing packages so make that one descriptive."
 
+#: checkinstall.in:1245
 msgid "End your description with an empty line or EOF."
 msgstr "説明の末尾は空行かEOFにしてください。"
 
-msgid "Package created with checkinstall $CHECKINSTALL_VERSION"
-msgstr "Package created with checkinstall $CHECKINSTALL_VERSION"
-
-msgid "Warning: Your package description is bigger than 11 lines."
+#: checkinstall.in:1263
+#, fuzzy
+#| msgid "Warning: Your package description is bigger than 11 lines."
+msgid ""
+"Warning: Your package description is bigger than 11 lines.\\nWarning: The "
+"Slackware 8.1+ pkgtools might not like it."
 msgstr "警告: パッケージの説明が11行を超えています。"
 
-msgid "Warning: The Slackware 8.1+ pkgtools might not like it."
-msgstr "警告: Slackware 8.1以上のpkgtoolsには不適切です"
+#: checkinstall.in:1275
+msgid ""
+"********************************************\\n**** Slackware package "
+"creation selected ***\\n********************************************"
+msgstr ""
 
-msgid "*** Warning: The package name"
-msgstr "*** 警告: パッケージ名が"
+#: checkinstall.in:1280
+msgid ""
+"**************************************\\n**** RPM package creation selected "
+"***\\n**************************************"
+msgstr ""
 
-msgid "contains upper case"
-msgstr "大文字を含んでいます"
+#: checkinstall.in:1285
+msgid ""
+"*****************************************\\n**** Debian package creation "
+"selected ***\\n*****************************************"
+msgstr ""
 
-msgid "*** Warning: letters. dpkg might not like that so I changed"
-msgstr "*** 警告: dpkgには不適切ですので"
+#: checkinstall.in:1355
+#, sh-printf-format
+msgid ""
+"*** Warning: The package name \"%s\" contains spaces.\\n*** Warning: Package "
+"names with spaces in them are not valid in most\\n*** Warning: packaging "
+"systems so I changed all spaces to underscores."
+msgstr ""
 
-msgid "*** Warning: them to lower case."
-msgstr "*** 警告: 文字を小文字にしました"
+#: checkinstall.in:1364
+#, sh-printf-format
+msgid ""
+"*** Warning: The package name \"%s\" contains upper case\\n*** Warning: "
+"letters. dpkg might not like that so I changed\\n*** Warning: them to lower "
+"case."
+msgstr ""
 
-msgid "*** Warning: The package version \"${VERSION}\" does not"
-msgstr "*** 警告: パッケージのバージョン \"${VERSION}\" が"
+#: checkinstall.in:1372
+#, sh-printf-format
+msgid ""
+"*** Warning: The package name \"%s\" does not start with\\n*** Warning: an "
+"alphanumetic character. dpkg might not like that so I prefixed\\n*** "
+"Warning: it with a number 0."
+msgstr ""
 
-msgid "*** Warning: contain any digits. dpkg might not like that."
-msgstr "*** 警告: 数字を含んでいません。dpkgには不適切です。"
+#: checkinstall.in:1378
+#, sh-printf-format
+msgid ""
+"*** Warning: The package name \"%s\" contains illegal\\n*** Warning: "
+"characters. dpkg might not like that so I changed\\n*** Warning: them to "
+"dashes."
+msgstr ""
 
+#: checkinstall.in:1403
+#, sh-printf-format
+msgid ""
+"*** Warning: The package version \"%s\" is not a\\n*** Warning: debian "
+"policy compliant one. Please specify an alternate one"
+msgstr ""
+
+#: checkinstall.in:1460
 msgid "This package will be built according to these values: "
 msgstr "このパッケージは以下の内容で構成されます: "
 
-msgid "0 -  Maintainer:"
+#: checkinstall.in:1464
+#, fuzzy, sh-printf-format
+#| msgid "0 -  Maintainer:"
+msgid "0 -  Maintainer: [ %s ]"
 msgstr "0 -  メンテナ:"
 
-msgid "1 -  Summary:"
+#: checkinstall.in:1466
+#, fuzzy, sh-printf-format
+#| msgid "1 -  Summary:"
+msgid "1 -  Summary: [ %s ]"
 msgstr "1 -  概要:"
 
-msgid "2 -  Name:"
+#: checkinstall.in:1467
+#, fuzzy, sh-printf-format
+#| msgid "2 -  Name:"
+msgid "2 -  Name:    [ %s ]"
 msgstr "2 -  名前:"
 
-msgid "3 -  Version:"
+#: checkinstall.in:1468
+#, fuzzy, sh-printf-format
+#| msgid "3 -  Version:"
+msgid "3 -  Version: [ %s ]"
 msgstr "3 -  バージョン:"
 
-msgid "5 -  License:"
+#: checkinstall.in:1469
+#, sh-printf-format
+msgid "4 -  Release: [ %s ]"
+msgstr ""
+
+#: checkinstall.in:1470
+#, fuzzy, sh-printf-format
+#| msgid "5 -  License:"
+msgid "5 -  License: [ %s ]"
 msgstr "5 -  ライセンス:"
 
-msgid "6 -  Group:"
+#: checkinstall.in:1471
+#, fuzzy, sh-printf-format
+#| msgid "6 -  Group:"
+msgid "6 -  Group:   [ %s ]"
 msgstr "6 -  グループ:"
 
-msgid "7 -  Architecture:"
+#: checkinstall.in:1472
+#, fuzzy, sh-printf-format
+#| msgid "7 -  Architecture:"
+msgid "7 -  Architecture: [ %s ]"
 msgstr "7 -  アーキテクチャ:"
 
-msgid "8 -  Source location:"
+#: checkinstall.in:1473
+#, fuzzy, sh-printf-format
+#| msgid "8 -  Source location:"
+msgid "8 -  Source location: [ %s ]"
 msgstr "8 -  ソースの配布場所:"
 
-msgid "9 -  Alternate source location:"
+#: checkinstall.in:1474
+#, fuzzy, sh-printf-format
+#| msgid "9 -  Alternate source location:"
+msgid "9 -  Alternate source location: [ %s ]"
 msgstr "9 -  ソースの別の配布場所:"
 
-msgid "10 - Provides:"
-msgstr "10 - 提供するもの:"
-
-msgid "11 - Requires:"
+#: checkinstall.in:1476
+#, fuzzy, sh-printf-format
+#| msgid "11 - Requires:"
+msgid "10 - Requires: [ %s ]"
 msgstr "11 - 必要なもの:"
 
+#: checkinstall.in:1478
+#, sh-printf-format
+msgid "11 - Recommends: [ %s ]"
+msgstr ""
+
+#: checkinstall.in:1480
+#, sh-printf-format
+msgid "12 - Suggests: [ %s ]"
+msgstr ""
+
+#: checkinstall.in:1482
+#, fuzzy, sh-printf-format
+#| msgid "10 - Provides:"
+msgid "13 - Provides: [ %s ]"
+msgstr "10 - 提供するもの:"
+
+#: checkinstall.in:1483
+#, sh-printf-format
+msgid "14 - Conflicts: [ %s ]"
+msgstr ""
+
+#: checkinstall.in:1484
+#, sh-printf-format
+msgid "15 - Replaces: [ %s ]"
+msgstr ""
+
+#: checkinstall.in:1485
+#, fuzzy, sh-printf-format
+#| msgid "11 - Requires:"
+msgid "16 - Prerequires: [ %s ]"
+msgstr "11 - 必要なもの:"
+
+#: checkinstall.in:1488
 msgid "Enter a number to change any of them or press ENTER to continue: "
 msgstr "変更するものの番号を入力してください。Enterで続行します: "
 
+#: checkinstall.in:1498
 msgid "Enter new summary: "
 msgstr "概要を入力: "
 
+#: checkinstall.in:1503
 msgid "Enter new name: "
 msgstr "名前を入力: "
 
+#: checkinstall.in:1508
 msgid "Enter new version: "
 msgstr "バージョンを入力: "
 
+#: checkinstall.in:1513
 msgid "Enter new release number: "
 msgstr "リリース番号を入力: "
 
+#: checkinstall.in:1518
 msgid "Enter the license type: "
 msgstr "ライセンスの種類を入力: "
 
+#: checkinstall.in:1523
 msgid "Enter the new software group: "
 msgstr "ソフトウェアのグループを入力: "
 
+#: checkinstall.in:1528
 msgid "Enter the architecture type: "
 msgstr "アーキテクチャを入力: "
 
+#: checkinstall.in:1533
 msgid "Enter the source location: "
 msgstr "ソースの配布場所を入力: "
 
+#: checkinstall.in:1538
 msgid "Enter the alternate source location: "
 msgstr "ソースの別の配布場所を入力: "
 
-msgid "Enter the maintaner's name and e-mail address: "
+#: checkinstall.in:1544
+#, fuzzy
+#| msgid "Enter the maintaner's name and e-mail address: "
+msgid "Enter the maintainer's name and e-mail address: "
 msgstr "メンテナの名前とEmailアドレスを入力: "
 
-msgid "Enter the provided features: "
-msgstr "提供するものを入力: "
-
+#: checkinstall.in:1551
 msgid "Enter the additional requirements: "
 msgstr "追加で必要になるものを入力: "
 
-msgid "********************************************"
-msgstr "********************************************"
+#: checkinstall.in:1558
+#, fuzzy
+#| msgid "Enter the additional requirements: "
+msgid "Enter the additional recommendations: "
+msgstr "追加で必要になるものを入力: "
 
-msgid "**** Slackware package creation selected ***"
-msgstr "**** Slackwareパッケージを選択しました ***"
+#: checkinstall.in:1565
+#, fuzzy
+#| msgid "Enter the additional requirements: "
+msgid "Enter the additional suggestions: "
+msgstr "追加で必要になるものを入力: "
 
+#: checkinstall.in:1573
+msgid "Enter the provided features: "
+msgstr "提供するものを入力: "
+
+#: checkinstall.in:1644
+#, fuzzy, sh-printf-format
+#| msgid "Installing with"
+msgid "Installing with %s..."
+msgstr "以下のコマンドでインストール"
+
+#: checkinstall.in:1669 checkinstall.in:2341
+msgid ""
+"========================= Installation results ==========================="
+msgstr ""
+"========================= インストールの結果 ==========================="
+
+#: checkinstall.in:1675 checkinstall.in:2348
+msgid ""
+"======================== Installation successful =========================="
+msgstr ""
+"======================== インストールに成功しました "
+"=========================="
+
+#: checkinstall.in:1688
+msgid "****  Installation failed. Aborting package creation."
+msgstr "****  インストールは失敗しました。パッケージの作成を中断します"
+
+#: checkinstall.in:1694
+msgid "Do you want to view the installation log file? "
+msgstr "インストールのログファイルを見ますか？"
+
+#: checkinstall.in:1699
+#, sh-printf-format
+msgid ""
+" ***************************************************************\\n         "
+"Installation results. You can find them in\\n       %s\\n "
+"***************************************************************\\n"
+msgstr ""
+
+#: checkinstall.in:1797
+#, fuzzy
+#| msgid "Some of the files created by the installation are inside the build"
+msgid ""
+"Some of the files created by the installation are inside the home "
+"directory: /home"
+msgstr "このインストールで作成したファイルの一部はパッケージ内にあります"
+
+#: checkinstall.in:1799
+#, fuzzy
+#| msgid "You probably don't want them to be included in the package,"
+msgid "You probably don't want them to be included in the package."
+msgstr "おそらくパッケージにこれらを含もうとは思わないでしょう。"
+
+#: checkinstall.in:1800
+msgid "Do you want me to list them? "
+msgstr "それらを表示しますか？"
+
+#: checkinstall.in:1804 checkinstall.in:1821
+msgid "Should I exclude them from the package? (Saying yes is a good idea) "
+msgstr "それらをパッケージから除外しますか？(yesと答えることをおすすめします)"
+
+#: checkinstall.in:1815
+#, fuzzy, sh-printf-format
+#| msgid "Some of the files created by the installation are inside the build"
+msgid ""
+"Some of the files created by the installation are inside the "
+"build\\ndirectory: %s"
+msgstr "このインストールで作成したファイルの一部はパッケージ内にあります"
+
+#: checkinstall.in:1817
+msgid ""
+"You probably don't want them to be included in the package,\\nespecially if "
+"they are inside your home directory.\\nDo you want me to list them? "
+msgstr ""
+
+#: checkinstall.in:1831
+msgid ""
+"You requested to review the list of files that will be\\nincluded in this "
+"package.\\n\\nNow you'll have the chance to review and optionally modify it."
+msgstr ""
+
+#: checkinstall.in:1833 checkinstall.in:2569 checkinstall.in:2804
+msgid "Press ENTER to continue."
+msgstr "Enterキーを押すと続けます。"
+
+#: checkinstall.in:1851
+msgid "Copying files to the temporary directory..."
+msgstr "tempディレクトリにファイルをコピー.."
+
+#: checkinstall.in:1928
+#, fuzzy
+#| msgid "Striping ELF binaries and libraries..."
+msgid "Stripping ELF binaries and libraries..."
+msgstr "ELFバイナリとライブラリを除去.."
+
+#: checkinstall.in:1930
+#, fuzzy
+#| msgid "Striping ELF binaries..."
+msgid "Stripping ELF binaries..."
+msgstr "ELFバイナリを除去.."
+
+#: checkinstall.in:1972
+msgid "Compressing man pages..."
+msgstr "manページを圧縮.."
+
+#: checkinstall.in:2049
+msgid "Building file list..."
+msgstr "ファイルリストを作成.."
+
+#: checkinstall.in:2082
+msgid "Shared libraries found. Adding them to the postinstall script."
+msgstr ""
+
+#: checkinstall.in:2140
+msgid "Kernel modules found. Calling depmod in the postinstall script"
+msgstr ""
+
+#: checkinstall.in:2194
 msgid "*** The \"installpkg\" program is not in your PATH!"
 msgstr "*** installpkgプログラムがパスにありません"
 
+#: checkinstall.in:2196
 msgid "*** Slackware package creation aborted"
 msgstr "*** Slackwareパッケージの作成を中止しました"
 
+#: checkinstall.in:2206
 msgid "Preparing Slackware install directory..."
 msgstr "Slackwareのインストールディレクトリを準備.."
 
+#: checkinstall.in:2212
 msgid "Writing package description..."
 msgstr "パッケージの説明を書き込み.."
 
+#: checkinstall.in:2261
 msgid "Writing Slackware install script..."
 msgstr "Slackwareのインストールスクリプトを書き込み.."
 
+#: checkinstall.in:2291
 msgid "Appending your script to the main install script..."
 msgstr "指定したスクリプトをメインインストールスクリプトに追加.."
 
-msgid "Creating package ${SLACK_PKG_BASENAME}..."
-msgstr "パッケージ ${SLACK_PKG_BASENAME} を作成.."
-
+#: checkinstall.in:2335
 msgid "Installing package..."
 msgstr "パッケージをインストール.."
 
+#: checkinstall.in:2354 checkinstall.in:2628 checkinstall.in:2835
 msgid "*** Failed to install the package"
 msgstr "*** パッケージのインストールに失敗"
 
+#: checkinstall.in:2357 checkinstall.in:2604 checkinstall.in:2630
+#: checkinstall.in:2818 checkinstall.in:2837
 msgid "Do you want to see the log file? "
 msgstr "ログファイルを見ますか？"
 
+#: checkinstall.in:2368
 msgid "NOTE: The package will not be installed."
 msgstr "注意: パッケージはインストールされません"
 
-msgid "**************************************"
-msgstr "**************************************"
-
-msgid "**** RPM package creation selected ***"
-msgstr "**** RPMパッケージを選択しました ***"
-
+#: checkinstall.in:2401
 msgid "*** The \"rpm\" program is not in your PATH!"
 msgstr "*** rpmプログラムがパスにありません"
 
+#: checkinstall.in:2403
 msgid "*** RPM package creation aborted"
 msgstr "*** RPMパッケージの作成を中止しました"
 
-msgid "$RPMSOURCEDIR has no SOURCES directory. Please write the path to"
+#: checkinstall.in:2476
+#, fuzzy, sh-printf-format
+#| msgid "$RPMSOURCEDIR has no SOURCES directory. Please write the path to"
+msgid ""
+"%s has no SOURCES directory. Please write the path to\\nthe RPM source "
+"directory tree: "
 msgstr "$RPMSOURCEDIR にはSOURCESディレクトリがありません。RPMの"
 
-msgid "the RPM source directory tree: "
-msgstr "ソースディレクトリのパスを入力してください: "
+#: checkinstall.in:2567
+#, fuzzy
+#| msgid ""
+#| "Now you'll have the chance to review and optionally modify this file."
+msgid ""
+"You requested to review the .spec file for this package.\\nNow you'll have "
+"the chance to review and optionally modify this file."
+msgstr "閲覧してこのファイルを変更することができます。"
 
-msgid "You requested to review the .spec file for this package."
-msgstr "このパッケージのspecファイルを閲覧するよう選択しました。"
-
+#: checkinstall.in:2596
 msgid "Building RPM package..."
 msgstr "RPMパッケージを作成.."
 
+#: checkinstall.in:2602 checkinstall.in:2816
 msgid "*** Failed to build the package"
 msgstr "*** パッケージの作成に失敗"
 
-msgid "Warning: the use of RPMFLAGS is deprecated."
-msgstr "警告: RPMFLAGSの使用はおすすめしません。"
+#: checkinstall.in:2616
+msgid ""
+"Warning: the use of RPMFLAGS is deprecated.\\nWarning: You should now use "
+"RPM_FLAGS,\\nWarning: please update your checkinstallrc file."
+msgstr ""
 
-msgid "Warning: You should now use RPM_FLAGS,"
-msgstr "警告: 新しいRPM_FLAGSを使うべきです。"
-
-msgid "Warning: please update your checkinstallrc file."
-msgstr "警告: checkinstallrcファイルを更新してください。"
-
+#: checkinstall.in:2623
 msgid "Installing RPM package..."
 msgstr "RPMパッケージをインストール.."
 
+#: checkinstall.in:2638 checkinstall.in:2845
 msgid "NOTE: The package will not be installed"
 msgstr "注意: パッケージはインストールされません"
 
-msgid "*****************************************"
-msgstr "*****************************************"
+#: checkinstall.in:2672
+msgid "Looking for shared library dependencies..."
+msgstr ""
 
-msgid "**** Debian package creation selected ***"
-msgstr "**** Debianパッケージを選択しました ***"
+#: checkinstall.in:2702
+#, sh-printf-format
+msgid "Depends: %s"
+msgstr ""
 
+#: checkinstall.in:2718
 msgid "*** The \"dpkg\" program is not in your PATH!"
 msgstr "*** dpkgプログラムがパスにありません"
 
+#: checkinstall.in:2720
 msgid "*** Debian package creation aborted"
 msgstr "*** Debianパッケージの作成を中止しました"
 
-msgid "You requested to review the control file for this package."
-msgstr "このパッケージのcontrolファイルを閲覧するよう選択しました。"
+#: checkinstall.in:2802
+#, fuzzy
+#| msgid ""
+#| "Now you'll have the chance to review and optionally modify this file."
+msgid ""
+"You requested to review the control file for this package.\\nNow you'll have "
+"the chance to review and optionally modify this file."
+msgstr "閲覧してこのファイルを変更することができます。"
 
+#: checkinstall.in:2810
 msgid "Building Debian package..."
 msgstr "Debianパッケージを作成.."
 
+#: checkinstall.in:2830
 msgid "Installing Debian package..."
 msgstr "Debianパッケージをインストール.."
 
-msgid "*** No method was selected, I won't build any package."
-msgstr "*** パッケージ方式を選んでいません。何も作成しません。"
-
-msgid "*** The installation command \"$INSTALLCMD\""
-msgstr "*** インストールコマンド $INSTALLCMD は"
-
-msgid "*** has already been executed."
-msgstr "*** 既に実行されました。"
-
-msgid "The package storage directory"
-msgstr "パッケージを保存するディレクトリが"
-
-msgid "doesn't exist. Do you want to create it?"
+#: checkinstall.in:2875
+#, fuzzy, sh-printf-format
+#| msgid "doesn't exist. Do you want to create it?"
+msgid ""
+"The package storage directory [ %s ]\\ndoesn't exist. Do you want to create "
+"it?"
 msgstr "ありません。作成しますか？"
 
+#: checkinstall.in:2878
 msgid "Creating package storage directory..."
 msgstr "パッケージを保存するディレクトリを作成.."
 
-msgid "*** Unable to create $PAK_DIR"
+#: checkinstall.in:2883
+#, fuzzy, sh-printf-format
+#| msgid "*** Unable to create $PAK_DIR"
+msgid "*** Unable to create %s"
 msgstr "*** $PAK_DIR を作成できません"
 
-msgid "Transferring package to"
+#: checkinstall.in:2891
+#, fuzzy, sh-printf-format
+#| msgid "Transferring package to"
+msgid "Transferring package to %s..."
 msgstr "パッケージを以下に転送"
 
-msgid "There's no package storage directory, the package"
+#: checkinstall.in:2896
+msgid "*** Transfer failed:"
+msgstr ""
+
+#: checkinstall.in:2905
+#, fuzzy
+#| msgid "There's no package storage directory, the package"
+msgid ""
+"There's no package storage directory, the package\\nwill be stored at the "
+"default location."
 msgstr "パッケージを保存するディレクトリがありません。デフォルトの"
 
-msgid "will be stored at the default location."
-msgstr "場所に保存します。"
-
+#: checkinstall.in:2915
 msgid "Erasing temporary files..."
 msgstr "tempファイルを削除.."
 
+#: checkinstall.in:2933
 msgid "Deleting doc-pak directory..."
 msgstr "doc-pakディレクトリを削除.."
 
+#: checkinstall.in:2968
 msgid "Writing backup package..."
 msgstr "バックアップパッケージを書き込み.."
 
+#: checkinstall.in:2979
 msgid "Deleting temp dir..."
 msgstr "temp dirを削除.."
 
+#: checkinstall.in:2985
 msgid "Building debug information package..."
 msgstr "debug情報パッケージを作成.."
 
-msgid " Done. The new package has been installed and saved to"
-msgstr " 完了。新しいパッケージはインストールされ、以下に保存されました"
+#: checkinstall.in:3001
+#, sh-printf-format
+msgid ""
+" Done. The new package has been installed and saved to\\n\\n %s\\n\\n You "
+"can remove it from your system anytime using: \\n\\n      %s"
+msgstr ""
 
-msgid " You can remove it from your system anytime using: "
-msgstr " 以下を使うとシステムからいつでも削除できます: "
-
-msgid " Done. The new package has been saved to"
-msgstr " 完了。新しいパッケージは以下に保存されました"
-
-msgid " You can install it in your system anytime using: "
+#: checkinstall.in:3011
+#, fuzzy, sh-printf-format
+#| msgid " You can install it in your system anytime using: "
+msgid ""
+" Done. The new package has been saved to\\n\\n %s\\n You can install it in "
+"your system anytime using: \\n\\n      %s"
 msgstr " 以下を使うといつでもシステムにインストールできます: "
 
+#~ msgid "The checkinstallrc file was not found at:"
+#~ msgstr "checkinstallrcファイルが以下にありません:"
+
+#~ msgid "I can't find $INSTALLWATCH."
+#~ msgstr "$INSTALLWATCH がありません"
+
+#~ msgid "I can't continue. Either install installwatch or"
+#~ msgstr "続けられません。installwatchをインストールするか、"
+
+#~ msgid "modify the INSTALLWATCH variable in this script,"
+#~ msgstr "このスクリプトのINSTALLWATCH変数を変更してください。"
+
+#~ msgid "then run checkinstall again."
+#~ msgstr "その後でcheckinstallを再実行してください。"
+
+#~ msgid "My temp dir exists already."
+#~ msgstr "tempディレクトリは既にあります。"
+
+#~ msgid "This looks like a symlink attack!"
+#~ msgstr "symlink attackのようです。"
+
+#~ msgid "edit the variable definition for"
+#~ msgstr "edit the variable definition for"
+
+#~ msgid "and try again."
+#~ msgstr "and try again."
+
+#~ msgid "**** Failed to create temp dir!"
+#~ msgstr "**** tempディレクトリの作成に失敗しました"
+
+#~ msgid "**** Do you have write permission for ${BASE_TMP_DIR}?"
+#~ msgstr "**** ${BASE_TMP_DIR}への書き込み権限はありますか？"
+
+#~ msgid "Should I create a default set of package docs? "
+#~ msgstr "パッケージdocsのデフォルトのセットを作成しますか？"
+
+#~ msgid "*** won't include a documentation directory."
+#~ msgstr "*** ドキュメンテーションのディレクトリは作成されません。"
+
+#~ msgid "Copying documentation directory..."
+#~ msgstr "ドキュメンテーションのディレクトリをコピー.."
+
+#~ msgid "directory: `pwd`"
+#~ msgstr "ディレクトリ: `pwd`"
+
+#~ msgid "especially if they are inside your home directory."
+#~ msgstr "特にそれらがホームディレクトリの中にある場合は。"
+
+#~ msgid "You requested to review the list of files that will be"
+#~ msgstr "このパッケージに含まれるファイルのリストを"
+
+#~ msgid "included in this package."
+#~ msgstr "表示するよう選択しました。"
+
+#~ msgid "Now you'll have the chance to review and optionally modify it."
+#~ msgstr "閲覧して変更することができます。"
+
+#~ msgid " Remember that pkgtool shows"
+#~ msgstr " Remember that pkgtool shows"
+
+#~ msgid "Package created with checkinstall $CHECKINSTALL_VERSION"
+#~ msgstr "Package created with checkinstall $CHECKINSTALL_VERSION"
+
+#~ msgid "Warning: The Slackware 8.1+ pkgtools might not like it."
+#~ msgstr "警告: Slackware 8.1以上のpkgtoolsには不適切です"
+
+#~ msgid "*** Warning: The package name"
+#~ msgstr "*** 警告: パッケージ名が"
+
+#~ msgid "contains upper case"
+#~ msgstr "大文字を含んでいます"
+
+#~ msgid "*** Warning: letters. dpkg might not like that so I changed"
+#~ msgstr "*** 警告: dpkgには不適切ですので"
+
+#~ msgid "*** Warning: them to lower case."
+#~ msgstr "*** 警告: 文字を小文字にしました"
+
+#~ msgid "*** Warning: The package version \"${VERSION}\" does not"
+#~ msgstr "*** 警告: パッケージのバージョン \"${VERSION}\" が"
+
+#~ msgid "*** Warning: contain any digits. dpkg might not like that."
+#~ msgstr "*** 警告: 数字を含んでいません。dpkgには不適切です。"
+
+#~ msgid "********************************************"
+#~ msgstr "********************************************"
+
+#~ msgid "**** Slackware package creation selected ***"
+#~ msgstr "**** Slackwareパッケージを選択しました ***"
+
+#~ msgid "Creating package ${SLACK_PKG_BASENAME}..."
+#~ msgstr "パッケージ ${SLACK_PKG_BASENAME} を作成.."
+
+#~ msgid "**************************************"
+#~ msgstr "**************************************"
+
+#~ msgid "**** RPM package creation selected ***"
+#~ msgstr "**** RPMパッケージを選択しました ***"
+
+#~ msgid "the RPM source directory tree: "
+#~ msgstr "ソースディレクトリのパスを入力してください: "
+
+#~ msgid "You requested to review the .spec file for this package."
+#~ msgstr "このパッケージのspecファイルを閲覧するよう選択しました。"
+
+#~ msgid "Warning: the use of RPMFLAGS is deprecated."
+#~ msgstr "警告: RPMFLAGSの使用はおすすめしません。"
+
+#~ msgid "Warning: You should now use RPM_FLAGS,"
+#~ msgstr "警告: 新しいRPM_FLAGSを使うべきです。"
+
+#~ msgid "Warning: please update your checkinstallrc file."
+#~ msgstr "警告: checkinstallrcファイルを更新してください。"
+
+#~ msgid "*****************************************"
+#~ msgstr "*****************************************"
+
+#~ msgid "**** Debian package creation selected ***"
+#~ msgstr "**** Debianパッケージを選択しました ***"
+
+#~ msgid "You requested to review the control file for this package."
+#~ msgstr "このパッケージのcontrolファイルを閲覧するよう選択しました。"
+
+#~ msgid "*** No method was selected, I won't build any package."
+#~ msgstr "*** パッケージ方式を選んでいません。何も作成しません。"
+
+#~ msgid "*** The installation command \"$INSTALLCMD\""
+#~ msgstr "*** インストールコマンド $INSTALLCMD は"
+
+#~ msgid "*** has already been executed."
+#~ msgstr "*** 既に実行されました。"
+
+#~ msgid "The package storage directory"
+#~ msgstr "パッケージを保存するディレクトリが"
+
+#~ msgid "will be stored at the default location."
+#~ msgstr "場所に保存します。"
+
+#~ msgid " Done. The new package has been installed and saved to"
+#~ msgstr " 完了。新しいパッケージはインストールされ、以下に保存されました"
+
+#~ msgid " You can remove it from your system anytime using: "
+#~ msgstr " 以下を使うとシステムからいつでも削除できます: "
+
+#~ msgid " Done. The new package has been saved to"
+#~ msgstr " 完了。新しいパッケージは以下に保存されました"
