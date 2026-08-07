@@ -1,3 +1,47 @@
+Checkinstall 1.7.0
+======================================
+
+The first release since 2010, and the first from the fork at
+https://github.com/ssgelm/checkinstall. It carries the patches Debian had
+accumulated over the years, together with fixes for bugs reported against
+Debian and Ubuntu.
+
+* Filesystem translation works again. glibc 2.33 turned stat() and its
+  relatives into ordinary exported functions, so a library defining only
+  __xstat() stopped seeing most of what an install did, and every tool that
+  checks a path before acting on it was told the file was not there. statx(),
+  the fortified open() variants, the mkstemp family, linkat(), openat64(),
+  utimensat() and the 64-bit time entry points are all intercepted now.
+
+* A failed or interrupted install can no longer replace /lib with a real
+  directory, which left a merged-/usr system unable to run a single binary.
+
+* A mode set on a symlink no longer reaches the file it points at. A binary
+  installed 755 could come out of the package writable by anyone.
+
+* Built packages record the shared libraries they need, with --autodeps.
+  They also record files under their real parent directories, so an install
+  writing to /lib/systemd/system ships /usr/lib/systemd/system.
+
+* Values given on the command line are used as written rather than being
+  re-evaluated by the shell, so --maintainer="Jane Doe <jane@example.org>"
+  reaches the package intact.
+
+* Names containing spaces survive the file list.
+
+* New options: --autodeps for shared library dependencies, --debcompression
+  to choose what dpkg-deb packs a .deb with, and --prerequires for Debian
+  Pre-Depends.
+
+* Builds on hppa and alpha, and on 32-bit architectures using 64-bit time or
+  large file offsets. Honours CPPFLAGS, CFLAGS and LDFLAGS. Installing no
+  longer needs root.
+
+* Added a French translation, and regenerated the message template, which
+  dated from 2002 and was missing 44 of the strings the program prints.
+
+* Added a test suite under tests/.
+
 Checkinstall 1.6.2
 
 * Added support for at-style functions
