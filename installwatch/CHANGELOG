@@ -82,6 +82,3 @@
 * Added libc5 support
 * Cosmetic fixes on the documentation
 * Removed support for mknod(2), I'll add it again later
-
-=================
-$Id: CHANGELOG,v 0.7 2001/11/18 08:32:33 izto Exp $

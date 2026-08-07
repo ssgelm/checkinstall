@@ -7,6 +7,3 @@ Here's a list of things that need to be fixed, in no particular order.
   neither. Believe me, this is a very good thing anyway :-)
 
 * mknod(2) is not watched
-
-=============
-$Id: BUGS,v 0.6 2001/04/17 19:38:09 izto Exp $

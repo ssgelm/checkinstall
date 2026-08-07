@@ -1,5 +1,4 @@
 # Makefile for installwatch
-# $Id: Makefile,v 0.7.0.6 2008/11/09 07:49:34 izto Exp $
 
 # Well, the only configurable part is the following variable.
 # Make sure the directory you specify exists.
@@ -50,5 +49,3 @@ tarball: clean
 test: install
 	gcc -Wall -DVERSION=\"$(VERSION)\" -DLIBDIR=\"$(LIBDIR)\" -o test-installwatch test-installwatch.c -ldl
 	PREFIX=$(PREFIX) $(PREFIX)/bin/installwatch ./test-installwatch
-
-

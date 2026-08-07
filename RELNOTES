@@ -345,7 +345,3 @@ chmod 1777 /tmp
 rm -rf /var/checkinstalltmp
 mkdir /var/checkinstalltmp
 chmod 0700 /var/checkinstalltmp
-
-===========
-$Id: RELNOTES,v 1.6.1.2 2006/11/01 07:41:41 izto Exp $
-                                                                 

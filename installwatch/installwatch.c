@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <https://www.gnu.org/licenses/>.
  *
- * $Id: installwatch.c,v 0.7.0.11 2008/11/09 07:47:00 izto Exp $
  * 
  * april-15-2001 - Modifications by Felipe Eduardo Sanchez Diaz Duran
  *                                  <izto@asic-linux.com.mx>
@@ -5893,4 +5892,3 @@ int unlinkat (int dirfd, const char *path, int flags) {
 	return result;
 
 }
-

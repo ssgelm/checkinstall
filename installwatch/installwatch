@@ -1,6 +1,5 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-2.0-or-later
-#$Id: installwatch,v 0.6.7.0 2007/12/04 07:35:04 gna Exp $
 
 #set -x
 

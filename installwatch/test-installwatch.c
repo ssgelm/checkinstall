@@ -1,5 +1,4 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
-/* $Id: test-installwatch.c,v 0.6.3.2 2001/12/14 00:06:05 izto Exp $ */
 /*
  * Copyright (C) 1998-99 Pancrazio `Ezio' de Mauro <p@demauro.net>
  *
@@ -274,4 +273,3 @@ int main(int argc, char **argv) {
 
 	return failed;
 }
-

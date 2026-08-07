@@ -66,5 +66,3 @@ FAQ
       see if the "rpm-build" and "spec-helper" packages are installed. Also
       verify that their versions match the version of the rpm binary installed
       in your system.
-
-$Id: FAQ,v 1.6 2002/11/25 21:54:19 izto Exp $

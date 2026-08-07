@@ -31,7 +31,3 @@ setenv LD_PRELOAD ./installwatch.so ; make install
 Of course, you must be root in the installwatch source directory.
 Remember, if you belong to the tcsh family, LD_PRELOAD will remain
 set after `make install', so be sure to clear the variable.
-
-
-================
-$Id: INSTALL,v 0.6 2001/04/17 19:38:09 izto Exp $

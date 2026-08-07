@@ -50,6 +50,3 @@ msgfmt -o /usr/local/lib/checkinstall/locale/es_MX/LC_MESSAGES/checkinstall.mo \
 
 5) Finally, send me an e-mail message with the .po file attached so I can
    include it in the next checkinstall release  :-).
-
-=====================================================
-$Id: NLS_SUPPORT,v 1.6.1.1 2006/11/01 07:30:26 izto Exp $
