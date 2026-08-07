@@ -979,11 +979,26 @@ static int copy_path(const char *truepath,const char *translroot) {
 				return -1;
 			}			
 			
-			while((bytes=read(truefd,buffer,BUFSIZ))>0)
-				write(translfd,buffer,bytes);
+			  /* A short write leaves a truncated copy behind, and
+			   * the caller would go on to package it. */
+			while((bytes=read(truefd,buffer,BUFSIZ))>0) {
+				int off=0;
+				while(off<bytes) {
+					ssize_t w=write(translfd,buffer+off,
+					                bytes-off);
+					if(w<0) {
+						if(errno==EINTR) continue;
+						close(truefd);
+						close(translfd);
+						return -1;
+					}
+					off+=w;
+				}
+			}
 	
 			close(truefd);
 			close(translfd);
+			if(bytes<0) return -1;
 		}
 	
 		  /* directory */
@@ -1436,7 +1451,12 @@ static int instw_init(void) {
 
 	  /* nothing can be activated without that, anyway */
 	if((proot=getenv("INSTW_ROOTPATH"))) {
-		realpath(proot,wrkpath);
+		  /* On failure realpath leaves wrkpath undefined, so fall
+		   * back to the value as it was given to us. */
+		if(realpath(proot,wrkpath)==NULL) {
+			strncpy(wrkpath,proot,PATH_MAX);
+			wrkpath[PATH_MAX]='\0';
+		}
 		if(wrkpath[strlen(wrkpath)-1]=='/')
 			wrkpath[strlen(wrkpath)-1]='\0';
 		__instw.root=malloc(strlen(wrkpath)+1);
@@ -1555,7 +1575,10 @@ static int instw_init(void) {
 		if(*ppnext==NULL) return -1;
 		(*ppnext)->string=NULL;
 		(*ppnext)->next=NULL;
-		realpath(__instw.root,wrkpath);
+		if(realpath(__instw.root,wrkpath)==NULL) {
+			strncpy(wrkpath,__instw.root,PATH_MAX);
+			wrkpath[PATH_MAX]='\0';
+		}
 		(*ppnext)->string=malloc(strlen(wrkpath)+1);
 		strcpy((*ppnext)->string,wrkpath);
 		ppnext=&(*ppnext)->next;
@@ -1573,7 +1596,12 @@ static int instw_init(void) {
 			(*ppnext)->next=NULL;
 			  /* let's store the next excluded path */
 			if(strlen(pexclude)>PATH_MAX) return -1;
-			realpath(pexclude,wrkpath);
+			  /* An excluded path need not exist on this
+			   * machine, and then realpath fails. */
+			if(realpath(pexclude,wrkpath)==NULL) {
+				strncpy(wrkpath,pexclude,PATH_MAX);
+				wrkpath[PATH_MAX]='\0';
+			}
 			(*ppnext)->string=malloc(strlen(wrkpath)+1);
 			strcpy((*ppnext)->string,wrkpath);
 			ppnext=&(*ppnext)->next;
@@ -1805,9 +1833,17 @@ static int instw_setpath(instw_t *instw,const char *path) {
 	instw->truepath[0]='\0';
 
 	if(instw->path[0]!='/') {
+		size_t cwlen;
 		true_getcwd(instw->truepath,PATH_MAX+1);
-		if(instw->truepath[strlen(instw->truepath)-1]!='/'){
+		cwlen=strlen(instw->truepath);
+		if(cwlen && instw->truepath[cwlen-1]!='/'){
 			strcat(instw->truepath,"/");
+			cwlen++;
+		}
+		  /* The two together can be longer than the buffer. */
+		if(cwlen+strlen(instw->path)>PATH_MAX) {
+			instw->error=errno=ENAMETOOLONG;
+			return -1;
 		}
 		strcat(instw->truepath,instw->path);
 	} else {
@@ -1885,7 +1921,7 @@ static int instw_setpath(instw_t *instw,const char *path) {
 		instw->error=errno=ENAMETOOLONG;
 		return -1;
 	}
-	strncat(instw->mtranslpath,instw->reslvpath,PATH_MAX-trlen);
+	strncat(instw->mtranslpath,instw->reslvpath,PATH_MAX-melen);
 	instw->mtranslpath[PATH_MAX]='\0';
 
 	return 0;
