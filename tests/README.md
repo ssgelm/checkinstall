@@ -51,6 +51,7 @@ run from there.
 | `10-addso.sh` | `--addso=yes` finding staged libraries, and its ld.so.conf guard holding under `/bin/sh` |
 | `11-workdir-exclusion.sh` | the anchored build-directory exclusion, as a source check |
 | `12-deb-compression.sh` | `--debcompression` reaching dpkg-deb, and a bad value stopping the run early |
+| `13-filename-spaces.sh` | names and parent directories containing spaces, and a source directory with one |
 
 `src/` holds two small C helpers: one that materialises an `O_TMPFILE`
 through `linkat`, and one that calls the LFS64 temporary-file functions

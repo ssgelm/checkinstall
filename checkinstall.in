@@ -432,9 +432,9 @@ function shell_escape() {
 # Output all the parents of the files given as arguments to stdout. Remove
 # duplicates.
 function list_parents {
-    src="$*"
-    files=`for f in $src; do
-    echo "$f" | awk '
+    # One path in, one parent per line out. Anything space separated here
+    # loses paths that contain a space.
+    printf '%s\n' "$1" | awk '
     BEGIN{
         FS = "/"
     }
@@ -446,12 +446,9 @@ function list_parents {
                         printf "/"
                     }
             }
-            printf " "
+            printf "\n"
         }
     }'
-    done`
-
-    echo "${files}"  | tr ' ' '\n' | uniq | tr '\n' ' '
     return $?
 }
 
@@ -473,23 +470,25 @@ function copy_dir_hierarchy {
     # All directories the file is in, e.g if src is
     # ./usr/local/lib/installwatch.so, then files will be . ./usr ./usr/local
     # ./usr/local/lib
-    files=`list_parents ${src}`
+    files=`list_parents "${src}"`
 
-    # Only use tar if there are parents
-    echo "${files}" | egrep '[^[:space:]]' >/dev/null
-    if [ $? -eq 0 ]; then
+    # Only use tar if there are parents. Names go in on stdin so that a path
+    # containing a space stays one name.
+    if [ -n "${files}" ]; then
         if [ $deref_parents -eq 1 ]; then
             # Add the -h option to the tar command for dereferencing
-            $TAR --no-recursion -C "${root}" -cphf - $files | $TAR -f - -xvpC \
-                "${dest}"
+            printf '%s\n' "${files}" \
+                | $TAR --no-recursion -C "${root}" -cphf - -T - \
+                | $TAR -f - -xvpC "${dest}"
         else 
-            $TAR --no-recursion -C "${root}" -cpf - $files | $TAR -f - -xvpC \
-                "${dest}"
+            printf '%s\n' "${files}" \
+                | $TAR --no-recursion -C "${root}" -cpf - -T - \
+                | $TAR -f - -xvpC "${dest}"
         fi
 
     fi
 
-    $TAR -C "${root}" -cpf - $src | $TAR -f - -xvpC \
+    printf '%s\n' "${src}" | $TAR -C "${root}" -cpf - -T - | $TAR -f - -xvpC \
         "${dest}"
 
     return $?
@@ -1748,7 +1747,7 @@ if [ $INSTALL_FAILED -gt 0 ]; then
 	# If translation is on, it will catch these too.
 	
 	if [ -f "${DIRECTORIO_FUENTE}/${CK_INCLUDE_FILE}" ]; then
-   	   cat "${DIRECTORIO_FUENTE}/${CK_INCLUDE_FILE}" | while read include_file; do
+   	   cat "${DIRECTORIO_FUENTE}/${CK_INCLUDE_FILE}" | while IFS= read -r include_file; do
 	       copy_dir_hierarchy --deref-parents "$include_file" "." "${BUILD_DIR}" &>/dev/null
            done
 
@@ -1775,12 +1774,12 @@ if [ $INSTALL_FAILED -gt 0 ]; then
 
 	# OK, now we clean it up a bit
 	mv /${TMP_DIR}/newfiles.tmp /${TMP_DIR}/newfiles.installwatch
-	sort -u <  /${TMP_DIR}/newfiles | uniq  | while read file; do
+	sort -u <  /${TMP_DIR}/newfiles | uniq  | while IFS= read -r file; do
 	   if [ -e "${TRANSLROOT}${file}" ]; then
-	      echo $file >> /${TMP_DIR}/newfiles.tmp
+	      printf '%s\n' "$file" >> /${TMP_DIR}/newfiles.tmp
 	   else
 	      FILE_SYM=`file "${TRANSLROOT}${file}" | grep 'symbolic link'`
-	      [ "${FILE_SYM}" != "" ] && echo $file >> /${TMP_DIR}/newfiles.tmp
+	      [ "${FILE_SYM}" != "" ] && printf '%s\n' "$file" >> /${TMP_DIR}/newfiles.tmp
 	   fi
 	done
 
@@ -1850,7 +1849,7 @@ if [ $INSTALL_FAILED -gt 0 ]; then
 	   $VISUAL ${TMP_DIR}/newfiles
 
 	   # Check if new files were added by the user
-	   cat /${TMP_DIR}/newfiles | while read file; do 
+	   cat /${TMP_DIR}/newfiles | while IFS= read -r file; do 
 	      if ! [ -e "${TRANSLROOT}${file}" ]; then
 		  copy_dir_hierarchy --deref-parents "${file}" "/" "${BUILD_DIR}" >> /${TMP_DIR}/updated-by-user.log 2>&1
 	      fi
@@ -1867,7 +1866,7 @@ if [ $INSTALL_FAILED -gt 0 ]; then
 
 	cd /
 
-	( cat /${TMP_DIR}/newfiles | while read i; do 
+	( cat /${TMP_DIR}/newfiles | while IFS= read -r i; do 
 	      if [ ! -d "${TRANSLROOT}${i}" -o -L "${TRANSLROOT}${i}" ]; then
 	      echo ".${i}"
 	   fi
@@ -1881,34 +1880,37 @@ if [ $INSTALL_FAILED -gt 0 ]; then
         NEWFILES="${TMP_DIR}/modified"
         LOGFILE="/${TMP_DIR}/checkinstall.log"
 
- 	cat /${TMP_DIR}/newfiles-tar | while read file; do
-            parents=`list_parents ${file} | sed s/^\.//`
-            for p in $parents; do
+ 	while IFS= read -r file; do
+            list_parents "${file}" | while IFS= read -r p; do
             # We have to remove the ./ at the beginning
-		truep=`echo ${p} | sed s/^\.//`
-                # Parent has been modified: do _not_ dereference
-		grep "${truep}$" "${NEWFILES}" &>/dev/null
-		if [ $? -eq 0 ]; then
-                    $TAR --no-recursion -C "${TRANSLROOT}" -cpf - $p \
+		truep=${p#.}
+                # Parent has been modified: do _not_ dereference. Match the
+                # whole line: an unanchored pattern also hits a longer path
+                # that happens to end the same way.
+		if grep -qxF "${truep}" "${NEWFILES}"; then
+                    printf '%s\n' "$p" \
+                        | $TAR --no-recursion -C "${TRANSLROOT}" -cpf - -T - \
 			| $TAR -f - -xvpC "${BUILD_DIR}" >> $LOGFILE 2>&1
 		else
                     # Parent wasn't touched by the install script: dereference
-                    $TAR --no-recursion -C "${TRANSLROOT}" -cphf - $p \
+                    printf '%s\n' "$p" \
+                        | $TAR --no-recursion -C "${TRANSLROOT}" -cphf - -T - \
 			| $TAR -f - -xvpC "${BUILD_DIR}"  >> $LOGFILE 2>&1
 		fi
             done
-            truefile=`echo ${file} | sed 's/^\.//'`
+            truefile=${file#.}
             # No recursion here: if $file is a directory, then the files created
             # in it will follow.
-            grep "${truefile}$" "${NEWFILES}" &>/dev/null
-            if [ $? -eq 0 ]; then
-		$TAR --no-recursion -C "${TRANSLROOT}" -cpf - "$file" \
+            if grep -qxF "${truefile}" "${NEWFILES}"; then
+		printf '%s\n' "$file" \
+                    | $TAR --no-recursion -C "${TRANSLROOT}" -cpf - -T - \
                     | $TAR -f - -xvpC "${BUILD_DIR}" >> $LOGFILE 2>&1
             else 
-		$TAR --no-recursion -C "${TRANSLROOT}" -cphf - "$file" \
+		printf '%s\n' "$file" \
+                    | $TAR --no-recursion -C "${TRANSLROOT}" -cphf - -T - \
                     | $TAR -f - -xvpC "${BUILD_DIR}" >> $LOGFILE 2>&1
             fi
-	done
+	done < /${TMP_DIR}/newfiles-tar
 
 	okfail
 
