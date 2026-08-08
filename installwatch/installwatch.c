@@ -1819,9 +1819,6 @@ static int instw_setmetatransl(instw_t *instw) {
 static int instw_setpath(instw_t *instw,const char *path) {
 	char canonical[PATH_MAX+1];
 	const char *pcanon;
-	size_t relen;
-	size_t trlen = 0;
-	size_t melen;
 
 #if DEBUG
 	debug(2,"instw_setpath(%p,%s)\n",instw,path);
@@ -1860,12 +1857,6 @@ static int instw_setpath(instw_t *instw,const char *path) {
 		strncpy(instw->truepath,pcanon,PATH_MAX);
 		instw->truepath[PATH_MAX]='\0';
 	}
-
-	  /* reslvpath below is truepath, or truepath with a prefix taken off,
-	   * so relen is never shorter than what gets appended and the two
-	   * length checks further down are safe. gcc cannot see that and
-	   * warns about the strncat calls anyway. */
-	relen=strlen(instw->truepath);
 
 	  /* 
 	   *   if library is not completely initialized, or if translation 
@@ -1910,27 +1901,21 @@ static int instw_setpath(instw_t *instw,const char *path) {
 		instw->status |= ( INSTW_TRANSLATED | INSTW_IDENTITY);
 	} else {
 		  /* Building the real translated path */
-		strncpy(instw->translpath,instw->transl,PATH_MAX);
-		instw->translpath[PATH_MAX]='\0';
-		trlen=strlen(instw->translpath);
-		if((trlen+relen)>PATH_MAX) {
+		if(snprintf(instw->translpath,sizeof(instw->translpath),"%s%s",
+		            instw->transl,instw->reslvpath)
+		   >=(int)sizeof(instw->translpath)) {
 			instw->error=errno=ENAMETOOLONG;
 			return -1;
 		}
-		strncat(instw->translpath,instw->reslvpath,PATH_MAX-trlen);
-		instw->translpath[PATH_MAX]='\0';
 	}	
 
 	  /* Building the translation status path */
-	strncpy(instw->mtranslpath,instw->mtransl,PATH_MAX);
-	instw->mtranslpath[PATH_MAX]='\0';
-	melen=strlen(instw->mtranslpath);
-	if((melen+relen)>PATH_MAX) {
+	if(snprintf(instw->mtranslpath,sizeof(instw->mtranslpath),"%s%s",
+	            instw->mtransl,instw->reslvpath)
+	   >=(int)sizeof(instw->mtranslpath)) {
 		instw->error=errno=ENAMETOOLONG;
 		return -1;
 	}
-	strncat(instw->mtranslpath,instw->reslvpath,PATH_MAX-melen);
-	instw->mtranslpath[PATH_MAX]='\0';
 
 	return 0;
 }
@@ -2096,7 +2081,7 @@ static int instw_apply(instw_t *instw) {
 	struct stat reslvinfo;
 	instw_t iw;
 	char wpath[PATH_MAX+1];
-	size_t wsz=0;
+	ssize_t wsz=0;
 	char linkpath[PATH_MAX+1];
 
 
@@ -2140,8 +2125,8 @@ static int instw_apply(instw_t *instw) {
 		copy_path(instw->reslvpath,instw->transl);
 
 		  /* a symlink ! we have to translate the target */
-		if(S_ISLNK(reslvinfo.st_mode)) {
-			wsz=true_readlink(instw->reslvpath,wpath,PATH_MAX);
+		if(S_ISLNK(reslvinfo.st_mode) &&
+		   (wsz=true_readlink(instw->reslvpath,wpath,PATH_MAX))>=0) {
 			wpath[wsz]='\0';
 
 			instw_new(&iw);
@@ -2192,7 +2177,7 @@ static int instw_filldirls(instw_t *instw) {
 	struct stat sinfo;
 	struct stat dinfo;
 	int wfd;
-	size_t wsz;
+	ssize_t wsz;
 	instw_t iw_entry;
 	int status=0;
 
