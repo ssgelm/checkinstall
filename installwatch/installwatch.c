@@ -1861,6 +1861,10 @@ static int instw_setpath(instw_t *instw,const char *path) {
 		instw->truepath[PATH_MAX]='\0';
 	}
 
+	  /* reslvpath below is truepath, or truepath with a prefix taken off,
+	   * so relen is never shorter than what gets appended and the two
+	   * length checks further down are safe. gcc cannot see that and
+	   * warns about the strncat calls anyway. */
 	relen=strlen(instw->truepath);
 
 	  /* 
@@ -1871,7 +1875,9 @@ static int instw_setpath(instw_t *instw,const char *path) {
 	if(	!(instw->gstatus&INSTW_INITIALIZED) || 
 		!(instw->gstatus&INSTW_OKTRANSL)) {
 		strncpy(instw->reslvpath,instw->truepath,PATH_MAX);
+		instw->reslvpath[PATH_MAX]='\0';
 		strncpy(instw->translpath,instw->truepath,PATH_MAX);
+		instw->translpath[PATH_MAX]='\0';
 		return 0;
 	}
 	
@@ -1900,10 +1906,12 @@ static int instw_setpath(instw_t *instw,const char *path) {
 	   */
 	if(path_excluded(instw->truepath)) {
 		strncpy(instw->translpath,instw->truepath,PATH_MAX);
+		instw->translpath[PATH_MAX]='\0';
 		instw->status |= ( INSTW_TRANSLATED | INSTW_IDENTITY);
 	} else {
 		  /* Building the real translated path */
 		strncpy(instw->translpath,instw->transl,PATH_MAX);
+		instw->translpath[PATH_MAX]='\0';
 		trlen=strlen(instw->translpath);
 		if((trlen+relen)>PATH_MAX) {
 			instw->error=errno=ENAMETOOLONG;
