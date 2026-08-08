@@ -1001,7 +1001,17 @@ static int copy_path(const char *truepath,const char *translroot) {
 			if(failed) saved=errno;
 	
 			close(truefd);
-			close(translfd);
+
+			  /* A write can be reported as late as the close: the
+			   * kernel may hold back ENOSPC, a quota refusal or a
+			   * network filesystem error until then. Not retried on
+			   * EINTR, the state of the descriptor after that is not
+			   * portable. An earlier failure is the more useful one,
+			   * so it wins. */
+			if(close(translfd)<0 && !failed) {
+				saved=errno;
+				failed=1;
+			}
 
 			if(failed) {
 				  /* Leave nothing half written for the package
