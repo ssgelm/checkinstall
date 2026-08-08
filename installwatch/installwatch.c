@@ -359,6 +359,25 @@ int parse_suffix(char *,char *,const char *);
   /* single method used to minimize excessive returns */
 #define finalize(code) {rcod=code;goto finalize;}
 
+  /* open() takes its third argument only when it may create a file, and
+   * reading a va_arg the caller never passed is undefined. O_TMPFILE is
+   * more than one bit, so it has to be masked rather than tested. */
+#ifdef O_TMPFILE
+#define OPEN_TMPFILE(f) (((f) & O_TMPFILE) == O_TMPFILE)
+#else
+#define OPEN_TMPFILE(f) 0
+#endif
+#define OPEN_HAS_MODE(f) (((f) & O_CREAT) || OPEN_TMPFILE(f))
+  /* An open can change the file without being opened for writing: O_CREAT
+   * makes one and O_TRUNC empties one, both legal with O_RDONLY. */
+#define OPEN_MODIFIES(f) (((f) & (O_WRONLY|O_RDWR|O_CREAT|O_TRUNC)) || \
+                          OPEN_TMPFILE(f))
+  /* An fopen mode string can write if it starts w or a, or carries a '+'
+   * anywhere after the first letter. glibc takes "rb+" as well as "r+b",
+   * so the plus is not always the second character. */
+#define FOPEN_MODIFIES(m) ((m)[0]=='w'||(m)[0]=='a'|| \
+                           ((m)[0]!='\0' && strchr((m)+1,'+')!=NULL))
+
 #if DEBUG
 #ifndef __USE_FILE_OFFSET64
 static int __instw_printdirent(struct dirent*);
@@ -496,6 +515,7 @@ static void initialize(void) {
 	true_fxstatat64      = dlsym(libc_handle, "__fxstatat64");
 	true_linkat      = dlsym(libc_handle, "linkat");
 	true_mkdirat      = dlsym(libc_handle, "mkdirat");
+	true_mknodat      = dlsym(libc_handle, "mknodat");
 	true_readlinkat      = dlsym(libc_handle, "readlinkat");
 	true_xmknodat      = dlsym(libc_handle, "__xmknodat");
 	true_renameat      = dlsym(libc_handle, "renameat");
@@ -1078,7 +1098,17 @@ static inline int path_excluded(const char *truepath) {
 	pnext=__instw.exclude;
 
 	while(pnext!=NULL) {
-		if(strstr(truepath,pnext->string)==truepath) {
+		  /* A prefix match alone puts /tmpfoo under /tmp and
+		   * /usr/locality under /usr/local, and an excluded path is
+		   * not translated, so those writes would reach the real
+		   * filesystem. The prefix has to end the path or be followed
+		   * by a separator. "/" excludes everything by itself. */
+		size_t elen=strlen(pnext->string);
+
+		while(elen>1 && pnext->string[elen-1]=='/') elen--;
+
+		if(!strncmp(truepath,pnext->string,elen) &&
+		   (elen==1 || truepath[elen]=='\0' || truepath[elen]=='/')) {
 			result=1;
 			break;
 		}
@@ -1178,7 +1208,7 @@ int expand_path(string_t **list,const char *prefix,const char *suffix) {
 	char nwork[PATH_MAX+1];
 	char nsuffix[PATH_MAX+1];
 	char lnkpath[PATH_MAX+1];
-	size_t lnksz=0;
+	ssize_t lnksz=0;
 	string_t *pthis=NULL;
 	string_t *list1=NULL;
 	string_t *list2=NULL;
@@ -1214,12 +1244,16 @@ int expand_path(string_t **list,const char *prefix,const char *suffix) {
 	} else {
 		expand_path(&list1,nprefix,nsuffix);
 		
-		lnksz=true_readlink(nprefix,lnkpath,PATH_MAX);
+		  /* readlink returns -1, and indexing with that is a write
+		   * a long way outside the buffer. The link can go away
+		   * between the lstat above and here. */
+		if((lnksz=true_readlink(nprefix,lnkpath,PATH_MAX))<0)
+			return -1;
 		lnkpath[lnksz]='\0';
 		if(lnkpath[0]!='/') {
 			strcpy(nprefix,prefix);
 			len=strlen(lnkpath);
-			if(lnkpath[len-1]=='/') {lnkpath[len-1]='\0';}
+			if(len && lnkpath[len-1]=='/') {lnkpath[len-1]='\0';}
 			strcpy(nwork,"/");
 			strcat(nwork,lnkpath);
 			strcat(nwork,nsuffix);
@@ -2869,7 +2903,7 @@ FILE *fopen(const char *pathname, const char *mode) {
 	instw_print(&instw);
 #endif
 
-	if(mode[0]=='w'||mode[0]=='a'||mode[1]=='+') {
+	if(FOPEN_MODIFIES(mode)) {
 		backup(instw.truepath);
 		instw_apply(&instw);
 		logg("%" PRIdPTR "\tfopen\t%s\t#%s\n",(intptr_t)result,
@@ -2886,7 +2920,7 @@ FILE *fopen(const char *pathname, const char *mode) {
 		result=true_fopen(instw.path,mode);
 	}
 	
-	if(mode[0]=='w'||mode[0]=='a'||mode[1]=='+') 
+	if(FOPEN_MODIFIES(mode)) 
 		logg("%" PRIdPTR "\tfopen\t%s\t#%s\n",(intptr_t)result,
 		    instw.reslvpath,error(result));
 
@@ -3198,9 +3232,12 @@ int open(const char *pathname, int flags, ...) {
 	debug(2,"open(%s,%d,mode)\n",pathname,flags);
 #endif
 
-	va_start(ap, flags);
-	mode = va_arg(ap, int /*promoted from mode_t*/);
-	va_end(ap);
+	mode = 0;
+	if(OPEN_HAS_MODE(flags)) {
+		va_start(ap, flags);
+		mode = va_arg(ap, int /*promoted from mode_t*/);
+		va_end(ap);
+	}
 
 	  /* We were asked to work in "real" mode */
 	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
@@ -3216,7 +3253,7 @@ int open(const char *pathname, int flags, ...) {
 	instw_print(&instw);
 #endif
 
-	if(flags & (O_WRONLY | O_RDWR)) {
+	if(OPEN_MODIFIES(flags)) {
 		backup(instw.truepath);
 		instw_apply(&instw);
 	}
@@ -3228,7 +3265,7 @@ int open(const char *pathname, int flags, ...) {
 	else
 		result=true_open(instw.path,flags,mode);
 	
-	if(flags & (O_WRONLY | O_RDWR)) 
+	if(OPEN_MODIFIES(flags))
 		logg("%d\topen\t%s\t#%s\n",result,instw.reslvpath,error(result));
 
 	instw_delete(&instw);
@@ -4239,7 +4276,7 @@ FILE *fopen64(const char *pathname, const char *mode) {
 	instw_print(&instw);
 #endif
 
-	if(mode[0]=='w'||mode[0]=='a'||mode[1]=='+') {
+	if(FOPEN_MODIFIES(mode)) {
 		backup(instw.truepath);
 		instw_apply(&instw);
 	}
@@ -4254,7 +4291,7 @@ FILE *fopen64(const char *pathname, const char *mode) {
 		result=true_fopen64(instw.path,mode);
 	}
 
-	if(mode[0]=='w'||mode[0]=='a'||mode[1]=='+') 
+	if(FOPEN_MODIFIES(mode)) 
 		logg("%" PRIdPTR "\tfopen64\t%s\t#%s\n",(intptr_t)result,
 		    instw.reslvpath,error(result));
 
@@ -4280,9 +4317,12 @@ int open64(const char *pathname, int flags, ...) {
 	debug(2,"open64(%s,%d,mode)\n",pathname,flags);
 #endif
 
-	va_start(ap, flags);
-	mode = va_arg(ap, int /*promoted from mode_t*/);
-	va_end(ap);
+	mode = 0;
+	if(OPEN_HAS_MODE(flags)) {
+		va_start(ap, flags);
+		mode = va_arg(ap, int /*promoted from mode_t*/);
+		va_end(ap);
+	}
 
 	  /* We were asked to work in "real" mode */
 	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
@@ -4298,7 +4338,7 @@ int open64(const char *pathname, int flags, ...) {
 	instw_print(&instw);
 #endif
 
-	if(flags & (O_WRONLY | O_RDWR)) {
+	if(OPEN_MODIFIES(flags)) {
 		backup(instw.truepath);
 		instw_apply(&instw);
 	}
@@ -4313,7 +4353,7 @@ int open64(const char *pathname, int flags, ...) {
 		result=true_open64(instw.path,flags,mode);
 	}
 	
-	if(flags & (O_WRONLY | O_RDWR)) 
+	if(OPEN_MODIFIES(flags))
 		logg("%d\topen\t%s\t#%s\n",result,
 		    instw.reslvpath,error(result));
 
@@ -4621,7 +4661,7 @@ int truncate64(const char *path, __off64_t length) {
 int openat (int dirfd, const char *path, int flags, ...) {
  	mode_t mode = 0;
  	va_list arg;
- 	if(flags & O_CREAT) {
+ 	if(OPEN_HAS_MODE(flags)) {
  		va_start(arg, flags);
  		mode = va_arg(arg, int /*promoted from mode_t*/);
  		va_end (arg);
@@ -4646,7 +4686,7 @@ int openat (int dirfd, const char *path, int flags, ...) {
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_open(path,flags,mode);
+ 		return true_openat(dirfd,path,flags,mode);
 	
  	instw_new(&instw);
  	instw_setpathrel(&instw,dirfd,path);
@@ -4671,7 +4711,7 @@ int openat64 (int dirfd, const char *path, int flags, ...) {
 	mode_t mode = 0;
 	va_list arg;
 
-	if(flags & O_CREAT) {
+	if(OPEN_HAS_MODE(flags)) {
 		va_start(arg, flags);
 		mode = va_arg(arg, int /*promoted from mode_t*/);
 		va_end (arg);
@@ -4778,12 +4818,7 @@ int fchownat (int dirfd, const char *path,uid_t owner,gid_t group,int flags) {
 		 /* If we have AT_SYMLINK_NOFOLLOW then we need  */
 		 /* lchwon() behaviour, according to fchownat(2) */
 
-		 if ( flags & AT_SYMLINK_NOFOLLOW ) {
-		    return true_lchown(path, owner, group); 
-		 }
-		 else {
-		    return true_chown(path, owner, group);
-		 }
+		 return true_fchownat(dirfd, path, owner, group, flags);
  	}
 	
  	instw_new(&instw);
@@ -5193,7 +5228,7 @@ int mkdirat (int dirfd, const char *path, mode_t mode) {
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_mkdir(path,mode);
+ 		return true_mkdirat(dirfd,path,mode);
 	
  	instw_new(&instw);
  	instw_setpathrel(&instw,dirfd,path);
@@ -5672,7 +5707,7 @@ READLINKAT_T readlinkat (int dirfd, const char *path,
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_readlink(path, buf, bufsiz);
+ 		return true_readlinkat(dirfd, path, buf, bufsiz);
 	
  	instw_new(&instw);
  	instw_setpathrel(&instw,dirfd,path);
@@ -5715,7 +5750,7 @@ int mknodat (int dirfd,const char *path,mode_t mode,dev_t dev) {
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_mknod(path, mode, dev);
+ 		return true_mknodat(dirfd, path, mode, dev);
 	
  	instw_new(&instw);
  	instw_setpathrel(&instw,dirfd,path);
@@ -5923,15 +5958,11 @@ int unlinkat (int dirfd, const char *path, int flags) {
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP)) {
-	 	/* If we have AT_REMOVEDIR then we need        */
-		 /* rmdir() behaviour, according to unlinkat(2) */
-
-		 if ( flags & AT_REMOVEDIR ) {
-		    result=true_rmdir(path); 
-		 }
-		 else {
-	 	    result=true_unlink(path);
-		 }
+		  /* AT_REMOVEDIR rides along in flags, so this covers both
+		   * the unlink and the rmdir case. Returning matters: without
+		   * it the removal was done here and then attempted a second
+		   * time through the translated path below. */
+		 return true_unlinkat(dirfd, path, flags);
 	}
  	
 	
