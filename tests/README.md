@@ -26,6 +26,9 @@ arrived with these commits.
 `CHECKINSTALL_INSTALLED=1` drives whatever is installed on this machine,
 under /usr. Give it a prefix instead of `1` if the package used another one.
 This is the mode for testing a distribution's package after installing it.
+The rc file is looked for where upstream's Makefile puts it,
+`PREFIX/lib/checkinstall/checkinstallrc`, except under /usr where
+`/etc/checkinstallrc` is used if present. `CHECKINSTALL_RC` overrides both.
 
 `CHECKINSTALL_DEB` unpacks a built package instead of building, and runs the
 tests against the scripts and installwatch.so it ships. Both shipped scripts

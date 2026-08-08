@@ -65,7 +65,18 @@ write_rc() {
 if [ -n "$CK_INSTALLED" ]; then
 	rm -rf "$CKPREFIX"
 	CKPREFIX=$CK_INSTALLED
-	write_rc "${CK_INSTALLED%/usr}/etc/checkinstallrc"
+	# Upstream's Makefile keeps the rc file under PREFIX/lib/checkinstall.
+	# Distributions that follow the FHS move it to /etc, which is where it
+	# is when the prefix is /usr. CHECKINSTALL_RC overrides both.
+	if [ -n "${CHECKINSTALL_RC:-}" ]; then
+		rc=$CHECKINSTALL_RC
+	elif [ "$CK_INSTALLED" = /usr ] && [ -f /etc/checkinstallrc ]; then
+		rc=/etc/checkinstallrc
+	else
+		rc=$CK_INSTALLED/lib/checkinstall/checkinstallrc
+	fi
+	[ -f "$rc" ] || { echo "error: no checkinstallrc at $rc"; exit 2; }
+	write_rc "$rc"
 	trap 'rm -rf "$TESTTMP"' EXIT
 elif [ -n "$CK_DEB" ]; then
 	echo -n "unpacking... "
