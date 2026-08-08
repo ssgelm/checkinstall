@@ -16,114 +16,114 @@ msgstr ""
 "PO-Revision-Date:  2003-03-14 17:56-0600\n"
 "Last-Translator: Trofimov Igor <just@multilinux.info>\n"
 "Language-Team: RU <just@multilinux.info>\n"
-"Language: \n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=KOI8-R\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: checkinstall.in:83 checkinstall.in:338
 msgid "Bye."
-msgstr "Удачи."
+msgstr "пёп╢п╟я┤п╦."
 
 #: checkinstall.in:110
 msgid "           This software is released under the GNU GPL."
-msgstr "         Эта программа распространяется на условиях GNU GPL"
+msgstr "         п╜я┌п╟ п©я─п╬пЁя─п╟п╪п╪п╟ я─п╟я│п©я─п╬я│я┌я─п╟п╫я▐п╣я┌я│я▐ п╫п╟ я┐я│п╩п╬п╡п╦я▐я┘ GNU GPL"
 
 #: checkinstall.in:124
 msgid "Usage: checkinstall [options] [command [command arguments]]"
-msgstr "Использование: checkinstall [опции] [команда [аргументы команды]]"
+msgstr "п≤я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣: checkinstall [п╬п©я├п╦п╦] [п╨п╬п╪п╟п╫п╢п╟ [п╟я─пЁя┐п╪п╣п╫я┌я▀ п╨п╬п╪п╟п╫п╢я▀]]"
 
 #: checkinstall.in:125
 msgid "Options:"
-msgstr "Опции:"
+msgstr "п·п©я├п╦п╦:"
 
 #: checkinstall.in:127
 msgid "*Package type selection*"
-msgstr "*Выбор типа пакета*"
+msgstr "*п▓я▀п╠п╬я─ я┌п╦п©п╟ п©п╟п╨п╣я┌п╟*"
 
 #: checkinstall.in:129
 msgid "-t,--type=<slackware|rpm|debian> Choose packaging system"
-msgstr "-t,--type=<slackware|rpm|debian> Выберите тип пакета"
+msgstr "-t,--type=<slackware|rpm|debian> п▓я▀п╠п╣я─п╦я┌п╣ я┌п╦п© п©п╟п╨п╣я┌п╟"
 
 #: checkinstall.in:130
 msgid "-S                               Build a Slackware package"
-msgstr "-S                               Создать Slackware пакет"
+msgstr "-S                               п║п╬п╥п╢п╟я┌я▄ Slackware п©п╟п╨п╣я┌"
 
 #: checkinstall.in:131
 msgid "-R                               Build a RPM package"
-msgstr "-R                               Создать RPM пакет"
+msgstr "-R                               п║п╬п╥п╢п╟я┌я▄ RPM п©п╟п╨п╣я┌"
 
 #: checkinstall.in:132
 msgid "-D                               Build a Debian package"
-msgstr "-D                               Создать Debian пакет"
+msgstr "-D                               п║п╬п╥п╢п╟я┌я▄ Debian п©п╟п╨п╣я┌"
 
 #: checkinstall.in:134
 msgid "*Install options*"
-msgstr "*Опции установки*"
+msgstr "*п·п©я├п╦п╦ я┐я│я┌п╟п╫п╬п╡п╨п╦*"
 
 #: checkinstall.in:136
 msgid "--install=<yes|no>             Toggle created package installation"
-msgstr "--install=<yes|no>             Устанавливать созданные пакеты"
+msgstr "--install=<yes|no>             пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟я┌я▄ я│п╬п╥п╢п╟п╫п╫я▀п╣ п©п╟п╨п╣я┌я▀"
 
 #: checkinstall.in:137
 #, fuzzy
 #| msgid "--delspec=<yes|no>             Delete spec file upon termination"
 msgid ""
 "--fstrans=<yes|no>             Enable/disable the filesystem translation code"
-msgstr "--delspec=<yes|no>             Удалять spec-файл при завершении"
+msgstr "--delspec=<yes|no>             пёп╢п╟п╩я▐я┌я▄ spec-я└п╟п╧п╩ п©я─п╦ п╥п╟п╡п╣я─я┬п╣п╫п╦п╦"
 
 #: checkinstall.in:139
 msgid "*Scripting options*"
-msgstr "*Опции сценариев*"
+msgstr "*п·п©я├п╦п╦ я│я├п╣п╫п╟я─п╦п╣п╡*"
 
 #: checkinstall.in:141
 msgid "-y, --default                  Accept default answers to all questions"
 msgstr ""
-"-y, --default                  Принять значения по умолчанию для всех "
-"вопросов"
+"-y, --default                  п÷я─п╦п╫я▐я┌я▄ п╥п╫п╟я┤п╣п╫п╦я▐ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌ п╢п╩я▐ п╡я│п╣я┘ "
+"п╡п╬п©я─п╬я│п╬п╡"
 
 #: checkinstall.in:142
 msgid "--pkgname=<name>               Set name"
-msgstr "--pkgname=<name>               Установить имя"
+msgstr "--pkgname=<name>               пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╦п╪я▐"
 
 #: checkinstall.in:143
 msgid "--pkgversion=<version>         Set version"
-msgstr "--pkgversion=<version>         Установить версию"
+msgstr "--pkgversion=<version>         пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╡п╣я─я│п╦я▌"
 
 #: checkinstall.in:144
 msgid "-A, --arch, --pkgarch=<arch>   Set architecture"
-msgstr "-A, --arch, --pkgarch=<arch>   Установить архитектуру"
+msgstr "-A, --arch, --pkgarch=<arch>   пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╟я─я┘п╦я┌п╣п╨я┌я┐я─я┐"
 
 #: checkinstall.in:145
 msgid "--pkgrelease=<release>         Set release"
-msgstr "--pkgrelease=<release>         Установить версию релиза"
+msgstr "--pkgrelease=<release>         пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╡п╣я─я│п╦я▌ я─п╣п╩п╦п╥п╟"
 
 #: checkinstall.in:146
 msgid "--pkglicense=<license>         Set license"
-msgstr "--pkglicense=<license>         Установить лицензию"
+msgstr "--pkglicense=<license>         пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╩п╦я├п╣п╫п╥п╦я▌"
 
 #: checkinstall.in:147
 msgid "--pkggroup=<group>             Set software group"
-msgstr "--pkggroup=<group>             Установить программную группу"
+msgstr "--pkggroup=<group>             пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п©я─п╬пЁя─п╟п╪п╪п╫я┐я▌ пЁя─я┐п©п©я┐"
 
 #: checkinstall.in:148
 msgid "--pkgsource=<source>           Set source location"
-msgstr "--pkgsource=<source>           Установить пути к исходникам"
+msgstr "--pkgsource=<source>           пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п©я┐я┌п╦ п╨ п╦я│я┘п╬п╢п╫п╦п╨п╟п╪"
 
 #: checkinstall.in:149
 msgid "--pkgaltsource=<altsource>     Set alternate source location"
 msgstr ""
-"--pkgaltsource=<altsource>     Установить альтернативные пути к исходникам"
+"--pkgaltsource=<altsource>     пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡п╫я▀п╣ п©я┐я┌п╦ п╨ п╦я│я┘п╬п╢п╫п╦п╨п╟п╪"
 
 #: checkinstall.in:150
 msgid "--pakdir=<directory>           The new package will be saved here"
 msgstr ""
-"--pakdir=<directory>           Созданные пакеты будут храниться в этом "
-"каталоге"
+"--pakdir=<directory>           п║п╬п╥п╢п╟п╫п╫я▀п╣ п©п╟п╨п╣я┌я▀ п╠я┐п╢я┐я┌ я┘я─п╟п╫п╦я┌я▄я│я▐ п╡ я█я┌п╬п╪ "
+"п╨п╟я┌п╟п╩п╬пЁп╣"
 
 #: checkinstall.in:151
 msgid "--maintainer=<email addr>      The package maintainer (.deb)"
-msgstr "--maintainer=<email addr>      Создатель пакета (.deb)"
+msgstr "--maintainer=<email addr>      п║п╬п╥п╢п╟я┌п╣п╩я▄ п©п╟п╨п╣я┌п╟ (.deb)"
 
 #: checkinstall.in:152
 #, fuzzy
@@ -131,7 +131,7 @@ msgstr "--maintainer=<email addr>      Создатель пакета (.deb)"
 #| "--provides=<list>              Features provided by this package (.rpm)"
 msgid "--provides=<list>              Features provided by this package"
 msgstr ""
-"--provides=<list>              Дополнения, обеспечиваемые этим пакетом (.rpm)"
+"--provides=<list>              п■п╬п©п╬п╩п╫п╣п╫п╦я▐, п╬п╠п╣я│п©п╣я┤п╦п╡п╟п╣п╪я▀п╣ я█я┌п╦п╪ п©п╟п╨п╣я┌п╬п╪ (.rpm)"
 
 #: checkinstall.in:153
 #, fuzzy
@@ -139,7 +139,7 @@ msgstr ""
 #| "--requires=<list>              Features required by this package (.rpm)"
 msgid "--requires=<list>              Features required by this package"
 msgstr ""
-"--requires=<list>              Дополнения, требуемые этим пакетом (.rpm)"
+"--requires=<list>              п■п╬п©п╬п╩п╫п╣п╫п╦я▐, я┌я─п╣п╠я┐п╣п╪я▀п╣ я█я┌п╦п╪ п©п╟п╨п╣я┌п╬п╪ (.rpm)"
 
 #: checkinstall.in:154
 #, fuzzy
@@ -149,7 +149,7 @@ msgid ""
 "--prerequires=<list>           Packages that must be installed and "
 "configured before this package"
 msgstr ""
-"--requires=<list>              Дополнения, требуемые этим пакетом (.rpm)"
+"--requires=<list>              п■п╬п©п╬п╩п╫п╣п╫п╦я▐, я┌я─п╣п╠я┐п╣п╪я▀п╣ я█я┌п╦п╪ п©п╟п╨п╣я┌п╬п╪ (.rpm)"
 
 #: checkinstall.in:155
 #, fuzzy
@@ -157,7 +157,7 @@ msgstr ""
 #| "--provides=<list>              Features provided by this package (.rpm)"
 msgid "--recommends=<list>            Features recommended by this package"
 msgstr ""
-"--provides=<list>              Дополнения, обеспечиваемые этим пакетом (.rpm)"
+"--provides=<list>              п■п╬п©п╬п╩п╫п╣п╫п╦я▐, п╬п╠п╣я│п©п╣я┤п╦п╡п╟п╣п╪я▀п╣ я█я┌п╦п╪ п©п╟п╨п╣я┌п╬п╪ (.rpm)"
 
 #: checkinstall.in:156
 #, fuzzy
@@ -165,7 +165,7 @@ msgstr ""
 #| "--requires=<list>              Features required by this package (.rpm)"
 msgid "--suggests=<list>              Features suggested by this package"
 msgstr ""
-"--requires=<list>              Дополнения, требуемые этим пакетом (.rpm)"
+"--requires=<list>              п■п╬п©п╬п╩п╫п╣п╫п╦я▐, я┌я─п╣п╠я┐п╣п╪я▀п╣ я█я┌п╦п╪ п©п╟п╨п╣я┌п╬п╪ (.rpm)"
 
 #: checkinstall.in:157
 #, fuzzy
@@ -173,7 +173,7 @@ msgstr ""
 msgid ""
 "--conflicts=<list>             Packages that this package cannot be "
 "installed with (.deb)"
-msgstr "--rpmflags=<flags>             Флаги для установщика rpm"
+msgstr "--rpmflags=<flags>             п╓п╩п╟пЁп╦ п╢п╩я▐ я┐я│я┌п╟п╫п╬п╡я┴п╦п╨п╟ rpm"
 
 #: checkinstall.in:158
 #, fuzzy
@@ -182,11 +182,11 @@ msgstr "--rpmflags=<flags>             Флаги для установщика rpm"
 msgid ""
 "--replaces=<list>              Packages that this package replaces (.deb)"
 msgstr ""
-"--requires=<list>              Дополнения, требуемые этим пакетом (.rpm)"
+"--requires=<list>              п■п╬п©п╬п╩п╫п╣п╫п╦я▐, я┌я─п╣п╠я┐п╣п╪я▀п╣ я█я┌п╦п╪ п©п╟п╨п╣я┌п╬п╪ (.rpm)"
 
 #: checkinstall.in:159
 msgid "--rpmflags=<flags>             Pass this flags to the rpm installer"
-msgstr "--rpmflags=<flags>             Флаги для установщика rpm"
+msgstr "--rpmflags=<flags>             п╓п╩п╟пЁп╦ п╢п╩я▐ я┐я│я┌п╟п╫п╬п╡я┴п╦п╨п╟ rpm"
 
 #: checkinstall.in:160
 #, fuzzy
@@ -195,7 +195,7 @@ msgstr "--rpmflags=<flags>             Флаги для установщика rpm"
 msgid ""
 "--rpmi                         Use the -i flag for rpm when installing a .rpm"
 msgstr ""
-"--review-spec                  Проверить spec-файл перед созданием .rpm"
+"--review-spec                  п÷я─п╬п╡п╣я─п╦я┌я▄ spec-я└п╟п╧п╩ п©п╣я─п╣п╢ я│п╬п╥п╢п╟п╫п╦п╣п╪ .rpm"
 
 #: checkinstall.in:161
 #, fuzzy
@@ -204,77 +204,77 @@ msgstr ""
 msgid ""
 "--rpmu                         Use the -U flag for rpm when installing a .rpm"
 msgstr ""
-"--review-spec                  Проверить spec-файл перед созданием .rpm"
+"--review-spec                  п÷я─п╬п╡п╣я─п╦я┌я▄ spec-я└п╟п╧п╩ п©п╣я─п╣п╢ я│п╬п╥п╢п╟п╫п╦п╣п╪ .rpm"
 
 #: checkinstall.in:162
 msgid "--dpkgflags=<flags>            Pass this flags to the dpkg installer"
-msgstr "--dpkgflags=<flags>            Флаги для установщика dpkg"
+msgstr "--dpkgflags=<flags>            п╓п╩п╟пЁп╦ п╢п╩я▐ я┐я│я┌п╟п╫п╬п╡я┴п╦п╨п╟ dpkg"
 
 #: checkinstall.in:163
 msgid "--spec=<path>                  .spec file location"
-msgstr "--spec=<path>                  расположение файла .spec"
+msgstr "--spec=<path>                  я─п╟я│п©п╬п╩п╬п╤п╣п╫п╦п╣ я└п╟п╧п╩п╟ .spec"
 
 #: checkinstall.in:164
 msgid "--nodoc                        Do not include documentation files"
-msgstr "--nodoc                        Не включать файлы документации"
+msgstr "--nodoc                        п²п╣ п╡п╨п╩я▌я┤п╟я┌я▄ я└п╟п╧п╩я▀ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦"
 
 #: checkinstall.in:166
 msgid "*Info display options*"
-msgstr "*Информационные опции*"
+msgstr "*п≤п╫я└п╬я─п╪п╟я├п╦п╬п╫п╫я▀п╣ п╬п©я├п╦п╦*"
 
 #: checkinstall.in:168
 msgid "-d<0|1|2>                      Set debug level"
-msgstr "-d<0|1|2>                      Установить уровень отладки"
+msgstr "-d<0|1|2>                      пёя│я┌п╟п╫п╬п╡п╦я┌я▄ я┐я─п╬п╡п╣п╫я▄ п╬я┌п╩п╟п╢п╨п╦"
 
 #: checkinstall.in:169
 msgid "-si                            Run an interactive install command"
 msgstr ""
-"-si                            Запустить интерактивную команду установки"
+"-si                            п≈п╟п©я┐я│я┌п╦я┌я▄ п╦п╫я┌п╣я─п╟п╨я┌п╦п╡п╫я┐я▌ п╨п╬п╪п╟п╫п╢я┐ я┐я│я┌п╟п╫п╬п╡п╨п╦"
 
 #: checkinstall.in:170
 msgid "--showinstall=<yes|no>         Toggle interactive install command"
 msgstr ""
-"--showinstall=<yes|no>         Изменить интерактивную команду установки"
+"--showinstall=<yes|no>         п≤п╥п╪п╣п╫п╦я┌я▄ п╦п╫я┌п╣я─п╟п╨я┌п╦п╡п╫я┐я▌ п╨п╬п╪п╟п╫п╢я┐ я┐я│я┌п╟п╫п╬п╡п╨п╦"
 
 #: checkinstall.in:171
 msgid ""
 "-ss                            Run an interactive Slackware installation "
 "script"
 msgstr ""
-"-ss                            Запустить интерактивный установочный "
-"Slackware скрипт"
+"-ss                            п≈п╟п©я┐я│я┌п╦я┌я▄ п╦п╫я┌п╣я─п╟п╨я┌п╦п╡п╫я▀п╧ я┐я│я┌п╟п╫п╬п╡п╬я┤п╫я▀п╧ "
+"Slackware я│п╨я─п╦п©я┌"
 
 #: checkinstall.in:172
 msgid ""
 "--showslack=<yes|no>           Toggle interactive Slackware installation "
 "script"
 msgstr ""
-"--showslack=<yes|no>           Наличие интерактивного установочного "
-"Slackware скрипта"
+"--showslack=<yes|no>           п²п╟п╩п╦я┤п╦п╣ п╦п╫я┌п╣я─п╟п╨я┌п╦п╡п╫п╬пЁп╬ я┐я│я┌п╟п╫п╬п╡п╬я┤п╫п╬пЁп╬ "
+"Slackware я│п╨я─п╦п©я┌п╟"
 
 #: checkinstall.in:174
 msgid "*Package tuning options*"
-msgstr "*Опции настройки пакета*"
+msgstr "*п·п©я├п╦п╦ п╫п╟я│я┌я─п╬п╧п╨п╦ п©п╟п╨п╣я┌п╟*"
 
 #: checkinstall.in:176
 msgid ""
 "--autodoinst=<yes|no>          Toggle the creation of a doinst.sh script"
-msgstr "--autodoinst=<yes|no>          Создавать doinst.sh скрипт"
+msgstr "--autodoinst=<yes|no>          п║п╬п╥п╢п╟п╡п╟я┌я▄ doinst.sh я│п╨я─п╦п©я┌"
 
 #: checkinstall.in:177
 msgid ""
 "--strip=<yes|no>               Strip any ELF binaries found inside the "
 "package"
 msgstr ""
-"--strip=<yes|no>               Убирать отладочную информация из любых ELF-"
-"файлов в пакете"
+"--strip=<yes|no>               пёп╠п╦я─п╟я┌я▄ п╬я┌п╩п╟п╢п╬я┤п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▐ п╦п╥ п╩я▌п╠я▀я┘ ELF-"
+"я└п╟п╧п╩п╬п╡ п╡ п©п╟п╨п╣я┌п╣"
 
 #: checkinstall.in:178
 msgid ""
 "--stripso=<yes|no>             Strip any ELF binary libraries (.so files)"
 msgstr ""
-"--stripso=<yes|no>             Убирать отладочную информацию из любых ELF-"
-"библиотек (файлы .so)"
+"--stripso=<yes|no>             пёп╠п╦я─п╟я┌я▄ п╬я┌п╩п╟п╢п╬я┤п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▌ п╦п╥ п╩я▌п╠я▀я┘ ELF-"
+"п╠п╦п╠п╩п╦п╬я┌п╣п╨ (я└п╟п╧п╩я▀ .so)"
 
 #: checkinstall.in:179
 msgid ""
@@ -296,15 +296,15 @@ msgstr ""
 #| "package"
 msgid "--addso=<yes|no>               Search for any shared libs and add"
 msgstr ""
-"--strip=<yes|no>               Убирать отладочную информация из любых ELF-"
-"файлов в пакете"
+"--strip=<yes|no>               пёп╠п╦я─п╟я┌я▄ п╬я┌п╩п╟п╢п╬я┤п╫я┐я▌ п╦п╫я└п╬я─п╪п╟я├п╦я▐ п╦п╥ п╩я▌п╠я▀я┘ ELF-"
+"я└п╟п╧п╩п╬п╡ п╡ п©п╟п╨п╣я┌п╣"
 
 #: checkinstall.in:182
 #, fuzzy
 #| msgid "-si                            Run an interactive install command"
 msgid "                               them to /etc/ld.so.conf"
 msgstr ""
-"-si                            Запустить интерактивную команду установки"
+"-si                            п≈п╟п©я┐я│я┌п╦я┌я▄ п╦п╫я┌п╣я─п╟п╨я┌п╦п╡п╫я┐я▌ п╨п╬п╪п╟п╫п╢я┐ я┐я│я┌п╟п╫п╬п╡п╨п╦"
 
 #: checkinstall.in:183
 msgid ""
@@ -322,12 +322,12 @@ msgid ""
 "--gzman=<yes|no>               Compress any man pages found inside the "
 "package"
 msgstr ""
-"--gzman=<yes|no>               Сжимать любые страницы руководства, "
-"обнаруженные внутри пакета"
+"--gzman=<yes|no>               п║п╤п╦п╪п╟я┌я▄ п╩я▌п╠я▀п╣ я│я┌я─п╟п╫п╦я├я▀ я─я┐п╨п╬п╡п╬п╢я│я┌п╡п╟, "
+"п╬п╠п╫п╟я─я┐п╤п╣п╫п╫я▀п╣ п╡п╫я┐я┌я─п╦ п©п╟п╨п╣я┌п╟"
 
 #: checkinstall.in:186
 msgid "--docdir=<path>                Where to put documentation files"
-msgstr "--docdir=<path>                Куда помещать файлы документации"
+msgstr "--docdir=<path>                п я┐п╢п╟ п©п╬п╪п╣я┴п╟я┌я▄ я└п╟п╧п╩я▀ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦"
 
 #: checkinstall.in:187
 #, fuzzy
@@ -336,7 +336,7 @@ msgid ""
 "                               The package name+version gets automatically "
 "appended."
 msgstr ""
-"-si                            Запустить интерактивную команду установки"
+"-si                            п≈п╟п©я┐я│я┌п╦я┌я▄ п╦п╫я┌п╣я─п╟п╨я┌п╦п╡п╫я┐я▌ п╨п╬п╪п╟п╫п╢я┐ я┐я│я┌п╟п╫п╬п╡п╨п╦"
 
 #: checkinstall.in:188
 #, fuzzy
@@ -344,57 +344,57 @@ msgstr ""
 msgid ""
 "                               To avoid that prefix the path with a colon "
 "(:)."
-msgstr "-D                               Создать Debian пакет"
+msgstr "-D                               п║п╬п╥п╢п╟я┌я▄ Debian п©п╟п╨п╣я┌"
 
 #: checkinstall.in:189
 msgid "--umask=<mask>                 Set the umask value"
-msgstr "--umask=<mask>                 Установить значение umask"
+msgstr "--umask=<mask>                 пёя│я┌п╟п╫п╬п╡п╦я┌я▄ п╥п╫п╟я┤п╣п╫п╦п╣ umask"
 
 #: checkinstall.in:190
 msgid ""
 "--exclude=<file|dir[,...]>     Exclude these files/directories from the "
 "package"
 msgstr ""
-"--exclude=<file|dir[,...]>     Исключить эти файлы/директории из пакета"
+"--exclude=<file|dir[,...]>     п≤я│п╨п╩я▌я┤п╦я┌я▄ я█я┌п╦ я└п╟п╧п╩я▀/п╢п╦я─п╣п╨я┌п╬я─п╦п╦ п╦п╥ п©п╟п╨п╣я┌п╟"
 
 #: checkinstall.in:191
 msgid ""
 "--include=<listfile>           Force the inclusion in the package of the"
-msgstr "--include=<listfile>           Дополнительное включение в пакет"
+msgstr "--include=<listfile>           п■п╬п©п╬п╩п╫п╦я┌п╣п╩я▄п╫п╬п╣ п╡п╨п╩я▌я┤п╣п╫п╦п╣ п╡ п©п╟п╨п╣я┌"
 
 #: checkinstall.in:192
 #, fuzzy
 #| msgid "-D                               Build a Debian package"
 msgid "                               files/dirs listed in \"listfile\""
-msgstr "-D                               Создать Debian пакет"
+msgstr "-D                               п║п╬п╥п╢п╟я┌я▄ Debian п©п╟п╨п╣я┌"
 
 #: checkinstall.in:193
 msgid "--inspect                      Inspect the package's file list"
-msgstr "--inspect                      Проверить список всех файлов в пакете"
+msgstr "--inspect                      п÷я─п╬п╡п╣я─п╦я┌я▄ я│п©п╦я│п╬п╨ п╡я│п╣я┘ я└п╟п╧п╩п╬п╡ п╡ п©п╟п╨п╣я┌п╣"
 
 #: checkinstall.in:194
 msgid ""
 "--review-spec                  Review the spec file before creating a .rpm"
 msgstr ""
-"--review-spec                  Проверить spec-файл перед созданием .rpm"
+"--review-spec                  п÷я─п╬п╡п╣я─п╦я┌я▄ spec-я└п╟п╧п╩ п©п╣я─п╣п╢ я│п╬п╥п╢п╟п╫п╦п╣п╪ .rpm"
 
 #: checkinstall.in:195
 msgid ""
 "--review-control               Review the control file before creating a .deb"
 msgstr ""
-"--review-control               Проверить control-файл перед созданием .deb"
+"--review-control               п÷я─п╬п╡п╣я─п╦я┌я▄ control-я└п╟п╧п╩ п©п╣я─п╣п╢ я│п╬п╥п╢п╟п╫п╦п╣п╪ .deb"
 
 #: checkinstall.in:196
 msgid ""
 "--newslack                     Use the new (8.1+) Slackware description "
 "format"
 msgstr ""
-"--newslack                     Использовать новый (8.1+) формат описания "
-"Slackware пакетов"
+"--newslack                     п≤я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ п╫п╬п╡я▀п╧ (8.1+) я└п╬я─п╪п╟я┌ п╬п©п╦я│п╟п╫п╦я▐ "
+"Slackware п©п╟п╨п╣я┌п╬п╡"
 
 #: checkinstall.in:197
 msgid "                               (\"--newslack\" implies \"-S\")"
-msgstr "                               (\"--newslack\" подразумевает \"-S\")"
+msgstr "                               (\"--newslack\" п©п╬п╢я─п╟п╥я┐п╪п╣п╡п╟п╣я┌ \"-S\")"
 
 #: checkinstall.in:198
 msgid "--with-tar=/path/to/tar        Manually set the path to the tar binary"
@@ -404,58 +404,58 @@ msgstr ""
 #, fuzzy
 #| msgid "-R                               Build a RPM package"
 msgid "                               in this system"
-msgstr "-R                               Создать RPM пакет"
+msgstr "-R                               п║п╬п╥п╢п╟я┌я▄ RPM п©п╟п╨п╣я┌"
 
 #: checkinstall.in:201
 msgid "*Cleanup options*"
-msgstr "*Опции очистки*"
+msgstr "*п·п©я├п╦п╦ п╬я┤п╦я│я┌п╨п╦*"
 
 #: checkinstall.in:203
 msgid "--deldoc=<yes|no>              Delete doc-pak upon termination"
-msgstr "--deldoc=<yes|no>              Удалять doc-pak при завершении"
+msgstr "--deldoc=<yes|no>              пёп╢п╟п╩я▐я┌я▄ doc-pak п©я─п╦ п╥п╟п╡п╣я─я┬п╣п╫п╦п╦"
 
 #: checkinstall.in:204
 msgid "--deldesc=<yes|no>             Delete description-pak upon termination"
-msgstr "--deldesc=<yes|no>             Удалять description-pak при завершении"
+msgstr "--deldesc=<yes|no>             пёп╢п╟п╩я▐я┌я▄ description-pak п©я─п╦ п╥п╟п╡п╣я─я┬п╣п╫п╦п╦"
 
 #: checkinstall.in:205
 msgid "--delspec=<yes|no>             Delete spec file upon termination"
-msgstr "--delspec=<yes|no>             Удалять spec-файл при завершении"
+msgstr "--delspec=<yes|no>             пёп╢п╟п╩я▐я┌я▄ spec-я└п╟п╧п╩ п©я─п╦ п╥п╟п╡п╣я─я┬п╣п╫п╦п╦"
 
 #: checkinstall.in:206
 msgid "--bk                           Backup any overwritten files"
 msgstr ""
-"--bk                           Делать резервную копию замененных файлов"
+"--bk                           п■п╣п╩п╟я┌я▄ я─п╣п╥п╣я─п╡п╫я┐я▌ п╨п╬п©п╦я▌ п╥п╟п╪п╣п╫п╣п╫п╫я▀я┘ я└п╟п╧п╩п╬п╡"
 
 #: checkinstall.in:207
 msgid "--backup=<yes|no>              Toggle backup"
-msgstr "--backup=<yes|no>              Архивировать?"
+msgstr "--backup=<yes|no>              п░я─я┘п╦п╡п╦я─п╬п╡п╟я┌я▄?"
 
 #: checkinstall.in:209
 msgid "*About CheckInstall*"
-msgstr "*О программе*"
+msgstr "*п· п©я─п╬пЁя─п╟п╪п╪п╣*"
 
 #: checkinstall.in:211
 msgid "--help, -h                     Show this message"
-msgstr "--help, -h                     Показать это сообщение"
+msgstr "--help, -h                     п÷п╬п╨п╟п╥п╟я┌я▄ я█я┌п╬ я│п╬п╬п╠я┴п╣п╫п╦п╣"
 
 #: checkinstall.in:212
 msgid "--copyright                    Show Copyright information"
-msgstr "--copyright                    Показать информацию об авторских правах"
+msgstr "--copyright                    п÷п╬п╨п╟п╥п╟я┌я▄ п╦п╫я└п╬я─п╪п╟я├п╦я▌ п╬п╠ п╟п╡я┌п╬я─я│п╨п╦я┘ п©я─п╟п╡п╟я┘"
 
 #: checkinstall.in:213
 msgid "--version                      Show version information"
-msgstr "--version                      Показать информация о версии"
+msgstr "--version                      п÷п╬п╨п╟п╥п╟я┌я▄ п╦п╫я└п╬я─п╪п╟я├п╦я▐ п╬ п╡п╣я─я│п╦п╦"
 
 #: checkinstall.in:221
 msgid "Use --help or -h to get more information"
-msgstr "Используйте --help или -h для получения полной информации"
+msgstr "п≤я│п©п╬п╩я▄п╥я┐п╧я┌п╣ --help п╦п╩п╦ -h п╢п╩я▐ п©п╬п╩я┐я┤п╣п╫п╦я▐ п©п╬п╩п╫п╬п╧ п╦п╫я└п╬я─п╪п╟я├п╦п╦"
 
 #: checkinstall.in:229 checkinstall.in:764
 #, fuzzy, sh-printf-format
 #| msgid "is an invalid value for"
 msgid "%s is an invalid value for %s"
-msgstr "это неверное значение для"
+msgstr "я█я┌п╬ п╫п╣п╡п╣я─п╫п╬п╣ п╥п╫п╟я┤п╣п╫п╦п╣ п╢п╩я▐"
 
 #: checkinstall.in:280
 msgid " FAILED!"
@@ -467,15 +467,15 @@ msgstr ""
 
 #: checkinstall.in:298
 msgid "Restoring overwritten files from backup..."
-msgstr "Восстанавливаются замененные файлы из резервной копии..."
+msgstr "п▓п╬я│я│я┌п╟п╫п╟п╡п╩п╦п╡п╟я▌я┌я│я▐ п╥п╟п╪п╣п╫п╣п╫п╫я▀п╣ я└п╟п╧п╩я▀ п╦п╥ я─п╣п╥п╣я─п╡п╫п╬п╧ п╨п╬п©п╦п╦..."
 
 #: checkinstall.in:311
 msgid "*** SIGINT received ***"
-msgstr "*** получен SIGINT ***"
+msgstr "*** п©п╬п╩я┐я┤п╣п╫ SIGINT ***"
 
 #: checkinstall.in:318
 msgid "Cleaning up..."
-msgstr "Очищается..."
+msgstr "п·я┤п╦я┴п╟п╣я┌я│я▐..."
 
 #: checkinstall.in:325
 #, sh-printf-format
@@ -486,11 +486,11 @@ msgstr ""
 #, fuzzy, sh-printf-format
 #| msgid "The checkinstallrc file was not found at:"
 msgid "The checkinstallrc file was not found at:\\n%s"
-msgstr "Файл checkinstallrc не найден в:"
+msgstr "п╓п╟п╧п╩ checkinstallrc п╫п╣ п╫п╟п╧п╢п╣п╫ п╡:"
 
 #: checkinstall.in:509
 msgid "Assuming default values."
-msgstr "Подразумеваются значения по умолчанию."
+msgstr "п÷п╬п╢я─п╟п╥я┐п╪п╣п╡п╟я▌я┌я│я▐ п╥п╫п╟я┤п╣п╫п╦я▐ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌."
 
 #: checkinstall.in:765
 msgid "Use gzip, xz, zstd or none."
@@ -513,7 +513,7 @@ msgstr ""
 #, fuzzy, sh-printf-format
 #| msgid "I can't find $INSTALLWATCH."
 msgid "I can't find %s."
-msgstr "Невозможно найти $INSTALLWATCH."
+msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п╫п╟п╧я┌п╦ $INSTALLWATCH."
 
 #: checkinstall.in:1113
 msgid ""
@@ -527,11 +527,11 @@ msgstr ""
 msgid ""
 "%s is an unacceptable value for the temp dir. Please \\nedit the variable "
 "definition for %s and try again."
-msgstr "это неприменимые значения для временного каталога. Пожалуйста"
+msgstr "я█я┌п╬ п╫п╣п©я─п╦п╪п╣п╫п╦п╪я▀п╣ п╥п╫п╟я┤п╣п╫п╦я▐ п╢п╩я▐ п╡я─п╣п╪п╣п╫п╫п╬пЁп╬ п╨п╟я┌п╟п╩п╬пЁп╟. п÷п╬п╤п╟п╩я┐п╧я│я┌п╟"
 
 #: checkinstall.in:1138
 msgid "*** Aborting"
-msgstr "*** Прерывается"
+msgstr "*** п÷я─п╣я─я▀п╡п╟п╣я┌я│я▐"
 
 #: checkinstall.in:1145
 #, sh-printf-format
@@ -546,11 +546,11 @@ msgstr ""
 msgid ""
 "The package documentation directory ./doc-pak does not exist. \\nShould I "
 "create a default set of package docs? "
-msgstr "Каталог с документацией к программе ./doc-pak не существует."
+msgstr "п п╟я┌п╟п╩п╬пЁ я│ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╣п╧ п╨ п©я─п╬пЁя─п╟п╪п╪п╣ ./doc-pak п╫п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌."
 
 #: checkinstall.in:1171
 msgid "Preparing package documentation..."
-msgstr "Готовится документация к пакету..."
+msgstr "п⌠п╬я┌п╬п╡п╦я┌я│я▐ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦я▐ п╨ п©п╟п╨п╣я┌я┐..."
 
 #: checkinstall.in:1187
 #, fuzzy
@@ -558,11 +558,11 @@ msgstr "Готовится документация к пакету..."
 msgid ""
 "*** No known documentation files were found. The new package \\n*** won't "
 "include a documentation directory."
-msgstr "*** Найдены неизвестные файлы документации. Новый пакет"
+msgstr "*** п²п╟п╧п╢п╣п╫я▀ п╫п╣п╦п╥п╡п╣я│я┌п╫я▀п╣ я└п╟п╧п╩я▀ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╦. п²п╬п╡я▀п╧ п©п╟п╨п╣я┌"
 
 #: checkinstall.in:1205
 msgid "Please choose the packaging method you want to use."
-msgstr "Пожалуйста выберите необходимый метод создания пакетов."
+msgstr "п÷п╬п╤п╟п╩я┐п╧я│я┌п╟ п╡я▀п╠п╣я─п╦я┌п╣ п╫п╣п╬п╠я┘п╬п╢п╦п╪я▀п╧ п╪п╣я┌п╬п╢ я│п╬п╥п╢п╟п╫п╦я▐ п©п╟п╨п╣я┌п╬п╡."
 
 #: checkinstall.in:1206
 msgid "Slackware [S], RPM [R] or Debian [D]? "
@@ -574,7 +574,7 @@ msgstr ""
 
 #: checkinstall.in:1250
 msgid "Please write a description for the package."
-msgstr "Пожалуйста напишите описание пакета."
+msgstr "п÷п╬п╤п╟п╩я┐п╧я│я┌п╟ п╫п╟п©п╦я┬п╦я┌п╣ п╬п©п╦я│п╟п╫п╦п╣ п©п╟п╨п╣я┌п╟."
 
 #: checkinstall.in:1255
 #, fuzzy
@@ -584,11 +584,11 @@ msgid ""
 " Remember that pkgtool shows\\nonly the first one when listing packages so "
 "make that one descriptive."
 msgstr ""
-"только первое описание в списке пакетов, поэтому напишите его только одно."
+"я┌п╬п╩я▄п╨п╬ п©п╣я─п╡п╬п╣ п╬п©п╦я│п╟п╫п╦п╣ п╡ я│п©п╦я│п╨п╣ п©п╟п╨п╣я┌п╬п╡, п©п╬я█я┌п╬п╪я┐ п╫п╟п©п╦я┬п╦я┌п╣ п╣пЁп╬ я┌п╬п╩я▄п╨п╬ п╬п╢п╫п╬."
 
 #: checkinstall.in:1258
 msgid "End your description with an empty line or EOF."
-msgstr "Закончите ваше описание пустой строкой или EOF."
+msgstr "п≈п╟п╨п╬п╫я┤п╦я┌п╣ п╡п╟я┬п╣ п╬п©п╦я│п╟п╫п╦п╣ п©я┐я│я┌п╬п╧ я│я┌я─п╬п╨п╬п╧ п╦п╩п╦ EOF."
 
 #: checkinstall.in:1276
 #, fuzzy
@@ -596,7 +596,7 @@ msgstr "Закончите ваше описание пустой строкой или EOF."
 msgid ""
 "Warning: Your package description is bigger than 11 lines.\\nWarning: The "
 "Slackware 8.1+ pkgtools might not like it."
-msgstr "Внимание: Ваше описание пакета более чем 11 строк."
+msgstr "п▓п╫п╦п╪п╟п╫п╦п╣: п▓п╟я┬п╣ п╬п©п╦я│п╟п╫п╦п╣ п©п╟п╨п╣я┌п╟ п╠п╬п╩п╣п╣ я┤п╣п╪ 11 я│я┌я─п╬п╨."
 
 #: checkinstall.in:1288
 msgid ""
@@ -657,31 +657,31 @@ msgstr ""
 
 #: checkinstall.in:1473
 msgid "This package will be built according to these values: "
-msgstr "Этот пакет был создан с использованием данных значений: "
+msgstr "п╜я┌п╬я┌ п©п╟п╨п╣я┌ п╠я▀п╩ я│п╬п╥п╢п╟п╫ я│ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣п╪ п╢п╟п╫п╫я▀я┘ п╥п╫п╟я┤п╣п╫п╦п╧: "
 
 #: checkinstall.in:1477
 #, fuzzy, sh-printf-format
 #| msgid "0 -  Maintainer:"
 msgid "0 -  Maintainer: [ %s ]"
-msgstr "0 -  Создатель:"
+msgstr "0 -  п║п╬п╥п╢п╟я┌п╣п╩я▄:"
 
 #: checkinstall.in:1479
 #, fuzzy, sh-printf-format
 #| msgid "1 -  Summary:"
 msgid "1 -  Summary: [ %s ]"
-msgstr "1 -  Общее описание:"
+msgstr "1 -  п·п╠я┴п╣п╣ п╬п©п╦я│п╟п╫п╦п╣:"
 
 #: checkinstall.in:1480
 #, fuzzy, sh-printf-format
 #| msgid "2 -  Name:"
 msgid "2 -  Name:    [ %s ]"
-msgstr "2 -  Название:"
+msgstr "2 -  п²п╟п╥п╡п╟п╫п╦п╣:"
 
 #: checkinstall.in:1481
 #, fuzzy, sh-printf-format
 #| msgid "3 -  Version:"
 msgid "3 -  Version: [ %s ]"
-msgstr "3 -  Версия:"
+msgstr "3 -  п▓п╣я─я│п╦я▐:"
 
 #: checkinstall.in:1482
 #, sh-printf-format
@@ -692,37 +692,37 @@ msgstr ""
 #, fuzzy, sh-printf-format
 #| msgid "5 -  License:"
 msgid "5 -  License: [ %s ]"
-msgstr "5 -  Лицензия:"
+msgstr "5 -  п⌡п╦я├п╣п╫п╥п╦я▐:"
 
 #: checkinstall.in:1484
 #, fuzzy, sh-printf-format
 #| msgid "6 -  Group:"
 msgid "6 -  Group:   [ %s ]"
-msgstr "6 -  Группа:"
+msgstr "6 -  п⌠я─я┐п©п©п╟:"
 
 #: checkinstall.in:1485
 #, fuzzy, sh-printf-format
 #| msgid "7 -  Architecture:"
 msgid "7 -  Architecture: [ %s ]"
-msgstr "7 -  Архитектура:"
+msgstr "7 -  п░я─я┘п╦я┌п╣п╨я┌я┐я─п╟:"
 
 #: checkinstall.in:1486
 #, fuzzy, sh-printf-format
 #| msgid "8 -  Source location:"
 msgid "8 -  Source location: [ %s ]"
-msgstr "8 -  Расположение исходников:"
+msgstr "8 -  п═п╟я│п©п╬п╩п╬п╤п╣п╫п╦п╣ п╦я│я┘п╬п╢п╫п╦п╨п╬п╡:"
 
 #: checkinstall.in:1487
 #, fuzzy, sh-printf-format
 #| msgid "9 -  Alternate source location:"
 msgid "9 -  Alternate source location: [ %s ]"
-msgstr "9 -  Альтернативное расположение исходников:"
+msgstr "9 -  п░п╩я▄я┌п╣я─п╫п╟я┌п╦п╡п╫п╬п╣ я─п╟я│п©п╬п╩п╬п╤п╣п╫п╦п╣ п╦я│я┘п╬п╢п╫п╦п╨п╬п╡:"
 
 #: checkinstall.in:1489
 #, fuzzy, sh-printf-format
 #| msgid "11 - Requires:"
 msgid "10 - Requires: [ %s ]"
-msgstr "11 -  Требует наличия:"
+msgstr "11 -  п╒я─п╣п╠я┐п╣я┌ п╫п╟п╩п╦я┤п╦я▐:"
 
 #: checkinstall.in:1491
 #, sh-printf-format
@@ -738,7 +738,7 @@ msgstr ""
 #, fuzzy, sh-printf-format
 #| msgid "10 - Provides:"
 msgid "13 - Provides: [ %s ]"
-msgstr "10 - Обеспечивает:"
+msgstr "10 - п·п╠п╣я│п©п╣я┤п╦п╡п╟п╣я┌:"
 
 #: checkinstall.in:1496
 #, sh-printf-format
@@ -754,100 +754,100 @@ msgstr ""
 #, fuzzy, sh-printf-format
 #| msgid "11 - Requires:"
 msgid "16 - Prerequires: [ %s ]"
-msgstr "11 -  Требует наличия:"
+msgstr "11 -  п╒я─п╣п╠я┐п╣я┌ п╫п╟п╩п╦я┤п╦я▐:"
 
 #: checkinstall.in:1501
 msgid "Enter a number to change any of them or press ENTER to continue: "
 msgstr ""
-"Введите номер для изменения параметра или нажмите ВВОД для продолжения: "
+"п▓п╡п╣п╢п╦я┌п╣ п╫п╬п╪п╣я─ п╢п╩я▐ п╦п╥п╪п╣п╫п╣п╫п╦я▐ п©п╟я─п╟п╪п╣я┌я─п╟ п╦п╩п╦ п╫п╟п╤п╪п╦я┌п╣ п▓п▓п·п■ п╢п╩я▐ п©я─п╬п╢п╬п╩п╤п╣п╫п╦я▐: "
 
 #: checkinstall.in:1511
 msgid "Enter new summary: "
-msgstr "Введите новое общее описание: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ п╫п╬п╡п╬п╣ п╬п╠я┴п╣п╣ п╬п©п╦я│п╟п╫п╦п╣: "
 
 #: checkinstall.in:1516
 msgid "Enter new name: "
-msgstr "Введите новое имя: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ п╫п╬п╡п╬п╣ п╦п╪я▐: "
 
 #: checkinstall.in:1521
 msgid "Enter new version: "
-msgstr "Введите новую версию: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ п╫п╬п╡я┐я▌ п╡п╣я─я│п╦я▌: "
 
 #: checkinstall.in:1526
 msgid "Enter new release number: "
-msgstr "Введите новый номер релиза: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ п╫п╬п╡я▀п╧ п╫п╬п╪п╣я─ я─п╣п╩п╦п╥п╟: "
 
 #: checkinstall.in:1531
 msgid "Enter the license type: "
-msgstr "Введите тип лицензии: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ я┌п╦п© п╩п╦я├п╣п╫п╥п╦п╦: "
 
 #: checkinstall.in:1536
 msgid "Enter the new software group: "
-msgstr "Введите новую программную группу: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ п╫п╬п╡я┐я▌ п©я─п╬пЁя─п╟п╪п╪п╫я┐я▌ пЁя─я┐п©п©я┐: "
 
 #: checkinstall.in:1541
 msgid "Enter the architecture type: "
-msgstr "Введите тип архитектуры: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ я┌п╦п© п╟я─я┘п╦я┌п╣п╨я┌я┐я─я▀: "
 
 #: checkinstall.in:1546
 msgid "Enter the source location: "
-msgstr "Введите расположение исходников: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ я─п╟я│п©п╬п╩п╬п╤п╣п╫п╦п╣ п╦я│я┘п╬п╢п╫п╦п╨п╬п╡: "
 
 #: checkinstall.in:1551
 msgid "Enter the alternate source location: "
-msgstr "Введите альтернативное расположение исходников: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ п╟п╩я▄я┌п╣я─п╫п╟я┌п╦п╡п╫п╬п╣ я─п╟я│п©п╬п╩п╬п╤п╣п╫п╦п╣ п╦я│я┘п╬п╢п╫п╦п╨п╬п╡: "
 
 #: checkinstall.in:1557
 #, fuzzy
 #| msgid "Enter the maintaner's name and e-mail address: "
 msgid "Enter the maintainer's name and e-mail address: "
-msgstr "Введите имя создателя пакета и адрес его почты"
+msgstr "п▓п╡п╣п╢п╦я┌п╣ п╦п╪я▐ я│п╬п╥п╢п╟я┌п╣п╩я▐ п©п╟п╨п╣я┌п╟ п╦ п╟п╢я─п╣я│ п╣пЁп╬ п©п╬я┤я┌я▀"
 
 #: checkinstall.in:1564
 msgid "Enter the additional requirements: "
-msgstr "Введите дополнительные требования: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ п╢п╬п©п╬п╩п╫п╦я┌п╣п╩я▄п╫я▀п╣ я┌я─п╣п╠п╬п╡п╟п╫п╦я▐: "
 
 #: checkinstall.in:1571
 #, fuzzy
 #| msgid "Enter the additional requirements: "
 msgid "Enter the additional recommendations: "
-msgstr "Введите дополнительные требования: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ п╢п╬п©п╬п╩п╫п╦я┌п╣п╩я▄п╫я▀п╣ я┌я─п╣п╠п╬п╡п╟п╫п╦я▐: "
 
 #: checkinstall.in:1578
 #, fuzzy
 #| msgid "Enter the additional requirements: "
 msgid "Enter the additional suggestions: "
-msgstr "Введите дополнительные требования: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ п╢п╬п©п╬п╩п╫п╦я┌п╣п╩я▄п╫я▀п╣ я┌я─п╣п╠п╬п╡п╟п╫п╦я▐: "
 
 #: checkinstall.in:1586
 msgid "Enter the provided features: "
-msgstr "Введите обеспечиваемые дополнения: "
+msgstr "п▓п╡п╣п╢п╦я┌п╣ п╬п╠п╣я│п©п╣я┤п╦п╡п╟п╣п╪я▀п╣ п╢п╬п©п╬п╩п╫п╣п╫п╦я▐: "
 
 #: checkinstall.in:1657
 #, fuzzy, sh-printf-format
 #| msgid "Installing with"
 msgid "Installing with %s..."
-msgstr "Устанавливается с"
+msgstr "пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ я│"
 
 #: checkinstall.in:1682 checkinstall.in:2357
 msgid ""
 "========================= Installation results ==========================="
 msgstr ""
-"========================= Результаты установки ==========================="
+"========================= п═п╣п╥я┐п╩я▄я┌п╟я┌я▀ я┐я│я┌п╟п╫п╬п╡п╨п╦ ==========================="
 
 #: checkinstall.in:1688 checkinstall.in:2364
 msgid ""
 "======================== Installation successful =========================="
 msgstr ""
-"======================== Установка успешно завершена ======================"
+"======================== пёя│я┌п╟п╫п╬п╡п╨п╟ я┐я│п©п╣я┬п╫п╬ п╥п╟п╡п╣я─я┬п╣п╫п╟ ======================"
 
 #: checkinstall.in:1701
 msgid "****  Installation failed. Aborting package creation."
-msgstr "****  Установка неудачна. Отменяется создание пакета."
+msgstr "****  пёя│я┌п╟п╫п╬п╡п╨п╟ п╫п╣я┐п╢п╟я┤п╫п╟. п·я┌п╪п╣п╫я▐п╣я┌я│я▐ я│п╬п╥п╢п╟п╫п╦п╣ п©п╟п╨п╣я┌п╟."
 
 #: checkinstall.in:1707
 msgid "Do you want to view the installation log file? "
-msgstr "Вы хотите просмотреть лог-файл установки программы? "
+msgstr "п▓я▀ я┘п╬я┌п╦я┌п╣ п©я─п╬я│п╪п╬я┌я─п╣я┌я▄ п╩п╬пЁ-я└п╟п╧п╩ я┐я│я┌п╟п╫п╬п╡п╨п╦ п©я─п╬пЁя─п╟п╪п╪я▀? "
 
 #: checkinstall.in:1712
 #, sh-printf-format
@@ -863,21 +863,21 @@ msgstr ""
 msgid ""
 "Some of the files created by the installation are inside the home "
 "directory: /home"
-msgstr "Некоторые файлы были созданы вне директории сборки программы"
+msgstr "п²п╣п╨п╬я┌п╬я─я▀п╣ я└п╟п╧п╩я▀ п╠я▀п╩п╦ я│п╬п╥п╢п╟п╫я▀ п╡п╫п╣ п╢п╦я─п╣п╨я┌п╬я─п╦п╦ я│п╠п╬я─п╨п╦ п©я─п╬пЁя─п╟п╪п╪я▀"
 
 #: checkinstall.in:1812
 #, fuzzy
 #| msgid "You probably don't want them to be included in the package,"
 msgid "You probably don't want them to be included in the package."
-msgstr "Возможно вы не захотите их включения в пакет,"
+msgstr "п▓п╬п╥п╪п╬п╤п╫п╬ п╡я▀ п╫п╣ п╥п╟я┘п╬я┌п╦я┌п╣ п╦я┘ п╡п╨п╩я▌я┤п╣п╫п╦я▐ п╡ п©п╟п╨п╣я┌,"
 
 #: checkinstall.in:1813
 msgid "Do you want me to list them? "
-msgstr "Вы хотите посмотреть их список? "
+msgstr "п▓я▀ я┘п╬я┌п╦я┌п╣ п©п╬я│п╪п╬я┌я─п╣я┌я▄ п╦я┘ я│п©п╦я│п╬п╨? "
 
 #: checkinstall.in:1817 checkinstall.in:1834
 msgid "Should I exclude them from the package? (Saying yes is a good idea) "
-msgstr "Исключить их из пакета? (ответить ДА-хорошая идея) "
+msgstr "п≤я│п╨п╩я▌я┤п╦я┌я▄ п╦я┘ п╦п╥ п©п╟п╨п╣я┌п╟? (п╬я┌п╡п╣я┌п╦я┌я▄ п■п░-я┘п╬я─п╬я┬п╟я▐ п╦п╢п╣я▐) "
 
 #: checkinstall.in:1828
 #, fuzzy, sh-printf-format
@@ -885,7 +885,7 @@ msgstr "Исключить их из пакета? (ответить ДА-хорошая идея) "
 msgid ""
 "Some of the files created by the installation are inside the "
 "build\\ndirectory: %s"
-msgstr "Некоторые файлы были созданы вне директории сборки программы"
+msgstr "п²п╣п╨п╬я┌п╬я─я▀п╣ я└п╟п╧п╩я▀ п╠я▀п╩п╦ я│п╬п╥п╢п╟п╫я▀ п╡п╫п╣ п╢п╦я─п╣п╨я┌п╬я─п╦п╦ я│п╠п╬я─п╨п╦ п©я─п╬пЁя─п╟п╪п╪я▀"
 
 #: checkinstall.in:1830
 msgid ""
@@ -901,31 +901,31 @@ msgstr ""
 
 #: checkinstall.in:1846 checkinstall.in:2585 checkinstall.in:2824
 msgid "Press ENTER to continue."
-msgstr "Нажмите ВВОД для продолжения."
+msgstr "п²п╟п╤п╪п╦я┌п╣ п▓п▓п·п■ п╢п╩я▐ п©я─п╬п╢п╬п╩п╤п╣п╫п╦я▐."
 
 #: checkinstall.in:1864
 msgid "Copying files to the temporary directory..."
-msgstr "Файлы копируются во временный каталог..."
+msgstr "п╓п╟п╧п╩я▀ п╨п╬п©п╦я─я┐я▌я┌я│я▐ п╡п╬ п╡я─п╣п╪п╣п╫п╫я▀п╧ п╨п╟я┌п╟п╩п╬пЁ..."
 
 #: checkinstall.in:1944
 #, fuzzy
 #| msgid "Striping ELF binaries and libraries..."
 msgid "Stripping ELF binaries and libraries..."
-msgstr "Удаляется отладочная информация их двоичных ELF-файлов и библиотек..."
+msgstr "пёп╢п╟п╩я▐п╣я┌я│я▐ п╬я┌п╩п╟п╢п╬я┤п╫п╟я▐ п╦п╫я└п╬я─п╪п╟я├п╦я▐ п╦я┘ п╢п╡п╬п╦я┤п╫я▀я┘ ELF-я└п╟п╧п╩п╬п╡ п╦ п╠п╦п╠п╩п╦п╬я┌п╣п╨..."
 
 #: checkinstall.in:1946
 #, fuzzy
 #| msgid "Striping ELF binaries..."
 msgid "Stripping ELF binaries..."
-msgstr "Удаляется отладочная информация из двоичных ELF-файлов..."
+msgstr "пёп╢п╟п╩я▐п╣я┌я│я▐ п╬я┌п╩п╟п╢п╬я┤п╫п╟я▐ п╦п╫я└п╬я─п╪п╟я├п╦я▐ п╦п╥ п╢п╡п╬п╦я┤п╫я▀я┘ ELF-я└п╟п╧п╩п╬п╡..."
 
 #: checkinstall.in:1988
 msgid "Compressing man pages..."
-msgstr "Сжимаются страницы руководства..."
+msgstr "п║п╤п╦п╪п╟я▌я┌я│я▐ я│я┌я─п╟п╫п╦я├я▀ я─я┐п╨п╬п╡п╬п╢я│я┌п╡п╟..."
 
 #: checkinstall.in:2065
 msgid "Building file list..."
-msgstr "Построение списка файлов..."
+msgstr "п÷п╬я│я┌я─п╬п╣п╫п╦п╣ я│п©п╦я│п╨п╟ я└п╟п╧п╩п╬п╡..."
 
 #: checkinstall.in:2098
 msgid "Shared libraries found. Adding them to the postinstall script."
@@ -937,58 +937,58 @@ msgstr ""
 
 #: checkinstall.in:2210
 msgid "*** The \"installpkg\" program is not in your PATH!"
-msgstr "*** Программа \"installpkg\" не найдена в путях PATH!"
+msgstr "*** п÷я─п╬пЁя─п╟п╪п╪п╟ \"installpkg\" п╫п╣ п╫п╟п╧п╢п╣п╫п╟ п╡ п©я┐я┌я▐я┘ PATH!"
 
 #: checkinstall.in:2212
 msgid "*** Slackware package creation aborted"
-msgstr "*** Создание пакета Slackware прервано"
+msgstr "*** п║п╬п╥п╢п╟п╫п╦п╣ п©п╟п╨п╣я┌п╟ Slackware п©я─п╣я─п╡п╟п╫п╬"
 
 #: checkinstall.in:2222
 msgid "Preparing Slackware install directory..."
-msgstr "Создается установочная директория Slackware..."
+msgstr "п║п╬п╥п╢п╟п╣я┌я│я▐ я┐я│я┌п╟п╫п╬п╡п╬я┤п╫п╟я▐ п╢п╦я─п╣п╨я┌п╬я─п╦я▐ Slackware..."
 
 #: checkinstall.in:2228
 msgid "Writing package description..."
-msgstr "Записывается описание пакета..."
+msgstr "п≈п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п╬п©п╦я│п╟п╫п╦п╣ п©п╟п╨п╣я┌п╟..."
 
 #: checkinstall.in:2277
 msgid "Writing Slackware install script..."
-msgstr "Записывается установочный скрипт Slackware..."
+msgstr "п≈п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ я┐я│я┌п╟п╫п╬п╡п╬я┤п╫я▀п╧ я│п╨я─п╦п©я┌ Slackware..."
 
 #: checkinstall.in:2307
 msgid "Appending your script to the main install script..."
-msgstr "Ваш скрипт добавляется к основному сценарию установки пакета..."
+msgstr "п▓п╟я┬ я│п╨я─п╦п©я┌ п╢п╬п╠п╟п╡п╩я▐п╣я┌я│я▐ п╨ п╬я│п╫п╬п╡п╫п╬п╪я┐ я│я├п╣п╫п╟я─п╦я▌ я┐я│я┌п╟п╫п╬п╡п╨п╦ п©п╟п╨п╣я┌п╟..."
 
 #: checkinstall.in:2319
 #, fuzzy, sh-printf-format
 #| msgid "Transferring package to"
 msgid "Creating package %s..."
-msgstr "Пакет перемещается в"
+msgstr "п÷п╟п╨п╣я┌ п©п╣я─п╣п╪п╣я┴п╟п╣я┌я│я▐ п╡"
 
 #: checkinstall.in:2351
 msgid "Installing package..."
-msgstr "Устанавливается пакет..."
+msgstr "пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ п©п╟п╨п╣я┌..."
 
 #: checkinstall.in:2370 checkinstall.in:2644 checkinstall.in:2855
 msgid "*** Failed to install the package"
-msgstr "*** Ошибка установки пакета"
+msgstr "*** п·я┬п╦п╠п╨п╟ я┐я│я┌п╟п╫п╬п╡п╨п╦ п©п╟п╨п╣я┌п╟"
 
 #: checkinstall.in:2373 checkinstall.in:2620 checkinstall.in:2646
 #: checkinstall.in:2838 checkinstall.in:2857
 msgid "Do you want to see the log file? "
-msgstr "Желаете просмотреть лог-файл? "
+msgstr "п√п╣п╩п╟п╣я┌п╣ п©я─п╬я│п╪п╬я┌я─п╣я┌я▄ п╩п╬пЁ-я└п╟п╧п╩? "
 
 #: checkinstall.in:2384
 msgid "NOTE: The package will not be installed."
-msgstr "ПРЕДУПРЕЖДЕНИЕ: Этот пакет не был установлен."
+msgstr "п÷п═п∙п■пёп÷п═п∙п√п■п∙п²п≤п∙: п╜я┌п╬я┌ п©п╟п╨п╣я┌ п╫п╣ п╠я▀п╩ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫."
 
 #: checkinstall.in:2417
 msgid "*** The \"rpm\" program is not in your PATH!"
-msgstr "*** Программа \"rpm\" не найдена в ваших путях PATH!"
+msgstr "*** п÷я─п╬пЁя─п╟п╪п╪п╟ \"rpm\" п╫п╣ п╫п╟п╧п╢п╣п╫п╟ п╡ п╡п╟я┬п╦я┘ п©я┐я┌я▐я┘ PATH!"
 
 #: checkinstall.in:2419
 msgid "*** RPM package creation aborted"
-msgstr "*** Создание RPM-пакета прервано"
+msgstr "*** п║п╬п╥п╢п╟п╫п╦п╣ RPM-п©п╟п╨п╣я┌п╟ п©я─п╣я─п╡п╟п╫п╬"
 
 #: checkinstall.in:2492
 #, fuzzy, sh-printf-format
@@ -996,7 +996,7 @@ msgstr "*** Создание RPM-пакета прервано"
 msgid ""
 "%s has no SOURCES directory. Please write the path to\\nthe RPM source "
 "directory tree: "
-msgstr "$RPMSOURCEDIR не имеет каталога SOURCES. Пожалуйста напишите путь в"
+msgstr "$RPMSOURCEDIR п╫п╣ п╦п╪п╣п╣я┌ п╨п╟я┌п╟п╩п╬пЁп╟ SOURCES. п÷п╬п╤п╟п╩я┐п╧я│я┌п╟ п╫п╟п©п╦я┬п╦я┌п╣ п©я┐я┌я▄ п╡"
 
 #: checkinstall.in:2583
 #, fuzzy
@@ -1006,16 +1006,16 @@ msgid ""
 "You requested to review the .spec file for this package.\\nNow you'll have "
 "the chance to review and optionally modify this file."
 msgstr ""
-"Теперь у вас есть возможность просмотреть и при необходимости изменить этот "
-"файл."
+"п╒п╣п©п╣я─я▄ я┐ п╡п╟я│ п╣я│я┌я▄ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ п©я─п╬я│п╪п╬я┌я─п╣я┌я▄ п╦ п©я─п╦ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬я│я┌п╦ п╦п╥п╪п╣п╫п╦я┌я▄ я█я┌п╬я┌ "
+"я└п╟п╧п╩."
 
 #: checkinstall.in:2612
 msgid "Building RPM package..."
-msgstr "Собирается RPM пакет..."
+msgstr "п║п╬п╠п╦я─п╟п╣я┌я│я▐ RPM п©п╟п╨п╣я┌..."
 
 #: checkinstall.in:2618 checkinstall.in:2836
 msgid "*** Failed to build the package"
-msgstr "*** Ошибка сборки пакета"
+msgstr "*** п·я┬п╦п╠п╨п╟ я│п╠п╬я─п╨п╦ п©п╟п╨п╣я┌п╟"
 
 #: checkinstall.in:2632
 msgid ""
@@ -1025,11 +1025,11 @@ msgstr ""
 
 #: checkinstall.in:2639
 msgid "Installing RPM package..."
-msgstr "Устанавливается RPM-пакет..."
+msgstr "пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ RPM-п©п╟п╨п╣я┌..."
 
 #: checkinstall.in:2654 checkinstall.in:2865
 msgid "NOTE: The package will not be installed"
-msgstr "ЗАМЕТКА: Пакет не установлен"
+msgstr "п≈п░п°п∙п╒п п░: п÷п╟п╨п╣я┌ п╫п╣ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫"
 
 #: checkinstall.in:2688
 msgid "Looking for shared library dependencies..."
@@ -1042,11 +1042,11 @@ msgstr ""
 
 #: checkinstall.in:2734
 msgid "*** The \"dpkg\" program is not in your PATH!"
-msgstr "*** Программа \"dpkg\" не найдена в ваших путях PATH!"
+msgstr "*** п÷я─п╬пЁя─п╟п╪п╪п╟ \"dpkg\" п╫п╣ п╫п╟п╧п╢п╣п╫п╟ п╡ п╡п╟я┬п╦я┘ п©я┐я┌я▐я┘ PATH!"
 
 #: checkinstall.in:2736
 msgid "*** Debian package creation aborted"
-msgstr "*** Создание Debian-пакета прервано"
+msgstr "*** п║п╬п╥п╢п╟п╫п╦п╣ Debian-п©п╟п╨п╣я┌п╟ п©я─п╣я─п╡п╟п╫п╬"
 
 #: checkinstall.in:2822
 #, fuzzy
@@ -1056,16 +1056,16 @@ msgid ""
 "You requested to review the control file for this package.\\nNow you'll have "
 "the chance to review and optionally modify this file."
 msgstr ""
-"Теперь у вас есть возможность просмотреть и при необходимости изменить этот "
-"файл."
+"п╒п╣п©п╣я─я▄ я┐ п╡п╟я│ п╣я│я┌я▄ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ п©я─п╬я│п╪п╬я┌я─п╣я┌я▄ п╦ п©я─п╦ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬я│я┌п╦ п╦п╥п╪п╣п╫п╦я┌я▄ я█я┌п╬я┌ "
+"я└п╟п╧п╩."
 
 #: checkinstall.in:2830
 msgid "Building Debian package..."
-msgstr "Собирается Debian-пакет..."
+msgstr "п║п╬п╠п╦я─п╟п╣я┌я│я▐ Debian-п©п╟п╨п╣я┌..."
 
 #: checkinstall.in:2850
 msgid "Installing Debian package..."
-msgstr "Устанавливается Debian-пакет..."
+msgstr "пёя│я┌п╟п╫п╟п╡п╩п╦п╡п╟п╣я┌я│я▐ Debian-п©п╟п╨п╣я┌..."
 
 #: checkinstall.in:2895
 #, fuzzy, sh-printf-format
@@ -1073,23 +1073,23 @@ msgstr "Устанавливается Debian-пакет..."
 msgid ""
 "The package storage directory [ %s ]\\ndoesn't exist. Do you want to create "
 "it?"
-msgstr "не существует. Создать?"
+msgstr "п╫п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌. п║п╬п╥п╢п╟я┌я▄?"
 
 #: checkinstall.in:2898
 msgid "Creating package storage directory..."
-msgstr "Создается каталог для хранения пакетов..."
+msgstr "п║п╬п╥п╢п╟п╣я┌я│я▐ п╨п╟я┌п╟п╩п╬пЁ п╢п╩я▐ я┘я─п╟п╫п╣п╫п╦я▐ п©п╟п╨п╣я┌п╬п╡..."
 
 #: checkinstall.in:2903
 #, fuzzy, sh-printf-format
 #| msgid "*** Unable to create $PAK_DIR"
 msgid "*** Unable to create %s"
-msgstr "*** Невозможно создать $PAK_DIR"
+msgstr "*** п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ я│п╬п╥п╢п╟я┌я▄ $PAK_DIR"
 
 #: checkinstall.in:2911
 #, fuzzy, sh-printf-format
 #| msgid "Transferring package to"
 msgid "Transferring package to %s..."
-msgstr "Пакет перемещается в"
+msgstr "п÷п╟п╨п╣я┌ п©п╣я─п╣п╪п╣я┴п╟п╣я┌я│я▐ п╡"
 
 #: checkinstall.in:2916
 msgid "*** Transfer failed:"
@@ -1101,27 +1101,27 @@ msgstr ""
 msgid ""
 "There's no package storage directory, the package\\nwill be stored at the "
 "default location."
-msgstr "Нет каталога хранения пакетов, пакет"
+msgstr "п²п╣я┌ п╨п╟я┌п╟п╩п╬пЁп╟ я┘я─п╟п╫п╣п╫п╦я▐ п©п╟п╨п╣я┌п╬п╡, п©п╟п╨п╣я┌"
 
 #: checkinstall.in:2935
 msgid "Erasing temporary files..."
-msgstr "Удаляются временные файлы..."
+msgstr "пёп╢п╟п╩я▐я▌я┌я│я▐ п╡я─п╣п╪п╣п╫п╫я▀п╣ я└п╟п╧п╩я▀..."
 
 #: checkinstall.in:2953
 msgid "Deleting doc-pak directory..."
-msgstr "Удаляется каталог doc-pak..."
+msgstr "пёп╢п╟п╩я▐п╣я┌я│я▐ п╨п╟я┌п╟п╩п╬пЁ doc-pak..."
 
 #: checkinstall.in:2988
 msgid "Writing backup package..."
-msgstr "Записывается пакет с резервной копией..."
+msgstr "п≈п╟п©п╦я│я▀п╡п╟п╣я┌я│я▐ п©п╟п╨п╣я┌ я│ я─п╣п╥п╣я─п╡п╫п╬п╧ п╨п╬п©п╦п╣п╧..."
 
 #: checkinstall.in:2999
 msgid "Deleting temp dir..."
-msgstr "Удаляется временный каталог..."
+msgstr "пёп╢п╟п╩я▐п╣я┌я│я▐ п╡я─п╣п╪п╣п╫п╫я▀п╧ п╨п╟я┌п╟п╩п╬пЁ..."
 
 #: checkinstall.in:3005
 msgid "Building debug information package..."
-msgstr "Собирается пакет с отладочной информацией..."
+msgstr "п║п╬п╠п╦я─п╟п╣я┌я│я▐ п©п╟п╨п╣я┌ я│ п╬я┌п╩п╟п╢п╬я┤п╫п╬п╧ п╦п╫я└п╬я─п╪п╟я├п╦п╣п╧..."
 
 #: checkinstall.in:3021
 #, sh-printf-format
@@ -1136,148 +1136,148 @@ msgstr ""
 msgid ""
 " Done. The new package has been saved to\\n\\n %s\\n You can install it in "
 "your system anytime using: \\n\\n      %s"
-msgstr " Вы можете установить их в систему в любое время, используя: "
+msgstr " п▓я▀ п╪п╬п╤п╣я┌п╣ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ п╦я┘ п╡ я│п╦я│я┌п╣п╪я┐ п╡ п╩я▌п╠п╬п╣ п╡я─п╣п╪я▐, п╦я│п©п╬п╩я▄п╥я┐я▐: "
 
 #~ msgid "I can't continue. Either install installwatch or"
-#~ msgstr "Невозможно продолжить. Необходимо установить installwatch или"
+#~ msgstr "п²п╣п╡п╬п╥п╪п╬п╤п╫п╬ п©я─п╬п╢п╬п╩п╤п╦я┌я▄. п²п╣п╬п╠я┘п╬п╢п╦п╪п╬ я┐я│я┌п╟п╫п╬п╡п╦я┌я▄ installwatch п╦п╩п╦"
 
 #~ msgid "modify the INSTALLWATCH variable in this script,"
-#~ msgstr "модифицировать переменную INSTALLWATCH в этом скрипте,"
+#~ msgstr "п╪п╬п╢п╦я└п╦я├п╦я─п╬п╡п╟я┌я▄ п©п╣я─п╣п╪п╣п╫п╫я┐я▌ INSTALLWATCH п╡ я█я┌п╬п╪ я│п╨я─п╦п©я┌п╣,"
 
 #~ msgid "then run checkinstall again."
-#~ msgstr "потом запустить программу снова."
+#~ msgstr "п©п╬я┌п╬п╪ п╥п╟п©я┐я│я┌п╦я┌я▄ п©я─п╬пЁя─п╟п╪п╪я┐ я│п╫п╬п╡п╟."
 
 #~ msgid "My temp dir exists already."
-#~ msgstr "Мой временный каталог уже существует."
+#~ msgstr "п°п╬п╧ п╡я─п╣п╪п╣п╫п╫я▀п╧ п╨п╟я┌п╟п╩п╬пЁ я┐п╤п╣ я│я┐я┴п╣я│я┌п╡я┐п╣я┌."
 
 #~ msgid "This looks like a symlink attack!"
-#~ msgstr "Это похоже на атаку через символические ссылки!"
+#~ msgstr "п╜я┌п╬ п©п╬я┘п╬п╤п╣ п╫п╟ п╟я┌п╟п╨я┐ я┤п╣я─п╣п╥ я│п╦п╪п╡п╬п╩п╦я┤п╣я│п╨п╦п╣ я│я│я▀п╩п╨п╦!"
 
 #~ msgid "edit the variable definition for"
-#~ msgstr "отредактируйте значения переменных для"
+#~ msgstr "п╬я┌я─п╣п╢п╟п╨я┌п╦я─я┐п╧я┌п╣ п╥п╫п╟я┤п╣п╫п╦я▐ п©п╣я─п╣п╪п╣п╫п╫я▀я┘ п╢п╩я▐"
 
 #~ msgid "and try again."
-#~ msgstr "и попробуйте снова."
+#~ msgstr "п╦ п©п╬п©я─п╬п╠я┐п╧я┌п╣ я│п╫п╬п╡п╟."
 
 #~ msgid "**** Failed to create temp dir!"
-#~ msgstr "**** Ошибка создания временного каталога!"
+#~ msgstr "**** п·я┬п╦п╠п╨п╟ я│п╬п╥п╢п╟п╫п╦я▐ п╡я─п╣п╪п╣п╫п╫п╬пЁп╬ п╨п╟я┌п╟п╩п╬пЁп╟!"
 
 #~ msgid "**** Do you have write permission for ${BASE_TMP_DIR}?"
-#~ msgstr "**** Вы имеете права для записи в ${BASE_TMP_DIR}?"
+#~ msgstr "**** п▓я▀ п╦п╪п╣п╣я┌п╣ п©я─п╟п╡п╟ п╢п╩я▐ п╥п╟п©п╦я│п╦ п╡ ${BASE_TMP_DIR}?"
 
 #~ msgid "Should I create a default set of package docs? "
-#~ msgstr "Создавать каталог с документацией по умолчанию? "
+#~ msgstr "п║п╬п╥п╢п╟п╡п╟я┌я▄ п╨п╟я┌п╟п╩п╬пЁ я│ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╣п╧ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌? "
 
 #~ msgid "*** won't include a documentation directory."
-#~ msgstr "*** не будет включать каталог с документацией."
+#~ msgstr "*** п╫п╣ п╠я┐п╢п╣я┌ п╡п╨п╩я▌я┤п╟я┌я▄ п╨п╟я┌п╟п╩п╬пЁ я│ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╣п╧."
 
 #~ msgid "Copying documentation directory..."
-#~ msgstr "Копируется каталог с документацией..."
+#~ msgstr "п п╬п©п╦я─я┐п╣я┌я│я▐ п╨п╟я┌п╟п╩п╬пЁ я│ п╢п╬п╨я┐п╪п╣п╫я┌п╟я├п╦п╣п╧..."
 
 #~ msgid "directory: `pwd`"
-#~ msgstr "каталог: `pwd`"
+#~ msgstr "п╨п╟я┌п╟п╩п╬пЁ: `pwd`"
 
 #~ msgid "especially if they are inside your home directory."
-#~ msgstr "в случае если они вне вашего домашнего каталога."
+#~ msgstr "п╡ я│п╩я┐я┤п╟п╣ п╣я│п╩п╦ п╬п╫п╦ п╡п╫п╣ п╡п╟я┬п╣пЁп╬ п╢п╬п╪п╟я┬п╫п╣пЁп╬ п╨п╟я┌п╟п╩п╬пЁп╟."
 
 #~ msgid "You requested to review the list of files that will be"
-#~ msgstr "Вы запросили список файлов, которые будут"
+#~ msgstr "п▓я▀ п╥п╟п©я─п╬я│п╦п╩п╦ я│п©п╦я│п╬п╨ я└п╟п╧п╩п╬п╡, п╨п╬я┌п╬я─я▀п╣ п╠я┐п╢я┐я┌"
 
 #~ msgid "included in this package."
-#~ msgstr "включенны в пакет"
+#~ msgstr "п╡п╨п╩я▌я┤п╣п╫п╫я▀ п╡ п©п╟п╨п╣я┌"
 
 #~ msgid "Now you'll have the chance to review and optionally modify it."
 #~ msgstr ""
-#~ "Теперь у вас есть возможность просмотреть и при необходимости изменить их."
+#~ "п╒п╣п©п╣я─я▄ я┐ п╡п╟я│ п╣я│я┌я▄ п╡п╬п╥п╪п╬п╤п╫п╬я│я┌я▄ п©я─п╬я│п╪п╬я┌я─п╣я┌я▄ п╦ п©я─п╦ п╫п╣п╬п╠я┘п╬п╢п╦п╪п╬я│я┌п╦ п╦п╥п╪п╣п╫п╦я┌я▄ п╦я┘."
 
 #~ msgid " Remember that pkgtool shows"
-#~ msgstr " Помните что pkgtool показывает"
+#~ msgstr " п÷п╬п╪п╫п╦я┌п╣ я┤я┌п╬ pkgtool п©п╬п╨п╟п╥я▀п╡п╟п╣я┌"
 
 #~ msgid "Package created with checkinstall $CHECKINSTALL_VERSION"
-#~ msgstr "Пакет созданный с помощью checkinstall $CHECKINSTALL_VERSION"
+#~ msgstr "п÷п╟п╨п╣я┌ я│п╬п╥п╢п╟п╫п╫я▀п╧ я│ п©п╬п╪п╬я┴я▄я▌ checkinstall $CHECKINSTALL_VERSION"
 
 #~ msgid "Warning: The Slackware 8.1+ pkgtools might not like it."
 #~ msgstr ""
-#~ "Внимание: Программе pkgtools в Slackware 8.1+ это может не понравиться."
+#~ "п▓п╫п╦п╪п╟п╫п╦п╣: п÷я─п╬пЁя─п╟п╪п╪п╣ pkgtools п╡ Slackware 8.1+ я█я┌п╬ п╪п╬п╤п╣я┌ п╫п╣ п©п╬п╫я─п╟п╡п╦я┌я▄я│я▐."
 
 #~ msgid "*** Warning: The package name"
-#~ msgstr "*** Внимание: Имя пакета"
+#~ msgstr "*** п▓п╫п╦п╪п╟п╫п╦п╣: п≤п╪я▐ п©п╟п╨п╣я┌п╟"
 
 #~ msgid "contains upper case"
-#~ msgstr "содержит верхний регистр"
+#~ msgstr "я│п╬п╢п╣я─п╤п╦я┌ п╡п╣я─я┘п╫п╦п╧ я─п╣пЁп╦я│я┌я─"
 
 #~ msgid "*** Warning: letters. dpkg might not like that so I changed"
-#~ msgstr "*** Внимание: символов. dpkg может не понять изменение"
+#~ msgstr "*** п▓п╫п╦п╪п╟п╫п╦п╣: я│п╦п╪п╡п╬п╩п╬п╡. dpkg п╪п╬п╤п╣я┌ п╫п╣ п©п╬п╫я▐я┌я▄ п╦п╥п╪п╣п╫п╣п╫п╦п╣"
 
 #~ msgid "*** Warning: them to lower case."
-#~ msgstr "*** Внимание: потом в нижнем регистре."
+#~ msgstr "*** п▓п╫п╦п╪п╟п╫п╦п╣: п©п╬я┌п╬п╪ п╡ п╫п╦п╤п╫п╣п╪ я─п╣пЁп╦я│я┌я─п╣."
 
 #~ msgid "*** Warning: The package version \"${VERSION}\" does not"
-#~ msgstr "*** Внимание: Версия пакета \"${VERSION}\" не"
+#~ msgstr "*** п▓п╫п╦п╪п╟п╫п╦п╣: п▓п╣я─я│п╦я▐ п©п╟п╨п╣я┌п╟ \"${VERSION}\" п╫п╣"
 
 #~ msgid "*** Warning: contain any digits. dpkg might not like that."
 #~ msgstr ""
-#~ "*** Внимание: содержит любых цифровых символов. dpkg может не понять что."
+#~ "*** п▓п╫п╦п╪п╟п╫п╦п╣: я│п╬п╢п╣я─п╤п╦я┌ п╩я▌п╠я▀я┘ я├п╦я└я─п╬п╡я▀я┘ я│п╦п╪п╡п╬п╩п╬п╡. dpkg п╪п╬п╤п╣я┌ п╫п╣ п©п╬п╫я▐я┌я▄ я┤я┌п╬."
 
 #~ msgid "********************************************"
 #~ msgstr "********************************************"
 
 #~ msgid "**** Slackware package creation selected ***"
-#~ msgstr "**** Выбрано создание пакета Slackware ***"
+#~ msgstr "**** п▓я▀п╠я─п╟п╫п╬ я│п╬п╥п╢п╟п╫п╦п╣ п©п╟п╨п╣я┌п╟ Slackware ***"
 
 #~ msgid "Creating package ${SLACK_PKG_BASENAME}..."
-#~ msgstr "Создается пакет ${SLACK_PKG_BASENAME}..."
+#~ msgstr "п║п╬п╥п╢п╟п╣я┌я│я▐ п©п╟п╨п╣я┌ ${SLACK_PKG_BASENAME}..."
 
 #~ msgid "**************************************"
 #~ msgstr "**************************************"
 
 #~ msgid "**** RPM package creation selected ***"
-#~ msgstr "**** Выбрано создание пакета RPM **"
+#~ msgstr "**** п▓я▀п╠я─п╟п╫п╬ я│п╬п╥п╢п╟п╫п╦п╣ п©п╟п╨п╣я┌п╟ RPM **"
 
 #~ msgid "the RPM source directory tree: "
-#~ msgstr "дерево исходных текстов для RPM: "
+#~ msgstr "п╢п╣я─п╣п╡п╬ п╦я│я┘п╬п╢п╫я▀я┘ я┌п╣п╨я│я┌п╬п╡ п╢п╩я▐ RPM: "
 
 #~ msgid "You requested to review the .spec file for this package."
-#~ msgstr "Вы запросили просмотр .spec-файла для данного пакета."
+#~ msgstr "п▓я▀ п╥п╟п©я─п╬я│п╦п╩п╦ п©я─п╬я│п╪п╬я┌я─ .spec-я└п╟п╧п╩п╟ п╢п╩я▐ п╢п╟п╫п╫п╬пЁп╬ п©п╟п╨п╣я┌п╟."
 
 #~ msgid "Warning: the use of RPMFLAGS is deprecated."
-#~ msgstr "Внимание: использование RPMFLAGS подавляется."
+#~ msgstr "п▓п╫п╦п╪п╟п╫п╦п╣: п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦п╣ RPMFLAGS п©п╬п╢п╟п╡п╩я▐п╣я┌я│я▐."
 
 #~ msgid "Warning: You should now use RPM_FLAGS,"
-#~ msgstr "Внимание: Сейчас вы должны использовать RPM_FLAGS,"
+#~ msgstr "п▓п╫п╦п╪п╟п╫п╦п╣: п║п╣п╧я┤п╟я│ п╡я▀ п╢п╬п╩п╤п╫я▀ п╦я│п©п╬п╩я▄п╥п╬п╡п╟я┌я▄ RPM_FLAGS,"
 
 #~ msgid "Warning: please update your checkinstallrc file."
-#~ msgstr "Внимание: пожалуйста обновите ваш файл checkinstallrc."
+#~ msgstr "п▓п╫п╦п╪п╟п╫п╦п╣: п©п╬п╤п╟п╩я┐п╧я│я┌п╟ п╬п╠п╫п╬п╡п╦я┌п╣ п╡п╟я┬ я└п╟п╧п╩ checkinstallrc."
 
 #~ msgid "*****************************************"
 #~ msgstr "*****************************************"
 
 #~ msgid "**** Debian package creation selected ***"
-#~ msgstr "**** Выбрано создание пакета для Debian ***"
+#~ msgstr "**** п▓я▀п╠я─п╟п╫п╬ я│п╬п╥п╢п╟п╫п╦п╣ п©п╟п╨п╣я┌п╟ п╢п╩я▐ Debian ***"
 
 #~ msgid "You requested to review the control file for this package."
-#~ msgstr "Вы запросили просмотр control-файла для данного пакета."
+#~ msgstr "п▓я▀ п╥п╟п©я─п╬я│п╦п╩п╦ п©я─п╬я│п╪п╬я┌я─ control-я└п╟п╧п╩п╟ п╢п╩я▐ п╢п╟п╫п╫п╬пЁп╬ п©п╟п╨п╣я┌п╟."
 
 #~ msgid "*** No method was selected, I won't build any package."
-#~ msgstr "*** Методов не выбрано, невозможно создать любой пакет."
+#~ msgstr "*** п°п╣я┌п╬п╢п╬п╡ п╫п╣ п╡я▀п╠я─п╟п╫п╬, п╫п╣п╡п╬п╥п╪п╬п╤п╫п╬ я│п╬п╥п╢п╟я┌я▄ п╩я▌п╠п╬п╧ п©п╟п╨п╣я┌."
 
 #~ msgid "*** The installation command \"$INSTALLCMD\""
-#~ msgstr "*** Установочная команда \"$INSTALLCMD\""
+#~ msgstr "*** пёя│я┌п╟п╫п╬п╡п╬я┤п╫п╟я▐ п╨п╬п╪п╟п╫п╢п╟ \"$INSTALLCMD\""
 
 #~ msgid "*** has already been executed."
-#~ msgstr "*** уже была выполнена."
+#~ msgstr "*** я┐п╤п╣ п╠я▀п╩п╟ п╡я▀п©п╬п╩п╫п╣п╫п╟."
 
 #~ msgid "The package storage directory"
-#~ msgstr "Каталог сохранения пакетов"
+#~ msgstr "п п╟я┌п╟п╩п╬пЁ я│п╬я┘я─п╟п╫п╣п╫п╦я▐ п©п╟п╨п╣я┌п╬п╡"
 
 #~ msgid "will be stored at the default location."
-#~ msgstr "будет сохранен в каталоге по умолчанию."
+#~ msgstr "п╠я┐п╢п╣я┌ я│п╬я┘я─п╟п╫п╣п╫ п╡ п╨п╟я┌п╟п╩п╬пЁп╣ п©п╬ я┐п╪п╬п╩я┤п╟п╫п╦я▌."
 
 #~ msgid " Done. The new package has been installed and saved to"
-#~ msgstr " Далее. Новые пакеты были установлены и сохранены в"
+#~ msgstr " п■п╟п╩п╣п╣. п²п╬п╡я▀п╣ п©п╟п╨п╣я┌я▀ п╠я▀п╩п╦ я┐я│я┌п╟п╫п╬п╡п╩п╣п╫я▀ п╦ я│п╬я┘я─п╟п╫п╣п╫я▀ п╡"
 
 #~ msgid " You can remove it from your system anytime using: "
-#~ msgstr " Вы можете удалить их из системы в любое время, используя: "
+#~ msgstr " п▓я▀ п╪п╬п╤п╣я┌п╣ я┐п╢п╟п╩п╦я┌я▄ п╦я┘ п╦п╥ я│п╦я│я┌п╣п╪я▀ п╡ п╩я▌п╠п╬п╣ п╡я─п╣п╪я▐, п╦я│п©п╬п╩я▄п╥я┐я▐: "
 
 #~ msgid " Done. The new package has been saved to"
-#~ msgstr " Далее. Новые пакеты были сохранены в"
+#~ msgstr " п■п╟п╩п╣п╣. п²п╬п╡я▀п╣ п©п╟п╨п╣я┌я▀ п╠я▀п╩п╦ я│п╬я┘я─п╟п╫п╣п╫я▀ п╡"

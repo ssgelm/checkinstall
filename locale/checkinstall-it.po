@@ -20,9 +20,9 @@ msgstr ""
 "PO-Revision-Date: 2006-01-29 16:11+0100\n"
 "Last-Translator: Michele Petrecca <michelinux@alice.it>\n"
 "Language-Team: ITALIANO\n"
-"Language: \n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9.1\n"
 
@@ -33,7 +33,7 @@ msgstr "Ciao."
 #: checkinstall.in:110
 msgid "           This software is released under the GNU GPL."
 msgstr ""
-"           Questo software Ë rilasciato sotto i termini della licenza GNU "
+"           Questo software √® rilasciato sotto i termini della licenza GNU "
 "GPL."
 
 #: checkinstall.in:124
@@ -128,8 +128,8 @@ msgstr ""
 #: checkinstall.in:150
 msgid "--pakdir=<directory>           The new package will be saved here"
 msgstr ""
-"--pakdir=<directory>           Il nuovo pacchetto verr‡ salvato nel percorso "
-"quÏ indicato"
+"--pakdir=<directory>           Il nuovo pacchetto verr√† salvato nel percorso "
+"qu√¨ indicato"
 
 #: checkinstall.in:151
 msgid "--maintainer=<email addr>      The package maintainer (.deb)"
@@ -477,13 +477,13 @@ msgstr "--version                      Mostra le informazioni sulla versione"
 
 #: checkinstall.in:221
 msgid "Use --help or -h to get more information"
-msgstr "Usa --help o -h per di ottenere pi˘ informazioni"
+msgstr "Usa --help o -h per di ottenere pi√π informazioni"
 
 #: checkinstall.in:229 checkinstall.in:764
 #, fuzzy, sh-printf-format
 #| msgid "is an invalid value for"
 msgid "%s is an invalid value for %s"
-msgstr "Ë un valore non valido per"
+msgstr "√® un valore non valido per"
 
 #: checkinstall.in:280
 msgid " FAILED!"
@@ -514,7 +514,7 @@ msgstr ""
 #, fuzzy, sh-printf-format
 #| msgid "The checkinstallrc file was not found at:"
 msgid "The checkinstallrc file was not found at:\\n%s"
-msgstr "Il file checkinstallrc non Ë stato trovato in:"
+msgstr "Il file checkinstallrc non √® stato trovato in:"
 
 #: checkinstall.in:509
 msgid "Assuming default values."
@@ -541,7 +541,7 @@ msgstr ""
 #, fuzzy, sh-printf-format
 #| msgid "I can't find $INSTALLWATCH."
 msgid "I can't find %s."
-msgstr "Non Ë possibile trovare $INSTALLWATCH."
+msgstr "Non √® possibile trovare $INSTALLWATCH."
 
 #: checkinstall.in:1113
 msgid ""
@@ -555,7 +555,7 @@ msgstr ""
 msgid ""
 "%s is an unacceptable value for the temp dir. Please \\nedit the variable "
 "definition for %s and try again."
-msgstr "Ë un valore inaccettabile per la cartella temp. Per favore"
+msgstr "√® un valore inaccettabile per la cartella temp. Per favore"
 
 #: checkinstall.in:1138
 msgid "*** Aborting"
@@ -587,7 +587,7 @@ msgid ""
 "*** No known documentation files were found. The new package \\n*** won't "
 "include a documentation directory."
 msgstr ""
-"*** Nessun file della documentazione Ë stato trovato. Il nuovo pacchetto"
+"*** Nessun file della documentazione √® stato trovato. Il nuovo pacchetto"
 
 #: checkinstall.in:1205
 msgid "Please choose the packaging method you want to use."
@@ -621,7 +621,7 @@ msgstr "Termina la tua descrizione con un linea vuota o EOF."
 msgid ""
 "Warning: Your package description is bigger than 11 lines.\\nWarning: The "
 "Slackware 8.1+ pkgtools might not like it."
-msgstr "Attenzione : La descrizione del pacchetto Ë superiore alle 11 linee."
+msgstr "Attenzione : La descrizione del pacchetto √® superiore alle 11 linee."
 
 #: checkinstall.in:1288
 msgid ""
@@ -682,7 +682,7 @@ msgstr ""
 
 #: checkinstall.in:1473
 msgid "This package will be built according to these values: "
-msgstr "Il pacchetto verr‡ costruito con le seguenti caratteristiche: "
+msgstr "Il pacchetto verr√† costruito con le seguenti caratteristiche: "
 
 #: checkinstall.in:1477
 #, fuzzy, sh-printf-format
@@ -905,7 +905,7 @@ msgstr ""
 #: checkinstall.in:1817 checkinstall.in:1834
 msgid "Should I exclude them from the package? (Saying yes is a good idea) "
 msgstr ""
-"Li escluderesti dalla creazione del pacchetto? (dire SÏ e una buona idea!) "
+"Li escluderesti dalla creazione del pacchetto? (dire S√¨ e una buona idea!) "
 
 #: checkinstall.in:1828
 #, fuzzy, sh-printf-format
@@ -968,7 +968,7 @@ msgstr ""
 #: checkinstall.in:2210
 msgid "*** The \"installpkg\" program is not in your PATH!"
 msgstr ""
-"*** Il programma \"installpkg\" non Ë indicato nella variabile d'ambiente "
+"*** Il programma \"installpkg\" non √® indicato nella variabile d'ambiente "
 "PATH!"
 
 #: checkinstall.in:2212
@@ -1012,12 +1012,12 @@ msgstr "Vuoi leggere il file di log? "
 
 #: checkinstall.in:2384
 msgid "NOTE: The package will not be installed."
-msgstr "NOTA: Il pacchetto non verr‡ installato."
+msgstr "NOTA: Il pacchetto non verr√† installato."
 
 #: checkinstall.in:2417
 msgid "*** The \"rpm\" program is not in your PATH!"
 msgstr ""
-"*** Il programma \"rpm\" non Ë indicato nella variabile d'ambiente PATH!"
+"*** Il programma \"rpm\" non √® indicato nella variabile d'ambiente PATH!"
 
 #: checkinstall.in:2419
 msgid "*** RPM package creation aborted"
@@ -1038,7 +1038,7 @@ msgid ""
 "You requested to review the .spec file for this package.\\nNow you'll have "
 "the chance to review and optionally modify this file."
 msgstr ""
-"Ora avrai la possibilt‡ di esaminare di nuovo e, opzionalmente, modificare "
+"Ora avrai la possibilt√† di esaminare di nuovo e, opzionalmente, modificare "
 "questo file."
 
 #: checkinstall.in:2612
@@ -1061,7 +1061,7 @@ msgstr "Installazione pacchetto RPM in corso..."
 
 #: checkinstall.in:2654 checkinstall.in:2865
 msgid "NOTE: The package will not be installed"
-msgstr "NOTA: Il pacchetto non verr‡ installato"
+msgstr "NOTA: Il pacchetto non verr√† installato"
 
 #: checkinstall.in:2688
 msgid "Looking for shared library dependencies..."
@@ -1075,7 +1075,7 @@ msgstr ""
 #: checkinstall.in:2734
 msgid "*** The \"dpkg\" program is not in your PATH!"
 msgstr ""
-"*** Il programma \"dpkg\" non Ë indicato nella variabile d'ambiente PATH!"
+"*** Il programma \"dpkg\" non √® indicato nella variabile d'ambiente PATH!"
 
 #: checkinstall.in:2736
 msgid "*** Debian package creation aborted"
@@ -1089,7 +1089,7 @@ msgid ""
 "You requested to review the control file for this package.\\nNow you'll have "
 "the chance to review and optionally modify this file."
 msgstr ""
-"Ora avrai la possibilt‡ di esaminare di nuovo e, opzionalmente, modificare "
+"Ora avrai la possibilt√† di esaminare di nuovo e, opzionalmente, modificare "
 "questo file."
 
 #: checkinstall.in:2830
@@ -1116,7 +1116,7 @@ msgstr "Creazione cartella di immagazzinamento in corso..."
 #, fuzzy, sh-printf-format
 #| msgid "*** Unable to create $PAK_DIR"
 msgid "*** Unable to create %s"
-msgstr "*** Non Ë possibile creare $PAK_DIR"
+msgstr "*** Non √® possibile creare $PAK_DIR"
 
 #: checkinstall.in:2911
 #, fuzzy, sh-printf-format
@@ -1134,7 +1134,7 @@ msgstr ""
 msgid ""
 "There's no package storage directory, the package\\nwill be stored at the "
 "default location."
-msgstr "Non c'Ë nessuna cartella di immagazzinamento, il pacchetto "
+msgstr "Non c'√® nessuna cartella di immagazzinamento, il pacchetto "
 
 #: checkinstall.in:2935
 msgid "Erasing temporary files..."
@@ -1172,7 +1172,7 @@ msgid ""
 msgstr "Puoi installarlo in ogni momento usando: "
 
 #~ msgid "I can't continue. Either install installwatch or"
-#~ msgstr "Non Ë possibile continuare. Installa installwatch oppure"
+#~ msgstr "Non √® possibile continuare. Installa installwatch oppure"
 
 #~ msgid "modify the INSTALLWATCH variable in this script,"
 #~ msgstr "modifca la variabile INSTALLWATCH in questo script,"
@@ -1181,7 +1181,7 @@ msgstr "Puoi installarlo in ogni momento usando: "
 #~ msgstr "quindi lancia di nuovo checkinstall."
 
 #~ msgid "My temp dir exists already."
-#~ msgstr "La cartella temporanea gi‡ esiste."
+#~ msgstr "La cartella temporanea gi√† esiste."
 
 #~ msgid "edit the variable definition for"
 #~ msgstr "modifica la variabile di definizione per"
@@ -1196,7 +1196,7 @@ msgstr "Puoi installarlo in ogni momento usando: "
 #~ msgstr "**** Hai i permessi di scrittura per ${BASE_TMP_DIR}?"
 
 #~ msgid "*** won't include a documentation directory."
-#~ msgstr "*** non includer‡ una cartella per la documentazione."
+#~ msgstr "*** non includer√† una cartella per la documentazione."
 
 #~ msgid "Copying documentation directory..."
 #~ msgstr "Copiatura cartella documentazione in corso..."
@@ -1215,7 +1215,7 @@ msgstr "Puoi installarlo in ogni momento usando: "
 
 #~ msgid "Now you'll have the chance to review and optionally modify it."
 #~ msgstr ""
-#~ "Ora avrai la possibilt‡ di esaminare di nuovo e, opzionalmente, di "
+#~ "Ora avrai la possibilt√† di esaminare di nuovo e, opzionalmente, di "
 #~ "modificarlo."
 
 #~ msgid " Remember that pkgtool shows"
@@ -1266,26 +1266,26 @@ msgstr "Puoi installarlo in ogni momento usando: "
 
 #~ msgid "*** No method was selected, I won't build any package."
 #~ msgstr ""
-#~ "*** Nessun metodo Ë stato selezionato. Non vuoi costruire nessun "
+#~ "*** Nessun metodo √® stato selezionato. Non vuoi costruire nessun "
 #~ "pacchetto."
 
 #~ msgid "*** The installation command \"$INSTALLCMD\""
 #~ msgstr "*** Il comando d'installazione \"$INSTALLCMD\""
 
 #~ msgid "*** has already been executed."
-#~ msgstr "*** Ë gi‡ stato eseguito."
+#~ msgstr "*** √® gi√† stato eseguito."
 
 #~ msgid "The package storage directory"
 #~ msgstr "La cartella di immagazzinamento del pacchetto"
 
 #~ msgid "will be stored at the default location."
-#~ msgstr "verr‡ immagazzinato nella locazione predefinita."
+#~ msgstr "verr√† immagazzinato nella locazione predefinita."
 
 #~ msgid " Done. The new package has been installed and saved to"
-#~ msgstr " Fatto. Il nuovo pacchetto Ë stato installato e salvato in"
+#~ msgstr " Fatto. Il nuovo pacchetto √® stato installato e salvato in"
 
 #~ msgid " You can remove it from your system anytime using: "
 #~ msgstr "Puoi rimuoverlo dal tuo sistema in ogni momento usando: "
 
 #~ msgid " Done. The new package has been saved to"
-#~ msgstr "Fatto. Il nuovo pacchetto Ë stato salvato in"
+#~ msgstr "Fatto. Il nuovo pacchetto √® stato salvato in"
