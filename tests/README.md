@@ -61,10 +61,14 @@ run from there.
 | `12-deb-compression.sh` | `--debcompression` reaching dpkg-deb, and a bad value stopping the run early |
 | `13-filename-spaces.sh` | names and parent directories containing spaces, and a source directory with one |
 | `14-symlink-modes.sh` | a mode set on a symlink staying off the file it points at |
+| `15-exclusions.sh` | exclusions matching whole path components, so /tmp does not exclude /tmpfoo |
+| `16-write-modes.sh` | opens that modify without asking for write access, and `fopen("rb+")` |
+| `17-at-wrappers.sh` | the `*at` calls resolving against their descriptor and not the working directory |
 
-`src/` holds two small C helpers: one that materialises an `O_TMPFILE`
-through `linkat`, and one that calls the LFS64 temporary-file functions
-directly.
+`src/` holds four small C helpers: one that materialises an `O_TMPFILE`
+through `linkat`, one that calls the LFS64 temporary-file functions
+directly, one that opens files in modes the shell cannot ask for, and one
+that drives the `*at` calls with a real directory descriptor.
 
 ## Writing another one
 
@@ -75,6 +79,10 @@ something under installwatch alone. Numbering is only for ordering.
 
 ## Known gaps
 
+- The passthrough the `*at` wrappers take when `INSTW_OKWRAP` is clear has no
+  test. The only window with it clear is inside `canonicalize()`, and nothing
+  there makes a relative `*at` call, so the branch is not reachable from a
+  test even though it is worth keeping correct.
 - `11-workdir-exclusion.sh` checks the source rather than the behaviour.
   Driving that branch needs a build whose own files reach checkinstall's file
   list, which has not happened from this harness.

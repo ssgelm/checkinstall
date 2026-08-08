@@ -29,7 +29,7 @@ run_iw() {
 	rm -rf "$root"; mkdir -p "$root"
 	INSTW_ROOTPATH="$root" INSTW_BACKUP=1 INSTW_TRANSL="$transl" \
 	INSTW_LOGFILE="$root/logfile" INSTW_DBGFILE="$root/dbgfile" \
-	INSTW_DBGLVL=0 INSTW_EXCLUDE="/dev,/proc,/tmp,/var/tmp," \
+	INSTW_DBGLVL=0 INSTW_EXCLUDE="${INSTW_EXCLUDE:-/dev,/proc,/tmp,/var/tmp,}" \
 	LD_PRELOAD="$IW_SO" "$@"
 }
 
