@@ -941,7 +941,6 @@ static int copy_path(const char *truepath,const char *translroot) {
 	int truefd;
 	int translfd;
 	struct utimbuf timbuf;
-	size_t truesz;
 	char linkpath[PATH_MAX+1];
 	ssize_t linksz;
 
@@ -952,13 +951,13 @@ static int copy_path(const char *truepath,const char *translroot) {
 	rcod=true_lstat(truepath,&trueinfo);
 	if(rcod<0 && errno!=ENOENT) return -1;
 	if(!rcod) {
-		if((truesz=strlen(truepath)+strlen(translpath))>PATH_MAX) {
+		int plen=snprintf(translpath,sizeof(translpath),"%s%s",
+		                  translroot,truepath);
+		if(plen<0) return -1;
+		if(plen>=(int)sizeof(translpath)) {
 			errno=ENAMETOOLONG;
 			return -1;
 		}
-		
-		strncpy(translpath,translroot,PATH_MAX);
-		strncat(translpath,truepath,PATH_MAX-truesz);
 
 		if(!true_lstat(translpath,&translinfo)) return 0;
 
@@ -971,34 +970,46 @@ static int copy_path(const char *truepath,const char *translroot) {
 
 		  /* regular file */
 		if(S_ISREG(trueinfo.st_mode)) {
+			int failed=0,saved=0;
+
 			if((truefd=true_open(truepath,O_RDONLY))<0) return -1;
 			if((translfd=true_open(	translpath,
 						O_WRONLY|O_CREAT|O_TRUNC,
 						trueinfo.st_mode))<0	) {
+				saved=errno;
 				close(truefd);
+				errno=saved;
 				return -1;
 			}			
 			
 			  /* A short write leaves a truncated copy behind, and
 			   * the caller would go on to package it. */
-			while((bytes=read(truefd,buffer,BUFSIZ))>0) {
+			while(!failed && (bytes=read(truefd,buffer,BUFSIZ))>0) {
 				int off=0;
 				while(off<bytes) {
 					ssize_t w=write(translfd,buffer+off,
 					                bytes-off);
-					if(w<0) {
-						if(errno==EINTR) continue;
-						close(truefd);
-						close(translfd);
-						return -1;
-					}
-					off+=w;
+					if(w>0) { off+=w; continue; }
+					  /* w==0 would spin here forever */
+					if(w<0 && errno==EINTR) continue;
+					if(w==0) errno=ENOSPC;
+					failed=1;
+					break;
 				}
 			}
+			if(bytes<0) failed=1;
+			if(failed) saved=errno;
 	
 			close(truefd);
 			close(translfd);
-			if(bytes<0) return -1;
+
+			if(failed) {
+				  /* Leave nothing half written for the package
+				   * to pick up. */
+				true_unlink(translpath);
+				errno=saved;
+				return -1;
+			}
 		}
 	
 		  /* directory */
@@ -1451,14 +1462,18 @@ static int instw_init(void) {
 
 	  /* nothing can be activated without that, anyway */
 	if((proot=getenv("INSTW_ROOTPATH"))) {
+		size_t rlen;
 		  /* On failure realpath leaves wrkpath undefined, so fall
 		   * back to the value as it was given to us. */
 		if(realpath(proot,wrkpath)==NULL) {
 			strncpy(wrkpath,proot,PATH_MAX);
 			wrkpath[PATH_MAX]='\0';
 		}
-		if(wrkpath[strlen(wrkpath)-1]=='/')
-			wrkpath[strlen(wrkpath)-1]='\0';
+		  /* Both of those can leave it empty, and then there is no
+		   * last character to look at. */
+		rlen=strlen(wrkpath);
+		if(rlen && wrkpath[rlen-1]=='/')
+			wrkpath[rlen-1]='\0';
 		__instw.root=malloc(strlen(wrkpath)+1);
 		if(NULL==__instw.root) return -1;
 		strcpy(__instw.root,wrkpath);
@@ -1826,7 +1841,13 @@ static int instw_setpath(instw_t *instw,const char *path) {
 
 	instw->status=0;
 
-	strncpy(instw->path,path,PATH_MAX);
+	  /* Truncating here would quietly operate on a different file, so
+	   * refuse instead. */
+	if(strlen(path)>PATH_MAX) {
+		instw->error=errno=ENAMETOOLONG;
+		return -1;
+	}
+	strcpy(instw->path,path);
 	instw->truepath[0]='\0';
 
 	if(instw->path[0]!='/') {
@@ -2122,7 +2143,12 @@ static int instw_apply(instw_t *instw) {
 
 	  /* will we have to copy the original file ? */
 	if(!true_lstat(instw->reslvpath,&reslvinfo)) {
-		copy_path(instw->reslvpath,instw->transl);
+		  /* Marking the path translated after a failed copy would put
+		   * a file that was never written into the package. */
+		if(copy_path(instw->reslvpath,instw->transl)<0) {
+			instw->error=errno;
+			finalize(-1);
+		}
 
 		  /* a symlink ! we have to translate the target */
 		if(S_ISLNK(reslvinfo.st_mode) &&
