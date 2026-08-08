@@ -515,7 +515,6 @@ static void initialize(void) {
 	true_fxstatat64      = dlsym(libc_handle, "__fxstatat64");
 	true_linkat      = dlsym(libc_handle, "linkat");
 	true_mkdirat      = dlsym(libc_handle, "mkdirat");
-	true_mknodat      = dlsym(libc_handle, "mknodat");
 	true_readlinkat      = dlsym(libc_handle, "readlinkat");
 	true_xmknodat      = dlsym(libc_handle, "__xmknodat");
 	true_renameat      = dlsym(libc_handle, "renameat");
@@ -1875,6 +1874,30 @@ static int instw_setmetatransl(instw_t *instw) {
  * returns   = /  0 ok. path set
  *               -1 failed. cf errno /
  */
+  /*
+   * procedure = / rc:=instw_patherror(instw) /
+   *
+   * Callers of instw_setpath() overwhelmingly ignore what it returns, and a
+   * half built instw_t still holds paths they would go on to use: a
+   * truncated translpath can name a real file inside the translated tree.
+   * Leave nothing usable behind, so an ignored error becomes an operation on
+   * an empty path rather than on the wrong file. errno is the caller's.
+   */
+static int instw_patherror(instw_t *instw) {
+	int saved=errno;
+
+	instw->path[0]='\0';
+	instw->truepath[0]='\0';
+	instw->reslvpath[0]='\0';
+	instw->translpath[0]='\0';
+	instw->mtranslpath[0]='\0';
+	instw->mdirlspath[0]='\0';
+	instw->status=0;
+
+	errno=saved;
+	return -1;
+}
+
 static int instw_setpath(instw_t *instw,const char *path) {
 	char canonical[PATH_MAX+1];
 	const char *pcanon;
@@ -1889,7 +1912,7 @@ static int instw_setpath(instw_t *instw,const char *path) {
 	   * refuse instead. */
 	if(strlen(path)>PATH_MAX) {
 		instw->error=errno=ENAMETOOLONG;
-		return -1;
+		return instw_patherror(instw);
 	}
 	strcpy(instw->path,path);
 	instw->truepath[0]='\0';
@@ -1905,7 +1928,7 @@ static int instw_setpath(instw_t *instw,const char *path) {
 		  /* The two together can be longer than the buffer. */
 		if(cwlen+strlen(instw->path)>PATH_MAX) {
 			instw->error=errno=ENAMETOOLONG;
-			return -1;
+			return instw_patherror(instw);
 		}
 		strcat(instw->truepath,instw->path);
 	} else {
@@ -1970,7 +1993,7 @@ static int instw_setpath(instw_t *instw,const char *path) {
 		            instw->transl,instw->reslvpath)
 		   >=(int)sizeof(instw->translpath)) {
 			instw->error=errno=ENAMETOOLONG;
-			return -1;
+			return instw_patherror(instw);
 		}
 	}	
 
@@ -1979,7 +2002,7 @@ static int instw_setpath(instw_t *instw,const char *path) {
 	            instw->mtransl,instw->reslvpath)
 	   >=(int)sizeof(instw->mtranslpath)) {
 		instw->error=errno=ENAMETOOLONG;
-		return -1;
+		return instw_patherror(instw);
 	}
 
 	return 0;
@@ -2037,6 +2060,9 @@ static int instw_setpathrel(instw_t *instw, int dirfd, const char *relpath) {
 free_out:
 	free(newpath);
 out:
+	  /* Same contract as instw_setpath: nothing usable left behind when
+	   * this fails, since the caller probably will not look. */
+	if(retval<0) return instw_patherror(instw);
 	return retval;
 
 #undef PROC_PATH_LEN
@@ -2920,7 +2946,7 @@ FILE *fopen(const char *pathname, const char *mode) {
 		result=true_fopen(instw.path,mode);
 	}
 	
-	if(FOPEN_MODIFIES(mode)) 
+	if(FOPEN_MODIFIES(mode))
 		logg("%" PRIdPTR "\tfopen\t%s\t#%s\n",(intptr_t)result,
 		    instw.reslvpath,error(result));
 
@@ -4291,7 +4317,7 @@ FILE *fopen64(const char *pathname, const char *mode) {
 		result=true_fopen64(instw.path,mode);
 	}
 
-	if(FOPEN_MODIFIES(mode)) 
+	if(FOPEN_MODIFIES(mode))
 		logg("%" PRIdPTR "\tfopen64\t%s\t#%s\n",(intptr_t)result,
 		    instw.reslvpath,error(result));
 
@@ -4661,7 +4687,7 @@ int truncate64(const char *path, __off64_t length) {
 int openat (int dirfd, const char *path, int flags, ...) {
  	mode_t mode = 0;
  	va_list arg;
- 	if(OPEN_HAS_MODE(flags)) {
+	if(OPEN_HAS_MODE(flags)) {
  		va_start(arg, flags);
  		mode = va_arg(arg, int /*promoted from mode_t*/);
  		va_end (arg);
@@ -4686,7 +4712,7 @@ int openat (int dirfd, const char *path, int flags, ...) {
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_openat(dirfd,path,flags,mode);
+		return true_openat(dirfd,path,flags,mode);
 	
  	instw_new(&instw);
  	instw_setpathrel(&instw,dirfd,path);
@@ -4887,12 +4913,7 @@ int fstatat (int dirfd, const char *path, struct stat *s, int flags) {
 		 /* If we have AT_SYMLINK_NOFOLLOW then we need  */
 		 /* lstat() behaviour, according to fstatat(2) */
 
-		 if ( flags & AT_SYMLINK_NOFOLLOW ) {
-		    return true_lstat(path, s); 
-		 }
-		 else {
- 		    return true_stat(path, s);
-		 }
+		 return true_fstatat(dirfd, path, s, flags);
 	}
 
 	
@@ -4962,12 +4983,7 @@ int __fxstatat (int version, int dirfd, const char *path, struct stat *s, int fl
 		 /* If we have AT_SYMLINK_NOFOLLOW then we need  */
 		 /* lstat() behaviour, according to fstatat(2) */
 
-		 if ( flags & AT_SYMLINK_NOFOLLOW ) {
-		    return true_lxstat(version, path, s); 
-		 }
-		 else {
- 		    return true_xstat(version, path, s);
-		 }
+		 return true_fxstatat(version, dirfd, path, s, flags);
 	}
 
 	
@@ -5035,12 +5051,7 @@ int fstatat64 (int dirfd, const char *path, struct stat64 *s, int flags) {
 		 /* If we have AT_SYMLINK_NOFOLLOW then we need  */
 		 /* lstat() behaviour, according to fstatat(2) */
 
-		 if ( flags & AT_SYMLINK_NOFOLLOW ) {
-		    return true_lstat64(path, s); 
-		 }
-		 else {
- 		    return true_stat64(path, s);
-		 }
+		 return true_fstatat64(dirfd, path, s, flags);
 	}
 
 	
@@ -5108,12 +5119,7 @@ int __fxstatat64 (int version, int dirfd, const char *path, struct stat64 *s, in
 		 /* If we have AT_SYMLINK_NOFOLLOW then we need  */
 		 /* lstat() behaviour, according to fstatat(2) */
 
-		 if ( flags & AT_SYMLINK_NOFOLLOW ) {
-		    return true_lxstat64(version, path, s); 
-		 }
-		 else {
- 		    return true_xstat64(version, path, s);
-		 }
+		 return true_fxstatat64(version, dirfd, path, s, flags);
 	}
 
 	
@@ -5228,7 +5234,7 @@ int mkdirat (int dirfd, const char *path, mode_t mode) {
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_mkdirat(dirfd,path,mode);
+		return true_mkdirat(dirfd,path,mode);
 	
  	instw_new(&instw);
  	instw_setpathrel(&instw,dirfd,path);
@@ -5707,7 +5713,7 @@ READLINKAT_T readlinkat (int dirfd, const char *path,
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_readlinkat(dirfd, path, buf, bufsiz);
+		return true_readlinkat(dirfd, path, buf, bufsiz);
 	
  	instw_new(&instw);
  	instw_setpathrel(&instw,dirfd,path);
@@ -5750,7 +5756,7 @@ int mknodat (int dirfd,const char *path,mode_t mode,dev_t dev) {
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_mknodat(dirfd, path, mode, dev);
+		return true_mknodat(dirfd, path, mode, dev);
 	
  	instw_new(&instw);
  	instw_setpathrel(&instw,dirfd,path);
@@ -5794,7 +5800,7 @@ int __xmknodat (int version, int dirfd,const char *path,mode_t mode,dev_t *dev) 
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_xmknod(version, path, mode, dev);
+		return true_xmknodat(version, dirfd, path, mode, dev);
 	
  	instw_new(&instw);
  	instw_setpathrel(&instw,dirfd,path);
@@ -5843,7 +5849,7 @@ int renameat (int olddirfd, const char *oldpath,
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_rename(oldpath, newpath);
+		return true_renameat(olddirfd, oldpath, newdirfd, newpath);
 	
  	instw_new(&instwold);
  	instw_new(&instwnew);
@@ -5905,7 +5911,7 @@ int symlinkat (const char *oldpath, int dirfd, const char *newpath) {
  	/* We were asked to work in "real" mode */
  	if(!(__instw.gstatus & INSTW_INITIALIZED) ||
  	   !(__instw.gstatus & INSTW_OKWRAP))
- 		return true_symlink(oldpath, newpath);
+		return true_symlinkat(oldpath, dirfd, newpath);
 	
  	instw_new(&instw);
  	instw_setpathrel(&instw,dirfd,newpath);
