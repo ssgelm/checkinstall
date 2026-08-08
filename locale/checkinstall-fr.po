@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.6.2\n"
 "Report-Msgid-Bugs-To: https://github.com/ssgelm/checkinstall/issues\n"
-"POT-Creation-Date: 2026-08-07 02:20-0500\n"
+"POT-Creation-Date: 2026-08-07 20:21-0500\n"
 "PO-Revision-Date: 2015-11-23 12:55+0100\n"
 "Last-Translator: Damien Escoffier <vauss@free.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: checkinstall.in:83 checkinstall.in:337
+#: checkinstall.in:83 checkinstall.in:338
 msgid "Bye."
 msgstr "Au revoir."
 
@@ -275,15 +275,21 @@ msgid ""
 msgstr ""
 
 #: checkinstall.in:180
+msgid ""
+"--debcompression=<type>        Compression for the .deb: gzip, xz, zstd "
+"or\\n                               none. Leave it unset and dpkg-deb chooses"
+msgstr ""
+
+#: checkinstall.in:181
 msgid "--addso=<yes|no>               Search for any shared libs and add"
 msgstr ""
 "--addso=<yes|no>               Rechercher les bibliothèques partagées et"
 
-#: checkinstall.in:181
+#: checkinstall.in:182
 msgid "                               them to /etc/ld.so.conf"
 msgstr "                               les ajouter à /etc/ld.so.conf"
 
-#: checkinstall.in:182
+#: checkinstall.in:183
 msgid ""
 "--reset-uids=<yes|no>          Reset perms for all files to o=g, dirs to 755 "
 "and"
@@ -291,14 +297,14 @@ msgstr ""
 "--reset-uids=<yes|no>          Réinitialiser les permissions de tous les "
 "fichiers à o=g, répertoires à 755"
 
-#: checkinstall.in:183
+#: checkinstall.in:184
 msgid ""
 "                               the owner/group for all dirs to root.root"
 msgstr ""
 "                               et le propriétaire/groupe de tous les "
 "répertoires à root.root"
 
-#: checkinstall.in:184
+#: checkinstall.in:185
 msgid ""
 "--gzman=<yes|no>               Compress any man pages found inside the "
 "package"
@@ -306,13 +312,13 @@ msgstr ""
 "--gzman=<yes|no>               Compresser toutes les pages de manuel "
 "trouvées à l'intérieur du paquet"
 
-#: checkinstall.in:185
+#: checkinstall.in:186
 msgid "--docdir=<path>                Where to put documentation files"
 msgstr ""
 "--docdir=<chemin>              Emplacement où mettre les fichiers de "
 "documentation"
 
-#: checkinstall.in:186
+#: checkinstall.in:187
 msgid ""
 "                               The package name+version gets automatically "
 "appended."
@@ -320,7 +326,7 @@ msgstr ""
 "                               Le nom et la version du paquet sont "
 "automatiquement joints."
 
-#: checkinstall.in:187
+#: checkinstall.in:188
 msgid ""
 "                               To avoid that prefix the path with a colon "
 "(:)."
@@ -328,11 +334,11 @@ msgstr ""
 "                               Pour éviter ceci, préfixez l'emplacement avec "
 "deux points (:)."
 
-#: checkinstall.in:188
+#: checkinstall.in:189
 msgid "--umask=<mask>                 Set the umask value"
 msgstr "--umask=<mask>                 Définir la valeur de « umask »"
 
-#: checkinstall.in:189
+#: checkinstall.in:190
 msgid ""
 "--exclude=<file|dir[,...]>     Exclude these files/directories from the "
 "package"
@@ -340,35 +346,35 @@ msgstr ""
 "--exclude=<fichier|répertoire[,...]>     Exclure ces fichiers ou répertoires "
 "du paquet"
 
-#: checkinstall.in:190
+#: checkinstall.in:191
 msgid ""
 "--include=<listfile>           Force the inclusion in the package of the"
 msgstr "--include=<liste-fichier>      Forcer l'inclusion dans le paquet de"
 
-#: checkinstall.in:191
+#: checkinstall.in:192
 msgid "                               files/dirs listed in \"listfile\""
 msgstr ""
 "                               fichiers ou répertoires listés dans "
 "« listfile »"
 
-#: checkinstall.in:192
+#: checkinstall.in:193
 msgid "--inspect                      Inspect the package's file list"
 msgstr ""
 "--inspect                      Inspecter la liste des fichiers du paquet"
 
-#: checkinstall.in:193
+#: checkinstall.in:194
 msgid ""
 "--review-spec                  Review the spec file before creating a .rpm"
 msgstr ""
 "--review-spec                  Réviser le fichier spec avant de créer un .rpm"
 
-#: checkinstall.in:194
+#: checkinstall.in:195
 msgid ""
 "--review-control               Review the control file before creating a .deb"
 msgstr ""
 "--review-control               Réviser le fichier control avant de créer .deb"
 
-#: checkinstall.in:195
+#: checkinstall.in:196
 msgid ""
 "--newslack                     Use the new (8.1+) Slackware description "
 "format"
@@ -376,114 +382,135 @@ msgstr ""
 "--newslack                     Utiliser le nouveau (8.1+) format de "
 "description Slackware"
 
-#: checkinstall.in:196
+#: checkinstall.in:197
 msgid "                               (\"--newslack\" implies \"-S\")"
 msgstr "                               (« --newslack » implique « -S »)"
 
-#: checkinstall.in:197
+#: checkinstall.in:198
 msgid "--with-tar=/path/to/tar        Manually set the path to the tar binary"
 msgstr ""
 "--with-tar=/chemin/vers/tar    Définir manuellement l'emplacement vers le "
 "fichier binaire tar"
 
-#: checkinstall.in:198
+#: checkinstall.in:199
 msgid "                               in this system"
 msgstr "                               dans ce système"
 
-#: checkinstall.in:200
+#: checkinstall.in:201
 msgid "*Cleanup options*"
 msgstr "*Options de nettoyage*"
 
-#: checkinstall.in:202
+#: checkinstall.in:203
 msgid "--deldoc=<yes|no>              Delete doc-pak upon termination"
 msgstr "--deldoc=<yes|no>              Supprimer doc-pak à la fin"
 
-#: checkinstall.in:203
+#: checkinstall.in:204
 msgid "--deldesc=<yes|no>             Delete description-pak upon termination"
 msgstr "--deldesc=<yes|no>             Supprimer description-pak à la fin"
 
-#: checkinstall.in:204
+#: checkinstall.in:205
 msgid "--delspec=<yes|no>             Delete spec file upon termination"
 msgstr "--delspec=<yes|no>             Supprimer le fichier spec à la fin"
 
-#: checkinstall.in:205
+#: checkinstall.in:206
 msgid "--bk                           Backup any overwritten files"
 msgstr "--bk                           Sauvegarder tous les fichiers écrasés"
 
-#: checkinstall.in:206
+#: checkinstall.in:207
 msgid "--backup=<yes|no>              Toggle backup"
 msgstr "--backup=<yes|no>              Activer la fonction de sauvegarde"
 
-#: checkinstall.in:208
+#: checkinstall.in:209
 msgid "*About CheckInstall*"
 msgstr "*À propos de CheckInstall*"
 
-#: checkinstall.in:210
+#: checkinstall.in:211
 msgid "--help, -h                     Show this message"
 msgstr "--help, -h                     Afficher ce message"
 
-#: checkinstall.in:211
+#: checkinstall.in:212
 msgid "--copyright                    Show Copyright information"
 msgstr "--copyright                    Afficher les informations de copyright"
 
-#: checkinstall.in:212
+#: checkinstall.in:213
 msgid "--version                      Show version information"
 msgstr "--version                      Afficher les informations de version"
 
-#: checkinstall.in:220
+#: checkinstall.in:221
 msgid "Use --help or -h to get more information"
 msgstr "Utilisez --help ou -h pour obtenir plus d'informations"
 
-#: checkinstall.in:228
+#: checkinstall.in:229 checkinstall.in:764
 #, fuzzy, sh-printf-format
 #| msgid "is an invalid value for"
 msgid "%s is an invalid value for %s"
 msgstr "est une valeur incorrecte pour"
 
-#: checkinstall.in:279
+#: checkinstall.in:280
 msgid " FAILED!"
 msgstr " ÉCHEC !"
 
-#: checkinstall.in:282
+#: checkinstall.in:283
 msgid "OK"
 msgstr " OK"
 
-#: checkinstall.in:297
+#: checkinstall.in:298
 msgid "Restoring overwritten files from backup..."
 msgstr "Restauration des fichiers écrasés à partir de la sauvegarde..."
 
-#: checkinstall.in:310
+#: checkinstall.in:311
 msgid "*** SIGINT received ***"
 msgstr "*** SIGINT reçu ***"
 
-#: checkinstall.in:317
+#: checkinstall.in:318
 msgid "Cleaning up..."
 msgstr "Nettoyage..."
+
+#: checkinstall.in:325
+#, sh-printf-format
+msgid "(Debugging mode on, KEEPING temp dir %s)..."
+msgstr ""
+
+#: checkinstall.in:507
+#, fuzzy, sh-printf-format
+#| msgid "The checkinstallrc file was not found at:"
+msgid "The checkinstallrc file was not found at:\\n%s"
+msgstr "Le fichier checkinstallrc n'a pas été trouvé à l'emplacement :"
 
 #: checkinstall.in:509
 msgid "Assuming default values."
 msgstr "En supposant les valeurs par défaut."
 
-#: checkinstall.in:828
+#: checkinstall.in:765
+msgid "Use gzip, xz, zstd or none."
+msgstr ""
+
+#: checkinstall.in:842
 #, sh-printf-format
 msgid ""
 "Warning: .spec file path \"%s\" not found.\\nWarning: Defaulting to \"%s\"."
 msgstr ""
 
-#: checkinstall.in:1072
+#: checkinstall.in:1085
 #, sh-printf-format
 msgid ""
 "Warning: The path to tar specified in the command line is invalid."
 "\\nWarning: It has been set to %s"
 msgstr ""
 
-#: checkinstall.in:1100
+#: checkinstall.in:1111
+#, fuzzy, sh-printf-format
+#| msgid "I can't find $INSTALLWATCH."
+msgid "I can't find %s."
+msgstr "Je ne trouve pas $INSTALLWATCH."
+
+#: checkinstall.in:1113
 msgid ""
 "I can't continue. Either install installwatch or\\nmodify the INSTALLWATCH "
 "variable in this script,\\nthen run checkinstall again."
 msgstr ""
 
-#: checkinstall.in:1123
+#: checkinstall.in:1136
 #, fuzzy, sh-printf-format
 #| msgid "is an unacceptable value for the temp dir. Please"
 msgid ""
@@ -491,18 +518,18 @@ msgid ""
 "definition for %s and try again."
 msgstr "est une valeur inacceptable pour le répertoire temporaire. Veuillez"
 
-#: checkinstall.in:1125
+#: checkinstall.in:1138
 msgid "*** Aborting"
 msgstr "*** Abandon"
 
-#: checkinstall.in:1132
+#: checkinstall.in:1145
 #, sh-printf-format
 msgid ""
 "**** Failed to create temp dir! \\n**** Do you have write permission for %s? "
 "\\n\\n**** Aborting installation."
 msgstr ""
 
-#: checkinstall.in:1155
+#: checkinstall.in:1168
 #, fuzzy
 #| msgid "The package documentation directory ./doc-pak does not exist."
 msgid ""
@@ -510,11 +537,11 @@ msgid ""
 "create a default set of package docs? "
 msgstr "Le répertoire de la documentation du paquet ./doc-pak n'existe pas."
 
-#: checkinstall.in:1158
+#: checkinstall.in:1171
 msgid "Preparing package documentation..."
 msgstr "Préparation de la documentation du paquet..."
 
-#: checkinstall.in:1174
+#: checkinstall.in:1187
 #, fuzzy
 #| msgid "*** No known documentation files were found. The new package"
 msgid ""
@@ -523,23 +550,23 @@ msgid ""
 msgstr ""
 "*** Aucun fichier de documentation connu n'a été trouvé. Le nouveau paquet"
 
-#: checkinstall.in:1192
+#: checkinstall.in:1205
 msgid "Please choose the packaging method you want to use."
 msgstr "Veuillez choisir la méthode d'empaquetage."
 
-#: checkinstall.in:1193
+#: checkinstall.in:1206
 msgid "Slackware [S], RPM [R] or Debian [D]? "
 msgstr "Slackware [S], RPM [R] ou Debian [D] ? "
 
-#: checkinstall.in:1213
+#: checkinstall.in:1226
 msgid "*** Invalid type."
 msgstr ""
 
-#: checkinstall.in:1237
+#: checkinstall.in:1250
 msgid "Please write a description for the package."
 msgstr "Veuillez écrire une description pour le paquet."
 
-#: checkinstall.in:1242
+#: checkinstall.in:1255
 #, fuzzy
 #| msgid ""
 #| "only the first one when listing packages so make that one descriptive."
@@ -550,11 +577,11 @@ msgstr ""
 "que la première ligne au moment du listage des paquets. Faites que celle-ci "
 "soit suffisamment descriptive."
 
-#: checkinstall.in:1245
+#: checkinstall.in:1258
 msgid "End your description with an empty line or EOF."
 msgstr "Terminez votre description avec une ligne vide ou EOF."
 
-#: checkinstall.in:1263
+#: checkinstall.in:1276
 #, fuzzy
 #| msgid "Warning: Your package description is bigger than 11 lines."
 msgid ""
@@ -562,25 +589,25 @@ msgid ""
 "Slackware 8.1+ pkgtools might not like it."
 msgstr "Avertissement : votre description de paquet fait plus de 11 lignes."
 
-#: checkinstall.in:1275
+#: checkinstall.in:1288
 msgid ""
 "********************************************\\n**** Slackware package "
 "creation selected ***\\n********************************************"
 msgstr ""
 
-#: checkinstall.in:1280
+#: checkinstall.in:1293
 msgid ""
 "**************************************\\n**** RPM package creation selected "
 "***\\n**************************************"
 msgstr ""
 
-#: checkinstall.in:1285
+#: checkinstall.in:1298
 msgid ""
 "*****************************************\\n**** Debian package creation "
 "selected ***\\n*****************************************"
 msgstr ""
 
-#: checkinstall.in:1355
+#: checkinstall.in:1368
 #, sh-printf-format
 msgid ""
 "*** Warning: The package name \"%s\" contains spaces.\\n*** Warning: Package "
@@ -588,7 +615,7 @@ msgid ""
 "systems so I changed all spaces to underscores."
 msgstr ""
 
-#: checkinstall.in:1364
+#: checkinstall.in:1377
 #, sh-printf-format
 msgid ""
 "*** Warning: The package name \"%s\" contains upper case\\n*** Warning: "
@@ -596,7 +623,7 @@ msgid ""
 "case."
 msgstr ""
 
-#: checkinstall.in:1372
+#: checkinstall.in:1385
 #, sh-printf-format
 msgid ""
 "*** Warning: The package name \"%s\" does not start with\\n*** Warning: an "
@@ -604,7 +631,7 @@ msgid ""
 "Warning: it with a number 0."
 msgstr ""
 
-#: checkinstall.in:1378
+#: checkinstall.in:1391
 #, sh-printf-format
 msgid ""
 "*** Warning: The package name \"%s\" contains illegal\\n*** Warning: "
@@ -612,201 +639,201 @@ msgid ""
 "dashes."
 msgstr ""
 
-#: checkinstall.in:1403
+#: checkinstall.in:1416
 #, sh-printf-format
 msgid ""
 "*** Warning: The package version \"%s\" is not a\\n*** Warning: debian "
 "policy compliant one. Please specify an alternate one"
 msgstr ""
 
-#: checkinstall.in:1460
+#: checkinstall.in:1473
 msgid "This package will be built according to these values: "
 msgstr "Ce paquet sera construit selon ces valeurs : "
 
-#: checkinstall.in:1464
+#: checkinstall.in:1477
 #, sh-printf-format
 msgid "0 -  Maintainer: [ %s ]"
 msgstr "0 -  Responsable : [ %s ]"
 
-#: checkinstall.in:1466
+#: checkinstall.in:1479
 #, sh-printf-format
 msgid "1 -  Summary: [ %s ]"
 msgstr "1 -  Résumé : [ %s ]"
 
-#: checkinstall.in:1467
+#: checkinstall.in:1480
 #, sh-printf-format
 msgid "2 -  Name:    [ %s ]"
 msgstr "2 -  Nom : [ %s ]"
 
-#: checkinstall.in:1468
+#: checkinstall.in:1481
 #, sh-printf-format
 msgid "3 -  Version: [ %s ]"
 msgstr "3 -  Version : [ %s ]"
 
-#: checkinstall.in:1469
+#: checkinstall.in:1482
 #, sh-printf-format
 msgid "4 -  Release: [ %s ]"
 msgstr "4 -  Publication : [ %s ]"
 
-#: checkinstall.in:1470
+#: checkinstall.in:1483
 #, sh-printf-format
 msgid "5 -  License: [ %s ]"
 msgstr "5 -  Licence : [ %s ]"
 
-#: checkinstall.in:1471
+#: checkinstall.in:1484
 #, sh-printf-format
 msgid "6 -  Group:   [ %s ]"
 msgstr "6 -  Groupe : [ %s ]"
 
-#: checkinstall.in:1472
+#: checkinstall.in:1485
 #, sh-printf-format
 msgid "7 -  Architecture: [ %s ]"
 msgstr "7 -  Architecture : [ %s ]"
 
-#: checkinstall.in:1473
+#: checkinstall.in:1486
 #, sh-printf-format
 msgid "8 -  Source location: [ %s ]"
 msgstr "8 -  Emplacement du code source : [ %s ]"
 
-#: checkinstall.in:1474
+#: checkinstall.in:1487
 #, sh-printf-format
 msgid "9 -  Alternate source location: [ %s ]"
 msgstr "9 -  Emplacement alternatif du code source : [ %s ]"
 
-#: checkinstall.in:1476
+#: checkinstall.in:1489
 #, sh-printf-format
 msgid "10 - Requires: [ %s ]"
 msgstr "10 - Nécessite : [ %s ]"
 
-#: checkinstall.in:1478
+#: checkinstall.in:1491
 #, fuzzy, sh-printf-format
 #| msgid "13 - Replaces: [ %s ]"
 msgid "11 - Recommends: [ %s ]"
 msgstr "13 - Remplace : [ %s ]"
 
-#: checkinstall.in:1480
+#: checkinstall.in:1493
 #, fuzzy, sh-printf-format
 #| msgid "10 - Requires: [ %s ]"
 msgid "12 - Suggests: [ %s ]"
 msgstr "10 - Nécessite : [ %s ]"
 
-#: checkinstall.in:1482
+#: checkinstall.in:1495
 #, fuzzy, sh-printf-format
 #| msgid "11 - Provides: [ %s ]"
 msgid "13 - Provides: [ %s ]"
 msgstr "11 - Fournit : [ %s ]"
 
-#: checkinstall.in:1483
+#: checkinstall.in:1496
 #, fuzzy, sh-printf-format
 #| msgid "12 - Conflicts: [ %s ]"
 msgid "14 - Conflicts: [ %s ]"
 msgstr "12 - Conflits : [ %s ]"
 
-#: checkinstall.in:1484
+#: checkinstall.in:1497
 #, fuzzy, sh-printf-format
 #| msgid "13 - Replaces: [ %s ]"
 msgid "15 - Replaces: [ %s ]"
 msgstr "13 - Remplace : [ %s ]"
 
-#: checkinstall.in:1485
+#: checkinstall.in:1498
 #, fuzzy, sh-printf-format
 #| msgid "10 - Requires: [ %s ]"
 msgid "16 - Prerequires: [ %s ]"
 msgstr "10 - Nécessite : [ %s ]"
 
-#: checkinstall.in:1488
+#: checkinstall.in:1501
 msgid "Enter a number to change any of them or press ENTER to continue: "
 msgstr ""
 "Entrez un nombre afin de changer la valeur correspondante ou appuyez sur "
 "ENTRÉE pour continuer :"
 
-#: checkinstall.in:1498
+#: checkinstall.in:1511
 msgid "Enter new summary: "
 msgstr "Entrez le nouveau résumé :"
 
-#: checkinstall.in:1503
+#: checkinstall.in:1516
 msgid "Enter new name: "
 msgstr "Entrez le nouveau nom :"
 
-#: checkinstall.in:1508
+#: checkinstall.in:1521
 msgid "Enter new version: "
 msgstr "Entrez la nouvelle version :"
 
-#: checkinstall.in:1513
+#: checkinstall.in:1526
 msgid "Enter new release number: "
 msgstr "Entrez le nouveau numéro de publication :"
 
-#: checkinstall.in:1518
+#: checkinstall.in:1531
 msgid "Enter the license type: "
 msgstr "Entez le type de licence :"
 
-#: checkinstall.in:1523
+#: checkinstall.in:1536
 msgid "Enter the new software group: "
 msgstr "Entrez le nouveau groupe de logiciel :"
 
-#: checkinstall.in:1528
+#: checkinstall.in:1541
 msgid "Enter the architecture type: "
 msgstr "Entrez le type d'architecture :"
 
-#: checkinstall.in:1533
+#: checkinstall.in:1546
 msgid "Enter the source location: "
 msgstr "Entrez l'emplacement du code source :"
 
-#: checkinstall.in:1538
+#: checkinstall.in:1551
 msgid "Enter the alternate source location: "
 msgstr "Entrez l'emplacement alternatif du code source :"
 
-#: checkinstall.in:1544
+#: checkinstall.in:1557
 msgid "Enter the maintainer's name and e-mail address: "
 msgstr "Entrez le nom et l'adresse courriel du responsable :"
 
-#: checkinstall.in:1551
+#: checkinstall.in:1564
 msgid "Enter the additional requirements: "
 msgstr "Entrez les exigences additionnelles :"
 
-#: checkinstall.in:1558
+#: checkinstall.in:1571
 #, fuzzy
 #| msgid "Enter the additional requirements: "
 msgid "Enter the additional recommendations: "
 msgstr "Entrez les exigences additionnelles :"
 
-#: checkinstall.in:1565
+#: checkinstall.in:1578
 #, fuzzy
 #| msgid "Enter the additional requirements: "
 msgid "Enter the additional suggestions: "
 msgstr "Entrez les exigences additionnelles :"
 
-#: checkinstall.in:1573
+#: checkinstall.in:1586
 msgid "Enter the provided features: "
 msgstr "Entrez les fonctionnalités fournies :"
 
-#: checkinstall.in:1644
+#: checkinstall.in:1657
 #, sh-printf-format
 msgid "Installing with %s..."
 msgstr "Installation avec %s..."
 
-#: checkinstall.in:1669 checkinstall.in:2341
+#: checkinstall.in:1682 checkinstall.in:2357
 msgid ""
 "========================= Installation results ==========================="
 msgstr ""
 "========================= Résultats de l'installation "
 "==========================="
 
-#: checkinstall.in:1675 checkinstall.in:2348
+#: checkinstall.in:1688 checkinstall.in:2364
 msgid ""
 "======================== Installation successful =========================="
 msgstr ""
 "======================== Installation réussie =========================="
 
-#: checkinstall.in:1688
+#: checkinstall.in:1701
 msgid "****  Installation failed. Aborting package creation."
 msgstr "****  L'installation a échoué. Abandon de la création du paquet."
 
-#: checkinstall.in:1694
+#: checkinstall.in:1707
 msgid "Do you want to view the installation log file? "
 msgstr "Voulez-vous visualiser le fichier journal de l'installation ? "
 
-#: checkinstall.in:1699
+#: checkinstall.in:1712
 #, sh-printf-format
 msgid ""
 " ***************************************************************\\n         "
@@ -814,7 +841,7 @@ msgid ""
 "***************************************************************\\n"
 msgstr ""
 
-#: checkinstall.in:1797
+#: checkinstall.in:1810
 msgid ""
 "Some of the files created by the installation are inside the home "
 "directory: /home"
@@ -822,19 +849,19 @@ msgstr ""
 "Quelques fichiers créés durant l'installation sont à l'intérieur du "
 "répertoire home : /home"
 
-#: checkinstall.in:1799
+#: checkinstall.in:1812
 msgid "You probably don't want them to be included in the package."
 msgstr "Vous ne voulez probablement pas les inclure dans le paquet."
 
-#: checkinstall.in:1800
+#: checkinstall.in:1813
 msgid "Do you want me to list them? "
 msgstr "Voulez-vous que je les liste ?"
 
-#: checkinstall.in:1804 checkinstall.in:1821
+#: checkinstall.in:1817 checkinstall.in:1834
 msgid "Should I exclude them from the package? (Saying yes is a good idea) "
 msgstr "Dois-je les exclure du paquet ? (Répondre « yes » est une bonne idée) "
 
-#: checkinstall.in:1815
+#: checkinstall.in:1828
 #, fuzzy, sh-printf-format
 #| msgid "Some of the files created by the installation are inside the build"
 msgid ""
@@ -842,102 +869,108 @@ msgid ""
 "build\\ndirectory: %s"
 msgstr "Quelques fichiers créés durant l'installation sont à l'intérieur"
 
-#: checkinstall.in:1817
+#: checkinstall.in:1830
 msgid ""
 "You probably don't want them to be included in the package,\\nespecially if "
 "they are inside your home directory.\\nDo you want me to list them? "
 msgstr ""
 
-#: checkinstall.in:1831
+#: checkinstall.in:1844
 msgid ""
 "You requested to review the list of files that will be\\nincluded in this "
 "package.\\n\\nNow you'll have the chance to review and optionally modify it."
 msgstr ""
 
-#: checkinstall.in:1833 checkinstall.in:2569 checkinstall.in:2804
+#: checkinstall.in:1846 checkinstall.in:2585 checkinstall.in:2824
 msgid "Press ENTER to continue."
 msgstr "Appuyez sur ENTRÉE pour continuer."
 
-#: checkinstall.in:1851
+#: checkinstall.in:1864
 msgid "Copying files to the temporary directory..."
 msgstr "Copie en cours des fichiers vers le répertoire temporaire..."
 
-#: checkinstall.in:1928
+#: checkinstall.in:1944
 msgid "Stripping ELF binaries and libraries..."
 msgstr "Suppression des fichiers binaires et bibliothèques ELF..."
 
-#: checkinstall.in:1930
+#: checkinstall.in:1946
 #, fuzzy
 #| msgid "Striping ELF binaries..."
 msgid "Stripping ELF binaries..."
 msgstr "Suppression des fichiers binaires ELF..."
 
-#: checkinstall.in:1972
+#: checkinstall.in:1988
 msgid "Compressing man pages..."
 msgstr "Compression des pages de manuel..."
 
-#: checkinstall.in:2049
+#: checkinstall.in:2065
 msgid "Building file list..."
 msgstr "Création de la liste des fichiers..."
 
-#: checkinstall.in:2082
+#: checkinstall.in:2098
 msgid "Shared libraries found. Adding them to the postinstall script."
 msgstr ""
 
-#: checkinstall.in:2140
+#: checkinstall.in:2156
 msgid "Kernel modules found. Calling depmod in the postinstall script"
 msgstr ""
 
-#: checkinstall.in:2194
+#: checkinstall.in:2210
 msgid "*** The \"installpkg\" program is not in your PATH!"
 msgstr "*** Le programme « installpkg » n'est pas dans votre chemin d'accès !"
 
-#: checkinstall.in:2196
+#: checkinstall.in:2212
 msgid "*** Slackware package creation aborted"
 msgstr "*** La création du paquet Slackware est abandonnée"
 
-#: checkinstall.in:2206
+#: checkinstall.in:2222
 msgid "Preparing Slackware install directory..."
 msgstr "Préparation du répertoire d'installation Slackware..."
 
-#: checkinstall.in:2212
+#: checkinstall.in:2228
 msgid "Writing package description..."
 msgstr "Écriture de la description du paquet..."
 
-#: checkinstall.in:2261
+#: checkinstall.in:2277
 msgid "Writing Slackware install script..."
 msgstr "Écriture du script d'installation Slackware..."
 
-#: checkinstall.in:2291
+#: checkinstall.in:2307
 msgid "Appending your script to the main install script..."
 msgstr "Ajout de votre script au script d'installation principal..."
 
-#: checkinstall.in:2335
+#: checkinstall.in:2319
+#, fuzzy, sh-printf-format
+#| msgid "Transferring package to %s..."
+msgid "Creating package %s..."
+msgstr "Transfert du paquet vers %s..."
+
+#: checkinstall.in:2351
 msgid "Installing package..."
 msgstr "Installation du paquet..."
 
-#: checkinstall.in:2354 checkinstall.in:2628 checkinstall.in:2835
+#: checkinstall.in:2370 checkinstall.in:2644 checkinstall.in:2855
 msgid "*** Failed to install the package"
 msgstr "*** Impossible d'installer le paquet"
 
-#: checkinstall.in:2357 checkinstall.in:2604 checkinstall.in:2630
-#: checkinstall.in:2818 checkinstall.in:2837
+#: checkinstall.in:2373 checkinstall.in:2620 checkinstall.in:2646
+#: checkinstall.in:2838 checkinstall.in:2857
 msgid "Do you want to see the log file? "
 msgstr "Souhaitez-vous voir le fichier journal ?"
 
-#: checkinstall.in:2368
+#: checkinstall.in:2384
 msgid "NOTE: The package will not be installed."
 msgstr "NOTE : Le paquet ne sera pas installé."
 
-#: checkinstall.in:2401
+#: checkinstall.in:2417
 msgid "*** The \"rpm\" program is not in your PATH!"
 msgstr "*** Le programme « rpm » n'est pas dans votre chemin d'accès !"
 
-#: checkinstall.in:2403
+#: checkinstall.in:2419
 msgid "*** RPM package creation aborted"
 msgstr "*** Création du paquet RPM abandonnée"
 
-#: checkinstall.in:2476
+#: checkinstall.in:2492
 #, fuzzy, sh-printf-format
 #| msgid "$RPMSOURCEDIR has no SOURCES directory. Please write the path to"
 msgid ""
@@ -945,7 +978,7 @@ msgid ""
 "directory tree: "
 msgstr "$RPMSOURCEDIR n'a pas de répertoire SOURCES. Veuillez entrer le"
 
-#: checkinstall.in:2567
+#: checkinstall.in:2583
 #, fuzzy
 #| msgid ""
 #| "Now you'll have the chance to review and optionally modify this file."
@@ -956,46 +989,46 @@ msgstr ""
 "À présent, vous avez la chance de revoir ce fichier et, le cas échéant, de "
 "le modifier."
 
-#: checkinstall.in:2596
+#: checkinstall.in:2612
 msgid "Building RPM package..."
 msgstr "Construction du paquet RPM..."
 
-#: checkinstall.in:2602 checkinstall.in:2816
+#: checkinstall.in:2618 checkinstall.in:2836
 msgid "*** Failed to build the package"
 msgstr "*** Impossible de construire le paquet"
 
-#: checkinstall.in:2616
+#: checkinstall.in:2632
 msgid ""
 "Warning: the use of RPMFLAGS is deprecated.\\nWarning: You should now use "
 "RPM_FLAGS,\\nWarning: please update your checkinstallrc file."
 msgstr ""
 
-#: checkinstall.in:2623
+#: checkinstall.in:2639
 msgid "Installing RPM package..."
 msgstr "Installation du paquet RPM..."
 
-#: checkinstall.in:2638 checkinstall.in:2845
+#: checkinstall.in:2654 checkinstall.in:2865
 msgid "NOTE: The package will not be installed"
 msgstr "NOTE : le paquet ne sera pas installé"
 
-#: checkinstall.in:2672
+#: checkinstall.in:2688
 msgid "Looking for shared library dependencies..."
 msgstr ""
 
-#: checkinstall.in:2702
+#: checkinstall.in:2718
 #, sh-printf-format
 msgid "Depends: %s"
 msgstr ""
 
-#: checkinstall.in:2718
+#: checkinstall.in:2734
 msgid "*** The \"dpkg\" program is not in your PATH!"
 msgstr "*** Le programme « dpkg » n'est pas dans votre chemin d'accès !"
 
-#: checkinstall.in:2720
+#: checkinstall.in:2736
 msgid "*** Debian package creation aborted"
 msgstr "*** Création du paquet Debian abandonnée"
 
-#: checkinstall.in:2802
+#: checkinstall.in:2822
 #, fuzzy
 #| msgid ""
 #| "Now you'll have the chance to review and optionally modify this file."
@@ -1006,15 +1039,15 @@ msgstr ""
 "À présent, vous avez la chance de revoir ce fichier et, le cas échéant, de "
 "le modifier."
 
-#: checkinstall.in:2810
+#: checkinstall.in:2830
 msgid "Building Debian package..."
 msgstr "Création du paquet Debian..."
 
-#: checkinstall.in:2830
+#: checkinstall.in:2850
 msgid "Installing Debian package..."
 msgstr "Installation du paquet Debian..."
 
-#: checkinstall.in:2875
+#: checkinstall.in:2895
 #, fuzzy, sh-printf-format
 #| msgid "doesn't exist. Do you want to create it?"
 msgid ""
@@ -1022,25 +1055,25 @@ msgid ""
 "it?"
 msgstr "n'existe pas. Voulez-vous le créer ?"
 
-#: checkinstall.in:2878
+#: checkinstall.in:2898
 msgid "Creating package storage directory..."
 msgstr "Création du répertoire de stockage du paquet..."
 
-#: checkinstall.in:2883
+#: checkinstall.in:2903
 #, sh-printf-format
 msgid "*** Unable to create %s"
 msgstr "*** Impossible de créer %s"
 
-#: checkinstall.in:2891
+#: checkinstall.in:2911
 #, sh-printf-format
 msgid "Transferring package to %s..."
 msgstr "Transfert du paquet vers %s..."
 
-#: checkinstall.in:2896
+#: checkinstall.in:2916
 msgid "*** Transfer failed:"
 msgstr "*** Transfert impossible :"
 
-#: checkinstall.in:2905
+#: checkinstall.in:2925
 #, fuzzy
 #| msgid "There's no package storage directory, the package"
 msgid ""
@@ -1048,34 +1081,34 @@ msgid ""
 "default location."
 msgstr "Il n'y a pas de répertoire de stockage, le paquet"
 
-#: checkinstall.in:2915
+#: checkinstall.in:2935
 msgid "Erasing temporary files..."
 msgstr "Suppression des fichiers temporaires..."
 
-#: checkinstall.in:2933
+#: checkinstall.in:2953
 msgid "Deleting doc-pak directory..."
 msgstr "Suppression du répertoire doc-pak..."
 
-#: checkinstall.in:2968
+#: checkinstall.in:2988
 msgid "Writing backup package..."
 msgstr "Écriture du paquet de sauvegarde..."
 
-#: checkinstall.in:2979
+#: checkinstall.in:2999
 msgid "Deleting temp dir..."
 msgstr "Suppression du répertoire temporaire..."
 
-#: checkinstall.in:2985
+#: checkinstall.in:3005
 msgid "Building debug information package..."
 msgstr "Création du paquet d'informations de débogage..."
 
-#: checkinstall.in:3001
+#: checkinstall.in:3021
 #, sh-printf-format
 msgid ""
 " Done. The new package has been installed and saved to\\n\\n %s\\n\\n You "
 "can remove it from your system anytime using: \\n\\n      %s"
 msgstr ""
 
-#: checkinstall.in:3011
+#: checkinstall.in:3031
 #, fuzzy, sh-printf-format
 #| msgid " You can install it in your system anytime using: "
 msgid ""
@@ -1083,12 +1116,6 @@ msgid ""
 "your system anytime using: \\n\\n      %s"
 msgstr ""
 " Vous pouvez l'installer dans votre système à tout moment en exécutant :"
-
-#~ msgid "The checkinstallrc file was not found at:"
-#~ msgstr "Le fichier checkinstallrc n'a pas été trouvé à l'emplacement :"
-
-#~ msgid "I can't find $INSTALLWATCH."
-#~ msgstr "Je ne trouve pas $INSTALLWATCH."
 
 #~ msgid "I can't continue. Either install installwatch or"
 #~ msgstr "Je ne peux pas continuer. Installez installwatch ou bien"

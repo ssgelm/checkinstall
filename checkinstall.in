@@ -322,7 +322,7 @@ function cleanup {
     [ -n "${TMP_DIR}" ] && [ -d ${TMP_DIR} ] && rm -rf ${TMP_DIR}
     rm -f checkinstall-debug*
  else
-    echogn "(Debugging mode on, KEEPING temp dir $TMP_DIR)..."
+    echogn "(Debugging mode on, KEEPING temp dir %s)..." "$TMP_DIR"
  fi
  [ -n "${RPMSOURCEDIR}" ] &&
    [ -f "${RPMSOURCEDIR}/SOURCES/${PKG_BASENAME}.tgz" ] &&
@@ -504,7 +504,7 @@ echo
 
 CHECKINSTALLRC=${CHECKINSTALLRC:-${INSTALLDIR}/lib/checkinstall/checkinstallrc}
 if ! [ -f $CHECKINSTALLRC ]; then
-   echog "The checkinstallrc file was not found at:\n$CHECKINSTALLRC"
+   echog "The checkinstallrc file was not found at:\n%s" "$CHECKINSTALLRC"
    echo
    echog "Assuming default values."
 else
@@ -1108,7 +1108,7 @@ fi
 
 if [ ! -x $INSTALLWATCH ]; then
    echo
-   echog "I can't find $INSTALLWATCH."
+   echog "I can't find %s." "$INSTALLWATCH"
    echo
    echog "I can't continue. Either install installwatch or\nmodify the INSTALLWATCH variable in this script,\nthen run checkinstall again."
    echo
@@ -2316,7 +2316,7 @@ fi
 
 
 echo
-echogn "Creating package ${SLACK_PKG_BASENAME}..."
+echogn "Creating package %s..." "${SLACK_PKG_BASENAME}"
 
 cd $BUILD_DIR
 chmod 755 $BUILD_DIR

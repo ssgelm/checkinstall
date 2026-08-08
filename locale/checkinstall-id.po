@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: checkinstall-id\n"
 "Report-Msgid-Bugs-To: https://github.com/ssgelm/checkinstall/issues\n"
-"POT-Creation-Date: 2026-08-07 02:20-0500\n"
+"POT-Creation-Date: 2026-08-07 20:21-0500\n"
 "PO-Revision-Date: 2005-01-10 21:03+0700\n"
 "Last-Translator: Tedi Heriyanto <tedi_h@gmx.net>\n"
 "Language-Team:  <translation-id@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9\n"
 
-#: checkinstall.in:83 checkinstall.in:337
+#: checkinstall.in:83 checkinstall.in:338
 msgid "Bye."
 msgstr "Bye."
 
@@ -270,6 +270,12 @@ msgid ""
 msgstr ""
 
 #: checkinstall.in:180
+msgid ""
+"--debcompression=<type>        Compression for the .deb: gzip, xz, zstd "
+"or\\n                               none. Leave it unset and dpkg-deb chooses"
+msgstr ""
+
+#: checkinstall.in:181
 #, fuzzy
 #| msgid ""
 #| "--strip=<yes|no>               Strip any ELF binaries found inside the "
@@ -278,34 +284,34 @@ msgid "--addso=<yes|no>               Search for any shared libs and add"
 msgstr ""
 "--strip=<yes|no>               Strip sembarang biner ELF yang ada dalam paket"
 
-#: checkinstall.in:181
+#: checkinstall.in:182
 #, fuzzy
 #| msgid "-si                            Run an interactive install command"
 msgid "                               them to /etc/ld.so.conf"
 msgstr "-si                            Jalankan perintah instalasi interaktif"
 
-#: checkinstall.in:182
+#: checkinstall.in:183
 msgid ""
 "--reset-uids=<yes|no>          Reset perms for all files to o=g, dirs to 755 "
 "and"
 msgstr ""
 
-#: checkinstall.in:183
+#: checkinstall.in:184
 msgid ""
 "                               the owner/group for all dirs to root.root"
 msgstr ""
 
-#: checkinstall.in:184
+#: checkinstall.in:185
 msgid ""
 "--gzman=<yes|no>               Compress any man pages found inside the "
 "package"
 msgstr "--gzman=<yes|no>               Kompresi man pages yang ada dalam paket"
 
-#: checkinstall.in:185
+#: checkinstall.in:186
 msgid "--docdir=<path>                Where to put documentation files"
 msgstr "--docdir=<path>                Lokasi file dokumentasi"
 
-#: checkinstall.in:186
+#: checkinstall.in:187
 #, fuzzy
 #| msgid "-si                            Run an interactive install command"
 msgid ""
@@ -313,7 +319,7 @@ msgid ""
 "appended."
 msgstr "-si                            Jalankan perintah instalasi interaktif"
 
-#: checkinstall.in:187
+#: checkinstall.in:188
 #, fuzzy
 #| msgid "-D                               Build a Debian package"
 msgid ""
@@ -321,157 +327,178 @@ msgid ""
 "(:)."
 msgstr "-D                               Buat paket Debian"
 
-#: checkinstall.in:188
+#: checkinstall.in:189
 msgid "--umask=<mask>                 Set the umask value"
 msgstr "--umask=<mask>                 Set nilai umask"
 
-#: checkinstall.in:189
+#: checkinstall.in:190
 msgid ""
 "--exclude=<file|dir[,...]>     Exclude these files/directories from the "
 "package"
 msgstr ""
 "--exclude=<file|dir[,...]>     Kecualikan file/direktori ini dari paket"
 
-#: checkinstall.in:190
+#: checkinstall.in:191
 msgid ""
 "--include=<listfile>           Force the inclusion in the package of the"
 msgstr "--include=<listfile>           Paksa penyertaannya dalam paket"
 
-#: checkinstall.in:191
+#: checkinstall.in:192
 #, fuzzy
 #| msgid "-D                               Build a Debian package"
 msgid "                               files/dirs listed in \"listfile\""
 msgstr "-D                               Buat paket Debian"
 
-#: checkinstall.in:192
+#: checkinstall.in:193
 msgid "--inspect                      Inspect the package's file list"
 msgstr "--inspect                      periksa daftar file paket"
 
-#: checkinstall.in:193
+#: checkinstall.in:194
 msgid ""
 "--review-spec                  Review the spec file before creating a .rpm"
 msgstr "--review-spec                  Review file spec sebelum membuat rpm"
 
-#: checkinstall.in:194
+#: checkinstall.in:195
 msgid ""
 "--review-control               Review the control file before creating a .deb"
 msgstr "--review-control               Review file kendali sebelum membuat deb"
 
-#: checkinstall.in:195
+#: checkinstall.in:196
 msgid ""
 "--newslack                     Use the new (8.1+) Slackware description "
 "format"
 msgstr ""
 "--newslack                     Gunakan format deskripsi Slackware baru (8.1+)"
 
-#: checkinstall.in:196
+#: checkinstall.in:197
 msgid "                               (\"--newslack\" implies \"-S\")"
 msgstr "                               (\"--newslack\" implies \"-S\")"
 
-#: checkinstall.in:197
+#: checkinstall.in:198
 msgid "--with-tar=/path/to/tar        Manually set the path to the tar binary"
 msgstr ""
 
-#: checkinstall.in:198
+#: checkinstall.in:199
 #, fuzzy
 #| msgid "-R                               Build a RPM package"
 msgid "                               in this system"
 msgstr "-R                               Buat paket RPM"
 
-#: checkinstall.in:200
+#: checkinstall.in:201
 msgid "*Cleanup options*"
 msgstr "*Opsi Pembersihan*"
 
-#: checkinstall.in:202
+#: checkinstall.in:203
 msgid "--deldoc=<yes|no>              Delete doc-pak upon termination"
 msgstr "--deldoc=<yes|no>              Hapus doc-pak setelah berhenti"
 
-#: checkinstall.in:203
+#: checkinstall.in:204
 msgid "--deldesc=<yes|no>             Delete description-pak upon termination"
 msgstr "--deldesc=<yes|no>             Hapus description-pak setelah berhenti"
 
-#: checkinstall.in:204
+#: checkinstall.in:205
 msgid "--delspec=<yes|no>             Delete spec file upon termination"
 msgstr "--delspec=<yes|no>             Hapus file spec setelah berhenti"
 
-#: checkinstall.in:205
+#: checkinstall.in:206
 msgid "--bk                           Backup any overwritten files"
 msgstr "--bk                           Backup file-file yang ditimpa"
 
-#: checkinstall.in:206
+#: checkinstall.in:207
 msgid "--backup=<yes|no>              Toggle backup"
 msgstr "--backup=<yes|no>              Aktifkan backup"
 
-#: checkinstall.in:208
+#: checkinstall.in:209
 msgid "*About CheckInstall*"
 msgstr "*Tentang CheckInstall*"
 
-#: checkinstall.in:210
+#: checkinstall.in:211
 msgid "--help, -h                     Show this message"
 msgstr "--help, -h                     Tampilkan pesan ini"
 
-#: checkinstall.in:211
+#: checkinstall.in:212
 msgid "--copyright                    Show Copyright information"
 msgstr "--copyright                    Tampilkan informasi hak cipta"
 
-#: checkinstall.in:212
+#: checkinstall.in:213
 msgid "--version                      Show version information"
 msgstr "--version                      Tampilkan informasi versi"
 
-#: checkinstall.in:220
+#: checkinstall.in:221
 msgid "Use --help or -h to get more information"
 msgstr "Gunakan  --help atau -h untuk memperoleh informasi lebih lanjut"
 
-#: checkinstall.in:228
+#: checkinstall.in:229 checkinstall.in:764
 #, fuzzy, sh-printf-format
 #| msgid "is an invalid value for"
 msgid "%s is an invalid value for %s"
 msgstr "merupakan nilai tidak valid untuk"
 
-#: checkinstall.in:279
+#: checkinstall.in:280
 msgid " FAILED!"
 msgstr ""
 
-#: checkinstall.in:282
+#: checkinstall.in:283
 msgid "OK"
 msgstr ""
 
-#: checkinstall.in:297
+#: checkinstall.in:298
 msgid "Restoring overwritten files from backup..."
 msgstr "Mengembalikan file-file yang ditimpa dari backup..."
 
-#: checkinstall.in:310
+#: checkinstall.in:311
 msgid "*** SIGINT received ***"
 msgstr "*** SIGINT diterima ***"
 
-#: checkinstall.in:317
+#: checkinstall.in:318
 msgid "Cleaning up..."
 msgstr "Pembersihan..."
+
+#: checkinstall.in:325
+#, sh-printf-format
+msgid "(Debugging mode on, KEEPING temp dir %s)..."
+msgstr ""
+
+#: checkinstall.in:507
+#, fuzzy, sh-printf-format
+#| msgid "The checkinstallrc file was not found at:"
+msgid "The checkinstallrc file was not found at:\\n%s"
+msgstr "File checkinstallrc tidak ditemukan di:"
 
 #: checkinstall.in:509
 msgid "Assuming default values."
 msgstr "Asumsikan nilai baku."
 
-#: checkinstall.in:828
+#: checkinstall.in:765
+msgid "Use gzip, xz, zstd or none."
+msgstr ""
+
+#: checkinstall.in:842
 #, sh-printf-format
 msgid ""
 "Warning: .spec file path \"%s\" not found.\\nWarning: Defaulting to \"%s\"."
 msgstr ""
 
-#: checkinstall.in:1072
+#: checkinstall.in:1085
 #, sh-printf-format
 msgid ""
 "Warning: The path to tar specified in the command line is invalid."
 "\\nWarning: It has been set to %s"
 msgstr ""
 
-#: checkinstall.in:1100
+#: checkinstall.in:1111
+#, fuzzy, sh-printf-format
+#| msgid "I can't find $INSTALLWATCH."
+msgid "I can't find %s."
+msgstr "Tidak dapat menemukan $INSTALLWATCH."
+
+#: checkinstall.in:1113
 msgid ""
 "I can't continue. Either install installwatch or\\nmodify the INSTALLWATCH "
 "variable in this script,\\nthen run checkinstall again."
 msgstr ""
 
-#: checkinstall.in:1123
+#: checkinstall.in:1136
 #, fuzzy, sh-printf-format
 #| msgid "is an unacceptable value for the temp dir. Please"
 msgid ""
@@ -479,18 +506,18 @@ msgid ""
 "definition for %s and try again."
 msgstr "adalah sebuah nilai yang tidak valid untuk dir temp. Silakan"
 
-#: checkinstall.in:1125
+#: checkinstall.in:1138
 msgid "*** Aborting"
 msgstr "*** Membatalkan"
 
-#: checkinstall.in:1132
+#: checkinstall.in:1145
 #, sh-printf-format
 msgid ""
 "**** Failed to create temp dir! \\n**** Do you have write permission for %s? "
 "\\n\\n**** Aborting installation."
 msgstr ""
 
-#: checkinstall.in:1155
+#: checkinstall.in:1168
 #, fuzzy
 #| msgid "The package documentation directory ./doc-pak does not exist."
 msgid ""
@@ -498,11 +525,11 @@ msgid ""
 "create a default set of package docs? "
 msgstr "Direktori dokumentasi paket ./doc-pak tidak ada."
 
-#: checkinstall.in:1158
+#: checkinstall.in:1171
 msgid "Preparing package documentation..."
 msgstr "Mempersiapkan dokumentasi paket..."
 
-#: checkinstall.in:1174
+#: checkinstall.in:1187
 #, fuzzy
 #| msgid "*** No known documentation files were found. The new package"
 msgid ""
@@ -510,23 +537,23 @@ msgid ""
 "include a documentation directory."
 msgstr "*** File dokumentasi yang dikenal tidak ditemukan. Paket baru"
 
-#: checkinstall.in:1192
+#: checkinstall.in:1205
 msgid "Please choose the packaging method you want to use."
 msgstr "Silakan pilih metode paket yang diinginkan."
 
-#: checkinstall.in:1193
+#: checkinstall.in:1206
 msgid "Slackware [S], RPM [R] or Debian [D]? "
 msgstr "Slackware [S], RPM [R] atau Debian [D]? "
 
-#: checkinstall.in:1213
+#: checkinstall.in:1226
 msgid "*** Invalid type."
 msgstr ""
 
-#: checkinstall.in:1237
+#: checkinstall.in:1250
 msgid "Please write a description for the package."
 msgstr "Silakan tulis deskripsi untuk paket."
 
-#: checkinstall.in:1242
+#: checkinstall.in:1255
 #, fuzzy
 #| msgid ""
 #| "only the first one when listing packages so make that one descriptive."
@@ -535,11 +562,11 @@ msgid ""
 "make that one descriptive."
 msgstr "yang pertama ketika mendaftar paket jadi buatlah yang deskriptif."
 
-#: checkinstall.in:1245
+#: checkinstall.in:1258
 msgid "End your description with an empty line or EOF."
 msgstr "Akhiri deskripsi dengan baris kosong atau EOF."
 
-#: checkinstall.in:1263
+#: checkinstall.in:1276
 #, fuzzy
 #| msgid "Warning: Your package description is bigger than 11 lines."
 msgid ""
@@ -547,25 +574,25 @@ msgid ""
 "Slackware 8.1+ pkgtools might not like it."
 msgstr "Peringatan: Deskripsi paket anda melebihi 11 baris."
 
-#: checkinstall.in:1275
+#: checkinstall.in:1288
 msgid ""
 "********************************************\\n**** Slackware package "
 "creation selected ***\\n********************************************"
 msgstr ""
 
-#: checkinstall.in:1280
+#: checkinstall.in:1293
 msgid ""
 "**************************************\\n**** RPM package creation selected "
 "***\\n**************************************"
 msgstr ""
 
-#: checkinstall.in:1285
+#: checkinstall.in:1298
 msgid ""
 "*****************************************\\n**** Debian package creation "
 "selected ***\\n*****************************************"
 msgstr ""
 
-#: checkinstall.in:1355
+#: checkinstall.in:1368
 #, sh-printf-format
 msgid ""
 "*** Warning: The package name \"%s\" contains spaces.\\n*** Warning: Package "
@@ -573,7 +600,7 @@ msgid ""
 "systems so I changed all spaces to underscores."
 msgstr ""
 
-#: checkinstall.in:1364
+#: checkinstall.in:1377
 #, sh-printf-format
 msgid ""
 "*** Warning: The package name \"%s\" contains upper case\\n*** Warning: "
@@ -581,7 +608,7 @@ msgid ""
 "case."
 msgstr ""
 
-#: checkinstall.in:1372
+#: checkinstall.in:1385
 #, sh-printf-format
 msgid ""
 "*** Warning: The package name \"%s\" does not start with\\n*** Warning: an "
@@ -589,7 +616,7 @@ msgid ""
 "Warning: it with a number 0."
 msgstr ""
 
-#: checkinstall.in:1378
+#: checkinstall.in:1391
 #, sh-printf-format
 msgid ""
 "*** Warning: The package name \"%s\" contains illegal\\n*** Warning: "
@@ -597,205 +624,205 @@ msgid ""
 "dashes."
 msgstr ""
 
-#: checkinstall.in:1403
+#: checkinstall.in:1416
 #, sh-printf-format
 msgid ""
 "*** Warning: The package version \"%s\" is not a\\n*** Warning: debian "
 "policy compliant one. Please specify an alternate one"
 msgstr ""
 
-#: checkinstall.in:1460
+#: checkinstall.in:1473
 msgid "This package will be built according to these values: "
 msgstr "Paket ini akan dibuat berdasarkan nilai-nilai berikut:"
 
-#: checkinstall.in:1464
+#: checkinstall.in:1477
 #, fuzzy, sh-printf-format
 #| msgid "0 -  Maintainer:"
 msgid "0 -  Maintainer: [ %s ]"
 msgstr "0 -  Pemelihara:"
 
-#: checkinstall.in:1466
+#: checkinstall.in:1479
 #, fuzzy, sh-printf-format
 #| msgid "1 -  Summary:"
 msgid "1 -  Summary: [ %s ]"
 msgstr "1 -  Ringkasan:"
 
-#: checkinstall.in:1467
+#: checkinstall.in:1480
 #, fuzzy, sh-printf-format
 #| msgid "2 -  Name:"
 msgid "2 -  Name:    [ %s ]"
 msgstr "2 -  Nama:"
 
-#: checkinstall.in:1468
+#: checkinstall.in:1481
 #, fuzzy, sh-printf-format
 #| msgid "3 -  Version:"
 msgid "3 -  Version: [ %s ]"
 msgstr "3 -  Versi:"
 
-#: checkinstall.in:1469
+#: checkinstall.in:1482
 #, sh-printf-format
 msgid "4 -  Release: [ %s ]"
 msgstr ""
 
-#: checkinstall.in:1470
+#: checkinstall.in:1483
 #, fuzzy, sh-printf-format
 #| msgid "5 -  License:"
 msgid "5 -  License: [ %s ]"
 msgstr "5 -  Lisensi:"
 
-#: checkinstall.in:1471
+#: checkinstall.in:1484
 #, fuzzy, sh-printf-format
 #| msgid "6 -  Group:"
 msgid "6 -  Group:   [ %s ]"
 msgstr "6 -  Kelompok:"
 
-#: checkinstall.in:1472
+#: checkinstall.in:1485
 #, fuzzy, sh-printf-format
 #| msgid "7 -  Architecture:"
 msgid "7 -  Architecture: [ %s ]"
 msgstr "7 -  Arsitektur:"
 
-#: checkinstall.in:1473
+#: checkinstall.in:1486
 #, fuzzy, sh-printf-format
 #| msgid "8 -  Source location:"
 msgid "8 -  Source location: [ %s ]"
 msgstr "8 -  Lokasi sumber:"
 
-#: checkinstall.in:1474
+#: checkinstall.in:1487
 #, fuzzy, sh-printf-format
 #| msgid "9 -  Alternate source location:"
 msgid "9 -  Alternate source location: [ %s ]"
 msgstr "9 -  Lokasi sumber alternatif:"
 
-#: checkinstall.in:1476
+#: checkinstall.in:1489
 #, fuzzy, sh-printf-format
 #| msgid "11 - Requires:"
 msgid "10 - Requires: [ %s ]"
 msgstr "11 - Membutuhkan:"
 
-#: checkinstall.in:1478
+#: checkinstall.in:1491
 #, sh-printf-format
 msgid "11 - Recommends: [ %s ]"
 msgstr ""
 
-#: checkinstall.in:1480
+#: checkinstall.in:1493
 #, sh-printf-format
 msgid "12 - Suggests: [ %s ]"
 msgstr ""
 
-#: checkinstall.in:1482
+#: checkinstall.in:1495
 #, fuzzy, sh-printf-format
 #| msgid "10 - Provides:"
 msgid "13 - Provides: [ %s ]"
 msgstr "10 - Memberikan:"
 
-#: checkinstall.in:1483
+#: checkinstall.in:1496
 #, sh-printf-format
 msgid "14 - Conflicts: [ %s ]"
 msgstr ""
 
-#: checkinstall.in:1484
+#: checkinstall.in:1497
 #, sh-printf-format
 msgid "15 - Replaces: [ %s ]"
 msgstr ""
 
-#: checkinstall.in:1485
+#: checkinstall.in:1498
 #, fuzzy, sh-printf-format
 #| msgid "11 - Requires:"
 msgid "16 - Prerequires: [ %s ]"
 msgstr "11 - Membutuhkan:"
 
-#: checkinstall.in:1488
+#: checkinstall.in:1501
 msgid "Enter a number to change any of them or press ENTER to continue: "
 msgstr "Masukkan angka untuk merubah salah satunya atau ENTER untuk lanjut:"
 
-#: checkinstall.in:1498
+#: checkinstall.in:1511
 msgid "Enter new summary: "
 msgstr "Masukkan ringkasan baru:"
 
-#: checkinstall.in:1503
+#: checkinstall.in:1516
 msgid "Enter new name: "
 msgstr "Masukkan nama baru:"
 
-#: checkinstall.in:1508
+#: checkinstall.in:1521
 msgid "Enter new version: "
 msgstr "Masukkan versi baru:"
 
-#: checkinstall.in:1513
+#: checkinstall.in:1526
 msgid "Enter new release number: "
 msgstr "Masukkan nomor rilis baru:"
 
-#: checkinstall.in:1518
+#: checkinstall.in:1531
 msgid "Enter the license type: "
 msgstr "Masukkan tipe lisensi:"
 
-#: checkinstall.in:1523
+#: checkinstall.in:1536
 msgid "Enter the new software group: "
 msgstr "Masukkan kelompok software baru:"
 
-#: checkinstall.in:1528
+#: checkinstall.in:1541
 msgid "Enter the architecture type: "
 msgstr "Masukkan tipe arsitektur:"
 
-#: checkinstall.in:1533
+#: checkinstall.in:1546
 msgid "Enter the source location: "
 msgstr "Masukkan lokasi sumber:"
 
-#: checkinstall.in:1538
+#: checkinstall.in:1551
 msgid "Enter the alternate source location: "
 msgstr "Masukkan lokasi sumber alternatif:"
 
-#: checkinstall.in:1544
+#: checkinstall.in:1557
 #, fuzzy
 #| msgid "Enter the maintaner's name and e-mail address: "
 msgid "Enter the maintainer's name and e-mail address: "
 msgstr "Masukkan nama dan email pemelihara:"
 
-#: checkinstall.in:1551
+#: checkinstall.in:1564
 msgid "Enter the additional requirements: "
 msgstr "Masukkan kebutuhan lainnya:"
 
-#: checkinstall.in:1558
+#: checkinstall.in:1571
 #, fuzzy
 #| msgid "Enter the additional requirements: "
 msgid "Enter the additional recommendations: "
 msgstr "Masukkan kebutuhan lainnya:"
 
-#: checkinstall.in:1565
+#: checkinstall.in:1578
 #, fuzzy
 #| msgid "Enter the additional requirements: "
 msgid "Enter the additional suggestions: "
 msgstr "Masukkan kebutuhan lainnya:"
 
-#: checkinstall.in:1573
+#: checkinstall.in:1586
 msgid "Enter the provided features: "
 msgstr "Masukkan fitur yang diberikan:"
 
-#: checkinstall.in:1644
+#: checkinstall.in:1657
 #, fuzzy, sh-printf-format
 #| msgid "Installing with"
 msgid "Installing with %s..."
 msgstr "Instalasi dengan"
 
-#: checkinstall.in:1669 checkinstall.in:2341
+#: checkinstall.in:1682 checkinstall.in:2357
 msgid ""
 "========================= Installation results ==========================="
 msgstr "========================= Hasil Instalasi ==========================="
 
-#: checkinstall.in:1675 checkinstall.in:2348
+#: checkinstall.in:1688 checkinstall.in:2364
 msgid ""
 "======================== Installation successful =========================="
 msgstr "======================== Instalasi Berhasil =========================="
 
-#: checkinstall.in:1688
+#: checkinstall.in:1701
 msgid "****  Installation failed. Aborting package creation."
 msgstr "****  Instalasi gagal. Membatalkan pembuatan paket."
 
-#: checkinstall.in:1694
+#: checkinstall.in:1707
 msgid "Do you want to view the installation log file? "
 msgstr "Anda ingin melihat file log instalasi?"
 
-#: checkinstall.in:1699
+#: checkinstall.in:1712
 #, sh-printf-format
 msgid ""
 " ***************************************************************\\n         "
@@ -803,7 +830,7 @@ msgid ""
 "***************************************************************\\n"
 msgstr ""
 
-#: checkinstall.in:1797
+#: checkinstall.in:1810
 #, fuzzy
 #| msgid "Some of the files created by the installation are inside the build"
 msgid ""
@@ -811,22 +838,22 @@ msgid ""
 "directory: /home"
 msgstr "Beberapa file yang dibuat oleh instalasi berada dalam "
 
-#: checkinstall.in:1799
+#: checkinstall.in:1812
 #, fuzzy
 #| msgid "You probably don't want them to be included in the package,"
 msgid "You probably don't want them to be included in the package."
 msgstr "Anda mungkin tidak ingin menyertakan mereka dalam paket,"
 
-#: checkinstall.in:1800
+#: checkinstall.in:1813
 msgid "Do you want me to list them? "
 msgstr "Anda ingin saya menampilkan daftar mereka?"
 
-#: checkinstall.in:1804 checkinstall.in:1821
+#: checkinstall.in:1817 checkinstall.in:1834
 msgid "Should I exclude them from the package? (Saying yes is a good idea) "
 msgstr ""
 "Haruskah saya tidak menyertakan mereka dari paket? (Jawab ya adalah ide baik)"
 
-#: checkinstall.in:1815
+#: checkinstall.in:1828
 #, fuzzy, sh-printf-format
 #| msgid "Some of the files created by the installation are inside the build"
 msgid ""
@@ -834,104 +861,110 @@ msgid ""
 "build\\ndirectory: %s"
 msgstr "Beberapa file yang dibuat oleh instalasi berada dalam "
 
-#: checkinstall.in:1817
+#: checkinstall.in:1830
 msgid ""
 "You probably don't want them to be included in the package,\\nespecially if "
 "they are inside your home directory.\\nDo you want me to list them? "
 msgstr ""
 
-#: checkinstall.in:1831
+#: checkinstall.in:1844
 msgid ""
 "You requested to review the list of files that will be\\nincluded in this "
 "package.\\n\\nNow you'll have the chance to review and optionally modify it."
 msgstr ""
 
-#: checkinstall.in:1833 checkinstall.in:2569 checkinstall.in:2804
+#: checkinstall.in:1846 checkinstall.in:2585 checkinstall.in:2824
 msgid "Press ENTER to continue."
 msgstr "Tekan ENTER untuk lanjut."
 
-#: checkinstall.in:1851
+#: checkinstall.in:1864
 msgid "Copying files to the temporary directory..."
 msgstr "Menyalinkan file ke direktori sementara..."
 
-#: checkinstall.in:1928
+#: checkinstall.in:1944
 #, fuzzy
 #| msgid "Striping ELF binaries and libraries..."
 msgid "Stripping ELF binaries and libraries..."
 msgstr "Men-strip biner dan librari ELF..."
 
-#: checkinstall.in:1930
+#: checkinstall.in:1946
 #, fuzzy
 #| msgid "Striping ELF binaries..."
 msgid "Stripping ELF binaries..."
 msgstr "Men-strip biner ELF..."
 
-#: checkinstall.in:1972
+#: checkinstall.in:1988
 msgid "Compressing man pages..."
 msgstr "Mengkompresi man page..."
 
-#: checkinstall.in:2049
+#: checkinstall.in:2065
 msgid "Building file list..."
 msgstr "Membuat daftar file..."
 
-#: checkinstall.in:2082
+#: checkinstall.in:2098
 msgid "Shared libraries found. Adding them to the postinstall script."
 msgstr ""
 
-#: checkinstall.in:2140
+#: checkinstall.in:2156
 msgid "Kernel modules found. Calling depmod in the postinstall script"
 msgstr ""
 
-#: checkinstall.in:2194
+#: checkinstall.in:2210
 msgid "*** The \"installpkg\" program is not in your PATH!"
 msgstr "*** Program \"installpkg\" tidak ada dalam PATH anda!"
 
-#: checkinstall.in:2196
+#: checkinstall.in:2212
 msgid "*** Slackware package creation aborted"
 msgstr "*** Pembuatan paket Slackware dibatalkan"
 
-#: checkinstall.in:2206
+#: checkinstall.in:2222
 msgid "Preparing Slackware install directory..."
 msgstr "Mempersiapkan direktori instalasi Slackware..."
 
-#: checkinstall.in:2212
+#: checkinstall.in:2228
 msgid "Writing package description..."
 msgstr "Menulis deskripsi paket..."
 
-#: checkinstall.in:2261
+#: checkinstall.in:2277
 msgid "Writing Slackware install script..."
 msgstr "Menulis skrip instalasi Slackware..."
 
-#: checkinstall.in:2291
+#: checkinstall.in:2307
 msgid "Appending your script to the main install script..."
 msgstr "Menambahkan skrip anda ke skrip instalasi utama..."
 
-#: checkinstall.in:2335
+#: checkinstall.in:2319
+#, fuzzy, sh-printf-format
+#| msgid "Transferring package to"
+msgid "Creating package %s..."
+msgstr "Mentransfer paket ke"
+
+#: checkinstall.in:2351
 msgid "Installing package..."
 msgstr "Instalasi paket..."
 
-#: checkinstall.in:2354 checkinstall.in:2628 checkinstall.in:2835
+#: checkinstall.in:2370 checkinstall.in:2644 checkinstall.in:2855
 msgid "*** Failed to install the package"
 msgstr "*** Gagal menginstalasi paket"
 
-#: checkinstall.in:2357 checkinstall.in:2604 checkinstall.in:2630
-#: checkinstall.in:2818 checkinstall.in:2837
+#: checkinstall.in:2373 checkinstall.in:2620 checkinstall.in:2646
+#: checkinstall.in:2838 checkinstall.in:2857
 msgid "Do you want to see the log file? "
 msgstr "Anda ingin melihat file log?"
 
-#: checkinstall.in:2368
+#: checkinstall.in:2384
 msgid "NOTE: The package will not be installed."
 msgstr "CATATAN: Paket tidak akan diinstalasi."
 
-#: checkinstall.in:2401
+#: checkinstall.in:2417
 msgid "*** The \"rpm\" program is not in your PATH!"
 msgstr "*** Program \"rpm\" tidak ada dalam PATH anda!"
 
-#: checkinstall.in:2403
+#: checkinstall.in:2419
 msgid "*** RPM package creation aborted"
 msgstr "*** Pembuatan paket RPM dibatalkan"
 
-#: checkinstall.in:2476
+#: checkinstall.in:2492
 #, fuzzy, sh-printf-format
 #| msgid "$RPMSOURCEDIR has no SOURCES directory. Please write the path to"
 msgid ""
@@ -939,7 +972,7 @@ msgid ""
 "directory tree: "
 msgstr "$RPMSOURCEDIR tidak memiliki direktori SOURCES. Silakan tulis path ke"
 
-#: checkinstall.in:2567
+#: checkinstall.in:2583
 #, fuzzy
 #| msgid ""
 #| "Now you'll have the chance to review and optionally modify this file."
@@ -949,46 +982,46 @@ msgid ""
 msgstr ""
 "Sekarang anda punya kesempatan untuk mereview dan memodifikasi file ini."
 
-#: checkinstall.in:2596
+#: checkinstall.in:2612
 msgid "Building RPM package..."
 msgstr "Membuat paket RPM..."
 
-#: checkinstall.in:2602 checkinstall.in:2816
+#: checkinstall.in:2618 checkinstall.in:2836
 msgid "*** Failed to build the package"
 msgstr "*** Gagal membuat paket"
 
-#: checkinstall.in:2616
+#: checkinstall.in:2632
 msgid ""
 "Warning: the use of RPMFLAGS is deprecated.\\nWarning: You should now use "
 "RPM_FLAGS,\\nWarning: please update your checkinstallrc file."
 msgstr ""
 
-#: checkinstall.in:2623
+#: checkinstall.in:2639
 msgid "Installing RPM package..."
 msgstr "Instalasi paket RPM..."
 
-#: checkinstall.in:2638 checkinstall.in:2845
+#: checkinstall.in:2654 checkinstall.in:2865
 msgid "NOTE: The package will not be installed"
 msgstr "CATATAN: paket tidak akan diinstalasi"
 
-#: checkinstall.in:2672
+#: checkinstall.in:2688
 msgid "Looking for shared library dependencies..."
 msgstr ""
 
-#: checkinstall.in:2702
+#: checkinstall.in:2718
 #, sh-printf-format
 msgid "Depends: %s"
 msgstr ""
 
-#: checkinstall.in:2718
+#: checkinstall.in:2734
 msgid "*** The \"dpkg\" program is not in your PATH!"
 msgstr "*** Program \"dpkg\" tidak ada dalam PATH anda!"
 
-#: checkinstall.in:2720
+#: checkinstall.in:2736
 msgid "*** Debian package creation aborted"
 msgstr "*** Pembuatan paket Debian dibatalkan"
 
-#: checkinstall.in:2802
+#: checkinstall.in:2822
 #, fuzzy
 #| msgid ""
 #| "Now you'll have the chance to review and optionally modify this file."
@@ -998,15 +1031,15 @@ msgid ""
 msgstr ""
 "Sekarang anda punya kesempatan untuk mereview dan memodifikasi file ini."
 
-#: checkinstall.in:2810
+#: checkinstall.in:2830
 msgid "Building Debian package..."
 msgstr "Membuat paket Debian..."
 
-#: checkinstall.in:2830
+#: checkinstall.in:2850
 msgid "Installing Debian package..."
 msgstr "Instalasi paket Debian..."
 
-#: checkinstall.in:2875
+#: checkinstall.in:2895
 #, fuzzy, sh-printf-format
 #| msgid "doesn't exist. Do you want to create it?"
 msgid ""
@@ -1014,27 +1047,27 @@ msgid ""
 "it?"
 msgstr "tidak ada. Anda ingin membuatnya?"
 
-#: checkinstall.in:2878
+#: checkinstall.in:2898
 msgid "Creating package storage directory..."
 msgstr "Membuat direktori penyimpanan paket..."
 
-#: checkinstall.in:2883
+#: checkinstall.in:2903
 #, fuzzy, sh-printf-format
 #| msgid "*** Unable to create $PAK_DIR"
 msgid "*** Unable to create %s"
 msgstr "*** Tidak dapat membuat $PAK_DIR"
 
-#: checkinstall.in:2891
+#: checkinstall.in:2911
 #, fuzzy, sh-printf-format
 #| msgid "Transferring package to"
 msgid "Transferring package to %s..."
 msgstr "Mentransfer paket ke"
 
-#: checkinstall.in:2896
+#: checkinstall.in:2916
 msgid "*** Transfer failed:"
 msgstr ""
 
-#: checkinstall.in:2905
+#: checkinstall.in:2925
 #, fuzzy
 #| msgid "There's no package storage directory, the package"
 msgid ""
@@ -1042,46 +1075,40 @@ msgid ""
 "default location."
 msgstr "Tidak ada direktori penyimpanan paket, paket"
 
-#: checkinstall.in:2915
+#: checkinstall.in:2935
 msgid "Erasing temporary files..."
 msgstr "Menghapus file sementara..."
 
-#: checkinstall.in:2933
+#: checkinstall.in:2953
 msgid "Deleting doc-pak directory..."
 msgstr "Menghapus direktori doc-pak..."
 
-#: checkinstall.in:2968
+#: checkinstall.in:2988
 msgid "Writing backup package..."
 msgstr "Menulis paket backup..."
 
-#: checkinstall.in:2979
+#: checkinstall.in:2999
 msgid "Deleting temp dir..."
 msgstr "Menghapus dir temp..."
 
-#: checkinstall.in:2985
+#: checkinstall.in:3005
 msgid "Building debug information package..."
 msgstr "Membuat informasi debug paket..."
 
-#: checkinstall.in:3001
+#: checkinstall.in:3021
 #, sh-printf-format
 msgid ""
 " Done. The new package has been installed and saved to\\n\\n %s\\n\\n You "
 "can remove it from your system anytime using: \\n\\n      %s"
 msgstr ""
 
-#: checkinstall.in:3011
+#: checkinstall.in:3031
 #, fuzzy, sh-printf-format
 #| msgid " You can install it in your system anytime using: "
 msgid ""
 " Done. The new package has been saved to\\n\\n %s\\n You can install it in "
 "your system anytime using: \\n\\n      %s"
 msgstr "Anda dapat menginstalasinya kapan saja menggunakan:"
-
-#~ msgid "The checkinstallrc file was not found at:"
-#~ msgstr "File checkinstallrc tidak ditemukan di:"
-
-#~ msgid "I can't find $INSTALLWATCH."
-#~ msgstr "Tidak dapat menemukan $INSTALLWATCH."
 
 #~ msgid "I can't continue. Either install installwatch or"
 #~ msgstr "Tidak dapat meneruskan. Instalasi installwatch atau"
