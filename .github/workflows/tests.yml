@@ -109,7 +109,7 @@ jobs:
   # because armhf is where the 64-bit time transition broke the build once
   # already and s390x is the only big-endian target within reach.
   emulated:
-    name: ${{ matrix.platform }}
+    name: ${{ matrix.platform }} (${{ matrix.image }})
     runs-on: ubuntu-latest
     timeout-minutes: 90
     strategy:
@@ -119,9 +119,16 @@ jobs:
           - platform: linux/arm/v7
             image: arm32v7/debian:bookworm
             suite: yes
+            flags: ""
+          # what the armhf buildd actually is: sid, and the ABI flags
+          - platform: linux/arm/v7
+            image: arm32v7/debian:unstable
+            suite: yes
+            flags: "-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_TIME_BITS=64 -g -O2"
           - platform: linux/s390x
             image: s390x/debian:bookworm
             suite: no
+            flags: ""
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
@@ -136,7 +143,7 @@ jobs:
               cp -r /src /work && cd /work
               echo "arch: $(uname -m), $(getconf LONG_BIT)-bit"
               echo "glibc: $(ldd --version | head -1)"
-              make
+              make ${{ matrix.flags && format('CFLAGS="{0}"', matrix.flags) || '' }}
               if [ "${{ matrix.suite }}" = yes ]; then tests/run-tests.sh; fi
             '
 

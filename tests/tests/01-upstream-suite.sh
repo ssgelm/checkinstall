@@ -37,7 +37,15 @@ for mode in 0 1; do
 		ok "upstream suite, fstrans=$mode"
 	else
 		fail "upstream suite, fstrans=$mode"
-		printf '%s\n' "$out" | grep -i "fail" | sed 's/^/      /'
+		# Not every way of failing says "fail". A crash says nothing at
+		# all, so fall back to the tail of whatever came out.
+		if printf '%s' "$out" | grep -qi "fail"; then
+			printf '%s\n' "$out" | grep -i "fail" | sed 's/^/      /'
+		else
+			printf '%s\n' "$out" | tail -12 | sed 's/^/      /'
+			printf '      (no "fail" in the output, exit %s)\n' \
+				"$(run_iw "$WORK/rc$mode" "$mode" "$WORK/test-installwatch" >/dev/null 2>&1; echo $?)"
+		fi
 	fi
 done
 finish
