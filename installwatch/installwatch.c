@@ -2140,8 +2140,16 @@ static int instw_getstatus_inner(instw_t *instw,int *status) {
 	  /* Which of these three answers no, and for which path, is the whole
 	   * question when a file that is plainly in the translated tree comes
 	   * back missing. Saying so here beats inferring it from the caller. */
-	if((instw->gstatus&INSTW_INITIALIZED) && __instw.dbglvl>=3) {
+	if(__instw.dbglvl>=3) {
 		int rc,er,saved=errno;
+
+		  /* Print this even when the bit is clear. Every test below
+		   * needs INSTW_INITIALIZED, so without it nothing is marked
+		   * translated and the caller stats the real path, and the
+		   * trace saying nothing at all is the least helpful way to
+		   * find that out. */
+		debug(3,"\tgstatus=0x%x status=0x%x\n",
+		      instw->gstatus,instw->status);
 
 		  /* rc and errno into locals first: as arguments they are
 		   * evaluated in whatever order the compiler likes, and errno
