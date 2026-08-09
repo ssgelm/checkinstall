@@ -72,6 +72,37 @@ jobs:
               tests/run-tests.sh
             '
 
+  # Distributions compile with _FILE_OFFSET_BITS=64 and _TIME_BITS=64 on
+  # 32-bit. Both rename this library's own definitions, which took the plain
+  # symbols away and left the true_* pointers bound to a libc function whose
+  # struct layout no longer matched. Translation broke on Debian armhf for
+  # years without anything noticing. Build the way a distribution does, on
+  # the glibc the buildds run, and check the plain names survived.
+  distro-flags:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: build with a distribution's flags in a 32-bit userland
+        run: |
+          docker run --rm --platform linux/386 \
+            -v "$PWD":/src:ro -w /tmp i386/debian:unstable sh -c '
+              set -e
+              export DEBIAN_FRONTEND=noninteractive
+              apt-get -qq update
+              apt-get -qq install -y build-essential gettext file cmake dpkg-dev
+              cp -r /src /work && cd /work
+              rm -f installwatch/*.o installwatch/*.so installwatch/localdecls.h
+              echo "glibc: $(ldd --version | head -1)"
+              # what the armhf buildd passes
+              make CFLAGS="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_TIME_BITS=64 -g -O2"
+              for sym in open openat creat fopen stat lstat fstatat readdir \
+                         readlink truncate ftruncate utimensat; do
+                nm -D --defined-only installwatch/installwatch.so |
+                  grep -qw "$sym" || { echo "wrapper lost to a header rename: $sym"; exit 1; }
+              done
+              tests/run-tests.sh
+            '
+
   # Architectures no runner provides. Emulated, so slow, and worth it only
   # because armhf is where the 64-bit time transition broke the build once
   # already and s390x is the only big-endian target within reach.
