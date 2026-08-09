@@ -66,7 +66,7 @@ run from there.
 | `17-at-wrappers.sh` | the `*at` calls resolving against their descriptor and not the working directory |
 | `18-renameat2.sh` | `RENAME_NOREPLACE` refusing properly, and `RENAME_EXCHANGE` swapping rather than destroying |
 | `19-empty-path.sh` | `AT_EMPTY_PATH` keeping descriptor semantics for an `O_PATH` handle on a dangling link |
-| `21-access.sh` | `faccessat()` and `euidaccess()` asking about the translated path, not the real one |
+| `20-access.sh` | `faccessat()` and `euidaccess()` asking about the translated path, not the real one |
 
 `src/` holds seven small C helpers: one that materialises an `O_TMPFILE`
 through `linkat`, one that calls the LFS64 temporary-file functions
