@@ -1,3 +1,31 @@
+Checkinstall 1.8.1
+======================================
+
+One fix, for 32-bit systems whose distribution compiles with 64-bit file
+offsets and 64-bit time. Debian does that on armhf, and has for years.
+
+Both options make glibc's headers rename the functions installwatch
+defines, so open() was compiled as open64() and stat() as
+__stat64_time64(), and the plain names left the library. The pointers it
+keeps to the real functions were still bound by name, so they reached a
+libc entry point whose struct layout no longer matched the one this code
+had been compiled against. Reads of st_mode landed on the wrong bytes, and
+the tests that decide whether a path is a directory or a symbolic link
+answered from them.
+
+What that looked like in use: files written to the real filesystem instead
+of into the package, installs aborting partway through, and packages built
+with nothing in them. On i386 against glibc 2.42 the test suite drops from
+19 of 19 to 5.
+
+The Makefile now undoes both options for installwatch alone. It has always
+defined the 64-bit entry points itself, which is what those options were
+wanted for, and they are unchanged. A build with no special flags behaves
+as it did, and so does every 64-bit architecture.
+
+The suite also builds with a distribution's flags now, on the glibc the
+Debian buildds run. That gap is why this lasted as long as it did.
+
 Checkinstall 1.8.0
 ======================================
 
