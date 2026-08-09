@@ -67,14 +67,16 @@ run from there.
 | `18-renameat2.sh` | `RENAME_NOREPLACE` refusing properly, and `RENAME_EXCHANGE` swapping rather than destroying |
 | `19-empty-path.sh` | `AT_EMPTY_PATH` keeping descriptor semantics for an `O_PATH` handle on a dangling link |
 | `20-getcwd.sh` | `getcwd()` handing back the caller's buffer rather than the wrapper's own |
+| `21-access.sh` | `faccessat()` and `euidaccess()` asking about the translated path, not the real one |
 
-`src/` holds seven small C helpers: one that materialises an `O_TMPFILE`
+`src/` holds eight small C helpers: one that materialises an `O_TMPFILE`
 through `linkat`, one that calls the LFS64 temporary-file functions
 directly, one that opens files in modes the shell cannot ask for, one
 that drives the `*at` calls with a real directory descriptor, one that
 calls `renameat2` with its flags, one that stats an `O_PATH` descriptor
-through `AT_EMPTY_PATH`, and one that checks which pointer `getcwd`
-returns.
+through `AT_EMPTY_PATH`, one that checks which pointer `getcwd`
+returns, and one that puts the same question to every member of the
+`access` family.
 
 ## Writing another one
 

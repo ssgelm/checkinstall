@@ -140,6 +140,8 @@ static long long int (*true_time64)(long long int *);
 #endif
 
 static int (*true_access)(const char *, int);
+static int (*true_faccessat)(int, const char *, int, int);
+static int (*true_euidaccess)(const char *, int);
 static int (*true_setxattr)(const char *,const char *,const void *,
                             size_t, int);
 static int (*true_removexattr)(const char *,const char *);
@@ -511,6 +513,8 @@ static void initialize(void) {
 #endif
 
         true_access      = dlsym(libc_handle, "access");
+        true_faccessat   = dlsym(libc_handle, "faccessat");
+        true_euidaccess  = dlsym(libc_handle, "euidaccess");
 
 
 
@@ -4278,6 +4282,75 @@ int access (const char *pathname, int type) {
        instw_delete(&instw);
 
        return result;
+}
+
+int faccessat (int dirfd, const char *pathname, int type, int flags) {
+	int result;
+	instw_t instw;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"faccessat(%d,%s,%d,%d)\n",dirfd,pathname,type,flags);
+#endif
+
+	  /* We were asked to work in "real" mode */
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_faccessat(dirfd,pathname,type,flags);
+
+	instw_new(&instw);
+	instw_setpathrel(&instw,dirfd,pathname);
+
+#if DEBUG
+	instw_print(&instw);
+#endif
+
+	  /* nothing is modified, so there is nothing to save */
+	instw_apply(&instw);
+
+	  /* instw resolved an absolute path, so the descriptor is spent */
+	result=true_faccessat(AT_FDCWD,instw.translpath,type,flags);
+	logg("%d\tfaccessat\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+  /* glibc's euidaccess, and eaccess as its alias. gnulib reaches for these
+   * before faccessat, so leaving them untranslated puts the same question
+   * to the real filesystem. */
+int euidaccess (const char *pathname, int type) {
+	int result;
+	instw_t instw;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"euidaccess(%s,%d)\n",pathname,type);
+#endif
+
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_euidaccess(pathname,type);
+
+	instw_new(&instw);
+	instw_setpath(&instw,pathname);
+	instw_apply(&instw);
+
+	result=true_euidaccess(instw.translpath,type);
+	logg("%d\teuidaccess\t%s\t#%s\n",result,instw.reslvpath,error(result));
+
+	instw_delete(&instw);
+
+	return result;
+}
+
+int eaccess (const char *pathname, int type) {
+	return euidaccess(pathname,type);
 }
 
 int setxattr (const char *pathname, const char *name,
