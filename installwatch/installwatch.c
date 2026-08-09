@@ -2137,6 +2137,26 @@ static int instw_getstatus_inner(instw_t *instw,int *status) {
 
 #if DEBUG
 	debug(2,"instw_getstatus(%p,%p)\n",instw,status);
+	  /* Which of these three answers no, and for which path, is the whole
+	   * question when a file that is plainly in the translated tree comes
+	   * back missing. Saying so here beats inferring it from the caller. */
+	if((instw->gstatus&INSTW_INITIALIZED) && __instw.dbglvl>=3) {
+		int rc,er,saved=errno;
+
+		  /* rc and errno into locals first: as arguments they are
+		   * evaluated in whatever order the compiler likes, and errno
+		   * then reads from before the call. */
+		rc=true_stat(instw->mtranslpath,&inode); er=errno;
+		debug(3,"\tmtransl \"%s\" stat=%d errno=%d\n",
+		      instw->mtranslpath,rc,rc?er:0);
+		rc=true_lstat(instw->translpath,&tinode); er=errno;
+		debug(3,"\ttransl  \"%s\" lstat=%d errno=%d\n",
+		      instw->translpath,rc,rc?er:0);
+		rc=true_stat(instw->reslvpath,&rinode); er=errno;
+		debug(3,"\treslv   \"%s\" stat=%d errno=%d\n",
+		      instw->reslvpath,rc,rc?er:0);
+		errno=saved;
+	}
 #endif
 
 	  /* 
