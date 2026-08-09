@@ -41,35 +41,36 @@ jobs:
       - name: run the suite
         run: tests/run-tests.sh
 
-  # 32-bit x86 userland on the 64-bit runner, no emulation needed. This is
-  # where the LFS64 wrappers and the explicit *_time64 entry points are
-  # compiled in, which is the ground #1054601 was fought over.
+  # 32-bit x86 userland, no emulation needed. This is where the LFS64
+  # wrappers and the explicit *_time64 entry points are compiled in, which
+  # is the ground #1054601 was fought over.
+  #
+  # Not a container: job containers get GitHub's own x86_64 node injected
+  # for the JavaScript actions, and a 32-bit container cannot execute it.
+  # Check out on the runner and reach into the container instead.
   i386:
     runs-on: ubuntu-latest
-    container:
-      image: i386/debian:bookworm
-      options: --platform linux/386
     steps:
-      - name: install what the suite needs
-        run: |
-          export DEBIAN_FRONTEND=noninteractive
-          apt-get -qq update
-          apt-get -qq install -y build-essential gettext file cmake dpkg-dev git
       - uses: actions/checkout@v4
-      - name: report the environment
+      - name: build and test in a 32-bit userland
         run: |
-          echo "userland: $(getconf LONG_BIT)-bit"
-          echo "glibc:    $(ldd --version | head -1)"
-      - name: build
-        run: make
-      - name: confirm the 32-bit time entry points are really compiled in
-        run: |
-          n=$(nm -D --defined-only installwatch/installwatch.so |
-              grep -c '__stat64_time64\|__utimensat64')
-          echo "explicit time64 wrappers: $n"
-          test "$n" -gt 0
-      - name: run the suite
-        run: tests/run-tests.sh
+          docker run --rm --platform linux/386 \
+            -v "$PWD":/src:ro -w /tmp i386/debian:bookworm sh -c '
+              set -e
+              export DEBIAN_FRONTEND=noninteractive
+              apt-get -qq update
+              apt-get -qq install -y build-essential gettext file cmake dpkg-dev
+              cp -r /src /work && cd /work
+              rm -f installwatch/*.o installwatch/*.so installwatch/localdecls.h
+              echo "userland: $(getconf LONG_BIT)-bit"
+              echo "glibc:    $(ldd --version | head -1)"
+              make
+              n=$(nm -D --defined-only installwatch/installwatch.so |
+                  grep -c "__stat64_time64\|__utimensat64")
+              echo "explicit time64 wrappers: $n"
+              test "$n" -gt 0
+              tests/run-tests.sh
+            '
 
   # Architectures no runner provides. Emulated, so slow, and worth it only
   # because armhf is where the 64-bit time transition broke the build once
