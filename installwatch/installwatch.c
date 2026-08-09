@@ -4065,6 +4065,13 @@ int __stat64_time64(const char *pathname, void *info) {
 	else
 		result=true_stat64_time64(instw.path,info);
 
+#if DEBUG
+	debug(2,"__stat64_time64(\"%s\") status=0x%x -> \"%s\" rc=%d errno=%d\n",
+	      pathname,status,
+	      (status&INSTW_TRANSLATED)?instw.translpath:instw.path,
+	      result,result?errno:0);
+#endif
+
 	instw_delete(&instw);
 
 	return result;
@@ -4090,6 +4097,13 @@ int __lstat64_time64(const char *pathname, void *info) {
 		result=true_lstat64_time64(instw.translpath,info);
 	else
 		result=true_lstat64_time64(instw.path,info);
+
+#if DEBUG
+	debug(2,"__lstat64_time64(\"%s\") status=0x%x -> \"%s\" rc=%d errno=%d\n",
+	      pathname,status,
+	      (status&INSTW_TRANSLATED)?instw.translpath:instw.path,
+	      result,result?errno:0);
+#endif
 
 	instw_delete(&instw);
 
@@ -4117,6 +4131,11 @@ int __fstatat64_time64(int dirfd, const char *path, void *s, int flags) {
 
 	instw_new(&instw);
 	instw_setpathrel(&instw,dirfd,path);
+
+#if DEBUG
+	debug(2,"__fstatat64_time64(%d,\"%s\",flags=0x%x) -> \"%s\"\n",
+	      dirfd,path,flags,instw.path);
+#endif
 
 	  /* instw resolved an absolute path, so the descriptor is spent */
 	if(flags & AT_SYMLINK_NOFOLLOW)
