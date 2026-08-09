@@ -65,12 +65,14 @@ run from there.
 | `16-write-modes.sh` | opens that modify without asking for write access, and `fopen("rb+")` |
 | `17-at-wrappers.sh` | the `*at` calls resolving against their descriptor and not the working directory |
 | `18-renameat2.sh` | `RENAME_NOREPLACE` refusing properly, and `RENAME_EXCHANGE` swapping rather than destroying |
+| `19-empty-path.sh` | `AT_EMPTY_PATH` keeping descriptor semantics for an `O_PATH` handle on a dangling link |
 
-`src/` holds five small C helpers: one that materialises an `O_TMPFILE`
+`src/` holds six small C helpers: one that materialises an `O_TMPFILE`
 through `linkat`, one that calls the LFS64 temporary-file functions
 directly, one that opens files in modes the shell cannot ask for, one
-that drives the `*at` calls with a real directory descriptor, and one that
-calls `renameat2` with its flags.
+that drives the `*at` calls with a real directory descriptor, one that
+calls `renameat2` with its flags, and one that stats an `O_PATH`
+descriptor through `AT_EMPTY_PATH`.
 
 ## Writing another one
 

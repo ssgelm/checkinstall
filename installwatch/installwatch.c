@@ -4057,6 +4057,14 @@ int __fstatat64_time64(int dirfd, const char *path, void *s, int flags) {
 	int result;
 	instw_t instw;
 
+	  /* An empty path asks about 'dirfd' itself (AT_EMPTY_PATH). Rebuilding
+	   * a name for it through /proc/self/fd changes the question: for an
+	   * O_PATH descriptor on a symbolic link the rebuilt name gets followed,
+	   * and a dangling one then reports ENOENT instead of the link. Hand
+	   * these straight over, NULL included, and let libc answer. */
+	if(path==NULL || *path=='\0')
+		return true_fstatat64_time64(dirfd,path,s,flags);
+
 	if(!libc_handle)
 		initialize();
 
@@ -4933,6 +4941,14 @@ int fstatat (int dirfd, const char *path, struct stat *s, int flags) {
  	
  	int result;
  	instw_t instw;
+
+	  /* An empty path asks about 'dirfd' itself (AT_EMPTY_PATH). Rebuilding
+	   * a name for it through /proc/self/fd changes the question: for an
+	   * O_PATH descriptor on a symbolic link the rebuilt name gets followed,
+	   * and a dangling one then reports ENOENT instead of the link. Hand
+	   * these straight over, NULL included, and let libc answer. */
+	if(path==NULL || *path=='\0')
+		return true_fstatat(dirfd,path,s,flags);
  
  	/* If all we are doing is normal open, forgo refcounting, etc. */
          if(dirfd == AT_FDCWD || *path == '/')
@@ -5003,6 +5019,14 @@ int __fxstatat (int version, int dirfd, const char *path, struct stat *s, int fl
  	
  	int result;
  	instw_t instw;
+
+	  /* An empty path asks about 'dirfd' itself (AT_EMPTY_PATH). Rebuilding
+	   * a name for it through /proc/self/fd changes the question: for an
+	   * O_PATH descriptor on a symbolic link the rebuilt name gets followed,
+	   * and a dangling one then reports ENOENT instead of the link. Hand
+	   * these straight over, NULL included, and let libc answer. */
+	if(path==NULL || *path=='\0')
+		return true_fxstatat(version,dirfd,path,s,flags);
  
  	/* If all we are doing is normal open, forgo refcounting, etc. */
          if(dirfd == AT_FDCWD || *path == '/')
@@ -5072,6 +5096,14 @@ int fstatat64 (int dirfd, const char *path, struct stat64 *s, int flags) {
  	
  	int result;
  	instw_t instw;
+
+	  /* An empty path asks about 'dirfd' itself (AT_EMPTY_PATH). Rebuilding
+	   * a name for it through /proc/self/fd changes the question: for an
+	   * O_PATH descriptor on a symbolic link the rebuilt name gets followed,
+	   * and a dangling one then reports ENOENT instead of the link. Hand
+	   * these straight over, NULL included, and let libc answer. */
+	if(path==NULL || *path=='\0')
+		return true_fstatat64(dirfd,path,s,flags);
  
  	/* If all we are doing is normal open, forgo refcounting, etc. */
          if(dirfd == AT_FDCWD || *path == '/')
@@ -5140,6 +5172,14 @@ int __fxstatat64 (int version, int dirfd, const char *path, struct stat64 *s, in
  	
  	int result;
  	instw_t instw;
+
+	  /* An empty path asks about 'dirfd' itself (AT_EMPTY_PATH). Rebuilding
+	   * a name for it through /proc/self/fd changes the question: for an
+	   * O_PATH descriptor on a symbolic link the rebuilt name gets followed,
+	   * and a dangling one then reports ENOENT instead of the link. Hand
+	   * these straight over, NULL included, and let libc answer. */
+	if(path==NULL || *path=='\0')
+		return true_fxstatat64(version,dirfd,path,s,flags);
  
  	/* If all we are doing is normal open, forgo refcounting, etc. */
          if(dirfd == AT_FDCWD || *path == '/')

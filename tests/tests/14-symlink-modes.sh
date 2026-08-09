@@ -1,21 +1,15 @@
 #!/bin/bash
 # A mode set on a symlink must not reach the file it points at. tar asks for
-# that with AT_SYMLINK_NOFOLLOW on every symlink it extracts; when the flag
+# that with AT_SYMLINK_NOFOLLOW on every symlink it extracts. When the flag
 # was dropped the mode went to the target, so a 755 binary came out of the
-# package world writable, and a link extracted before its target aborted the
-# install outright.
+# package writable by anyone, and a link extracted before its target aborted
+# the install outright.
+#
+# This is also the integration case for 19. Where glibc is older than 2.32
+# and refuses AT_SYMLINK_NOFOLLOW, tar falls back to an O_PATH descriptor
+# and AT_EMPTY_PATH, so a wrapper that rebuilds a pathname for the empty one
+# breaks the extraction here.
 . "$HARNESS"
-
-# Setting a symlink's own mode needs glibc 2.32 or newer. Before that
-# fchmodat refuses AT_SYMLINK_NOFOLLOW outright and the extraction below
-# cannot succeed however installwatch behaves. v1.7.0 fails here too, so
-# this is not something the wrappers can fix.
-glibc=$(ldd --version 2>/dev/null | head -1 | grep -oE '[0-9]+\.[0-9]+$')
-case $glibc in
-	2.[0-9]|2.[12][0-9]|2.3[01])
-		skip "glibc $glibc cannot set a symlink's mode, needs 2.32"
-		finish ;;
-esac
 
 # The symlink sorts before its target, so tar extracts it while it dangles.
 d=$WORK/sym; make_pkgdir "$d"
