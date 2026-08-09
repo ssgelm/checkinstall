@@ -136,6 +136,7 @@ static int (*true_fstatat64_time64)(int, const char *, void *, int);
 static int (*true_utime64)(const char *, const void *);
 static int (*true_utimes64)(const char *, const void *);
 static int (*true_utimensat64)(int, const char *, const void *, int);
+static long long int (*true_time64)(long long int *);
 #endif
 
 static int (*true_access)(const char *, int);
@@ -506,6 +507,7 @@ static void initialize(void) {
 	true_utime64          = dlsym(libc_handle, "__utime64");
 	true_utimes64         = dlsym(libc_handle, "__utimes64");
 	true_utimensat64      = dlsym(libc_handle, "__utimensat64");
+	true_time64           = dlsym(libc_handle, "__time64");
 #endif
 
         true_access      = dlsym(libc_handle, "access");
@@ -4170,6 +4172,22 @@ int __utimensat64(int dirfd, const char *pathname, const void *times, int flags)
 	instw_delete(&instw);
 
 	return result;
+}
+
+/* Nothing here needs the time, but test-installwatch decides whether it is
+ * running under installwatch by calling time() and reading the counter
+ * below. On a port that redirects by default, everything calls this one. */
+long long int __time64(long long int *timer) {
+	TIMECOUNT;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"__time64\n");
+#endif
+
+	return true_time64(timer);
 }
 
 #endif
