@@ -1,3 +1,41 @@
+Checkinstall 1.8.3
+======================================
+
+Three fixes. All of them turned up by running the test suite on a Debian
+hppa porterbox, and none of them actually specific to hppa: every one was
+reachable anywhere, and hppa is simply where something finally took the code
+path that exposed it.
+
+* getcwd() handed back the wrapper's own stack buffer in place of the buffer
+  it was given, so callers were reading a frame that had already gone. Where
+  the stack grows downward that dead frame usually survives long enough to
+  read as the right string, which is how this went unnoticed for as long as
+  it has existed. Where it grows upward the caller overwrites it at once,
+  and cmake was handed a path with pointer bytes in the middle of it.
+
+* faccessat() and euidaccess() were never wrapped at all. Only access() was.
+  An access check on a file that exists only in the translated tree went to
+  the real filesystem and was told it was missing. rm checks write access
+  before it unlinks, so on a system whose rm takes that path it refused to
+  remove files that were plainly there.
+
+* A path longer than MAXPATHLEN passed to chroot() overran a stack buffer
+  and killed the process before the real chroot() ran. Thanks Brian
+  Cosgrove, who found it and fixed it.
+
+The suite gained a case for each, and it now says something useful when one
+of them fails. A test that only printed lines matching "fail" reported a
+crash as a bare FAIL and nothing else, and three of the stat wrappers logged
+nothing at all, so a failing lookup left no trace of what it had decided.
+Both cost a round trip through a porterbox before anything could be
+diagnosed.
+
+Tests are also split now between the two places they can live. A wrapper's
+own contract, its return value, errno and refcount, is checked in
+installwatch's own test program. What ends up in the translated tree or in
+the built package is checked by the shell suite. tests/README.md says which
+is which.
+
 Checkinstall 1.8.2
 ======================================
 

@@ -12,13 +12,13 @@ checkinstall
 "make install" goes first because we have no checkinstall installed yet :)
 
 "checkinstall" goes latter so we can have a properly installed (and removable)
-               package for checkinstall-1.8.2
+               package for checkinstall-1.8.3
 
                (Be sure to read the README if you're planning on building RPM or
                 Debian binary packages)
                 
                
-This will install checkinstall-1.8.2, makepak (modified makepkg) and 
+This will install checkinstall-1.8.3, makepak (modified makepkg) and 
 installwatch-0.7.0
 
 
