@@ -66,17 +66,40 @@ run from there.
 | `17-at-wrappers.sh` | the `*at` calls resolving against their descriptor and not the working directory |
 | `18-renameat2.sh` | `RENAME_NOREPLACE` refusing properly, and `RENAME_EXCHANGE` swapping rather than destroying |
 | `19-empty-path.sh` | `AT_EMPTY_PATH` keeping descriptor semantics for an `O_PATH` handle on a dangling link |
-| `20-getcwd.sh` | `getcwd()` handing back the caller's buffer rather than the wrapper's own |
 | `21-access.sh` | `faccessat()` and `euidaccess()` asking about the translated path, not the real one |
 
-`src/` holds eight small C helpers: one that materialises an `O_TMPFILE`
+`src/` holds seven small C helpers: one that materialises an `O_TMPFILE`
 through `linkat`, one that calls the LFS64 temporary-file functions
 directly, one that opens files in modes the shell cannot ask for, one
 that drives the `*at` calls with a real directory descriptor, one that
 calls `renameat2` with its flags, one that stats an `O_PATH` descriptor
-through `AT_EMPTY_PATH`, one that checks which pointer `getcwd`
-returns, and one that puts the same question to every member of the
-`access` family.
+through `AT_EMPTY_PATH`, and one that puts the same question to every
+member of the `access` family.
+
+## Unit tests or integration tests
+
+There are two places a test can go, and which one depends on what it
+asserts rather than what it is written in.
+
+`installwatch/test-installwatch.c` holds the **unit** tests: one wrapper's
+own contract. Its return value, its `errno`, its refcount, whether it agrees
+with libc given the same input. It runs under installwatch in both
+translation modes, driven by `01-upstream-suite.sh`. A test function reports
+a wrong value with `fail_test()` and carries on, so one bad assertion does
+not hide the rest of the run. `do_test`'s third argument is how much the
+refcount should move.
+
+`tests/tests/` holds the **integration** tests: what actually happened.
+Which tree a file landed in, what stayed off the real filesystem, what the
+backup holds, what ended up in the built package. Anything wanting a real
+tool, a package build, or its own `INSTW_*` settings belongs here, because
+the shell harness can set up a fixture and then inspect the result from
+outside the process under test.
+
+`getcwd` is the worked example. Checking that it returns the caller's buffer
+rather than the wrapper's own is a unit test and lives in the unit program.
+Checking that a write reached the translated tree and not `/usr` is an
+integration test and lives here.
 
 ## Writing another one
 

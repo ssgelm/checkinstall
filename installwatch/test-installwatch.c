@@ -25,6 +25,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <dlfcn.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -40,6 +41,20 @@
 int *refcount;
 int *timecount;
 int passed, failed;
+
+/* A test function is void and do_test only compares a refcount, so until now
+ * the only way to report a wrong value was to exit and take the rest of the
+ * run with it. Record it here instead and let do_test fold it in. */
+static int test_failures;
+
+static void fail_test(const char *fmt, ...) {
+	va_list ap;
+
+	va_start(ap,fmt);
+	vfprintf(stderr,fmt,ap);
+	va_end(ap);
+	test_failures++;
+}
 void* libc_handle=NULL;
 
 void check_installwatch(void) {
@@ -126,25 +141,44 @@ void test_chroot(void) {
 	libc_result=libc_chroot(longpath);
 	libc_errno=errno;
 	if(*refcount != old_refcount) {
-		fprintf(stderr,
-		        "FAIL: direct libc chroot changed refcount from %d to %d\n",
-		        old_refcount,*refcount);
-		exit(1);
+		fail_test("FAIL: direct libc chroot changed refcount from %d to %d\n",
+		          old_refcount,*refcount);
 	}
 
 	errno=0;
 	wrapper_result=chroot(longpath);
 	wrapper_errno=errno;
 	if(wrapper_result != libc_result || wrapper_errno != libc_errno) {
-		fprintf(stderr,
-		        "FAIL: libc chroot returned %d with errno %d; "
-		        "installwatch returned %d with errno %d\n",
-		        libc_result,libc_errno,wrapper_result,wrapper_errno);
-		exit(1);
+		fail_test("FAIL: libc chroot returned %d with errno %d; "
+		          "installwatch returned %d with errno %d\n",
+		          libc_result,libc_errno,wrapper_result,wrapper_errno);
 	}
 
 	dlclose(libc);
 	free(longpath);
+}
+
+/* getcwd() returns the buffer it was given. Returning its own instead is a
+ * dangling pointer into a frame that has gone, which reads back as the right
+ * string where the stack grows down and as garbage where it grows up. */
+void test_getcwd(void) {
+	char buf[PATH_MAX];
+	char *ret;
+
+	ret=getcwd(buf,sizeof(buf));
+	if(ret == NULL)
+		fail_test("FAIL: getcwd(buf) failed\n");
+	else if(ret != buf)
+		fail_test("FAIL: getcwd returned %p, not the buffer %p it was given\n",
+		          (void *)ret,(void *)buf);
+
+	ret=getcwd(NULL,0);
+	if(ret == NULL)
+		fail_test("FAIL: getcwd(NULL,0) failed\n");
+	else if(ret == buf)
+		fail_test("FAIL: getcwd(NULL,0) returned the caller's buffer\n");
+	else
+		free(ret);
 }
 
 void test_creat(void) {
@@ -262,9 +296,10 @@ int do_test(const char *name, void (*function)(void), int increment) {
 	int old_refcount;
 	
 	printf("Testing %s... ", name);
+	test_failures = 0;
 	old_refcount = *refcount;
 	function();
-	if(*refcount == old_refcount + increment) {
+	if(*refcount == old_refcount + increment && test_failures == 0) {
 		printf("wanted refcount=%d returned refcount=%d",
 			(old_refcount+increment),*refcount);
 		puts("passed");
@@ -298,6 +333,7 @@ int main(int argc, char **argv) {
 	do_test("chmod", test_chmod, 3);
 	do_test("chown", test_chown, 3);
 	do_test("chroot", test_chroot, 2);
+	do_test("getcwd", test_getcwd, 0);
 	do_test("creat", test_creat, 2);
 	do_test("fchmod", test_fchmod, 3);
 	do_test("fchown", test_fchown, 3);
