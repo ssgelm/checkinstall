@@ -21,8 +21,18 @@ installwatch.so: installwatch.o
 	# note otherwise, and without it there are no separate debug symbols.
 	ld --build-id -znow -shared -o installwatch.so installwatch.o -ldl -lc $(LIBGCC)
 
+# An interposition library has to define every ABI variant of a call itself:
+# open() and open64(), stat() and stat64() and __stat64_time64(), and so on.
+# _FILE_OFFSET_BITS=64 and _TIME_BITS=64 make glibc's headers rename those
+# definitions, so the plain names disappear from the library and, worse, the
+# true_* pointers get bound by dlsym() to a symbol whose struct layout no
+# longer matches the one this file was compiled against. Distributions pass
+# both by default on 32-bit, so undo them here rather than trusting the
+# caller. The explicit 64-bit entry points below cover what they were for.
+ABI_UNDEFS=-U_FILE_OFFSET_BITS -U_TIME_BITS
+
 installwatch.o: installwatch.c localdecls.h
-	gcc $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -Wall -c -g -D_GNU_SOURCE -DPIC -fPIC -D_REENTRANT -DVERSION=\"$(VERSION)\" installwatch.c
+	gcc $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $(ABI_UNDEFS) -Wall -c -g -D_GNU_SOURCE -DPIC -fPIC -D_REENTRANT -DVERSION=\"$(VERSION)\" installwatch.c
 
 localdecls.h: create-localdecls
 	./create-localdecls
