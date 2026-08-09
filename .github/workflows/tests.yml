@@ -72,12 +72,14 @@ jobs:
               tests/run-tests.sh
             '
 
-  # Distributions compile with _FILE_OFFSET_BITS=64 and _TIME_BITS=64 on
-  # 32-bit. Both rename this library's own definitions, which took the plain
-  # symbols away and left the true_* pointers bound to a libc function whose
-  # struct layout no longer matched. Translation broke on Debian armhf for
-  # years without anything noticing. Build the way a distribution does, on
-  # the glibc the buildds run, and check the plain names survived.
+  # Debian compiles with _FILE_OFFSET_BITS=64 and _TIME_BITS=64 on most of
+  # its 32-bit architectures: armhf, armel, powerpc, m68k, hppa and sh4, but
+  # not i386 or x32. Both rename this library's own definitions, which took
+  # the plain symbols away and left the true_* pointers bound to a libc
+  # function whose struct layout no longer matched. Translation broke on all
+  # six for years without anything noticing. i386 is the 32-bit userland a
+  # runner can give us, so pass the flags by hand rather than relying on the
+  # ones dpkg would pick there.
   distro-flags:
     runs-on: ubuntu-latest
     steps:
