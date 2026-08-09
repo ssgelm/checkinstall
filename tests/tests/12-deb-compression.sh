@@ -26,8 +26,20 @@ else
 	finish
 fi
 
+# older dpkg-deb builds only some of these. Ask it rather than assume.
+supported() {
+	d=$WORK/probe; rm -rf "$d"; mkdir -p "$d/DEBIAN"
+	printf 'Package: p\nVersion: 1\nArchitecture: all\nMaintainer: t\nDescription: t\n' \
+		> "$d/DEBIAN/control"
+	dpkg-deb -Z"$1" --build "$d" "$WORK/probe.deb" >/dev/null 2>&1
+}
+
 for t in gzip:data.tar.gz none:data.tar zstd:data.tar.zst xz:data.tar.xz; do
 	want=${t#*:}; type=${t%%:*}
+	if ! supported "$type"; then
+		skip "--debcompression=$type: this dpkg-deb cannot build $type"
+		continue
+	fi
 	deb=$(build "$type" "--debcompression=$type")
 	if [ -z "$deb" ]; then
 		fail "--debcompression=$type built no package"

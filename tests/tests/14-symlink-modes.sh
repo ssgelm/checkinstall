@@ -6,6 +6,17 @@
 # install outright.
 . "$HARNESS"
 
+# Setting a symlink's own mode needs glibc 2.32 or newer. Before that
+# fchmodat refuses AT_SYMLINK_NOFOLLOW outright and the extraction below
+# cannot succeed however installwatch behaves. v1.7.0 fails here too, so
+# this is not something the wrappers can fix.
+glibc=$(ldd --version 2>/dev/null | head -1 | grep -oE '[0-9]+\.[0-9]+$')
+case $glibc in
+	2.[0-9]|2.[12][0-9]|2.3[01])
+		skip "glibc $glibc cannot set a symlink's mode, needs 2.32"
+		finish ;;
+esac
+
 # The symlink sorts before its target, so tar extracts it while it dangles.
 d=$WORK/sym; make_pkgdir "$d"
 mkdir -p "$d/stage/usr/local/bin"

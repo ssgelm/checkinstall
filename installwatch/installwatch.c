@@ -406,6 +406,14 @@ static int instw_makedirls(instw_t *);
 
 static int backup(const char *);
 
+  /* the bodies behind the errno-preserving shims */
+static inline int path_excluded_inner(const char *);
+static int instw_setpath_inner(instw_t *,const char *);
+static int instw_setpathrel_inner(instw_t *, int, const char *);
+static int instw_getstatus_inner(instw_t *,int *);
+static int instw_apply_inner(instw_t *);
+static int backup_inner(const char *);
+
 static int vlambda_log(const char *logname,const char *format,va_list ap);
 
 /*
@@ -1089,7 +1097,18 @@ static int copy_path(const char *truepath,const char *translroot) {
  * note      = /   __instw.exclude must be initialized / 
  * 
  */
+  /* These helpers stat paths that are not there yet on the way to the
+   * real call, and those misses used to reach the caller: a successful
+   * operation would return with errno holding someone else's ENOENT.
+   * A predicate has no error to report, so it always restores. */
 static inline int path_excluded(const char *truepath) {
+	int s_errno=errno, r;
+	r=path_excluded_inner(truepath);
+	errno=s_errno;
+	return r;
+}
+
+static inline int path_excluded_inner(const char *truepath) {
 	string_t *pnext;
 	int result;
 
@@ -1899,6 +1918,14 @@ static int instw_patherror(instw_t *instw) {
 }
 
 static int instw_setpath(instw_t *instw,const char *path) {
+	int s_errno=errno, r;
+	r=instw_setpath_inner(instw,path);
+	  /* a failure has an errno worth keeping */
+	if(r>=0) errno=s_errno;
+	return r;
+}
+
+static int instw_setpath_inner(instw_t *instw,const char *path) {
 	char canonical[PATH_MAX+1];
 	const char *pcanon;
 
@@ -2026,6 +2053,13 @@ static int instw_setpath(instw_t *instw,const char *path) {
  *               -1 failed. cf errno /
  */
 static int instw_setpathrel(instw_t *instw, int dirfd, const char *relpath) {
+	int s_errno=errno, r;
+	r=instw_setpathrel_inner(instw,dirfd,relpath);
+	if(r>=0) errno=s_errno;
+	return r;
+}
+
+static int instw_setpathrel_inner(instw_t *instw, int dirfd, const char *relpath) {
 
 /* This constant should be large enough to make a string that holds
  * /proc/self/fd/xxxxx  if you have an open fd with more than five digits,
@@ -2080,6 +2114,13 @@ out:
  *               -1 failed. cf errno /
  */
 static int instw_getstatus(instw_t *instw,int *status) {
+	int s_errno=errno, r;
+	r=instw_getstatus_inner(instw,status);
+	if(r>=0) errno=s_errno;
+	return r;
+}
+
+static int instw_getstatus_inner(instw_t *instw,int *status) {
 	struct stat inode;
 	struct stat rinode;
 	struct stat tinode;
@@ -2100,10 +2141,13 @@ static int instw_getstatus(instw_t *instw,int *status) {
 
 	  /*
 	   * do the file currently exist in the translated fs ?
+	   *   lstat, not stat: a symlink is there whether or not whatever it
+	   * points at is, and following one that dangles reports the entry
+	   * missing when it is not.
 	   */
 	if( (instw->gstatus&INSTW_INITIALIZED) &&
 	     (instw->gstatus&INSTW_OKTRANSL) && 
-	     !true_stat(instw->translpath,&tinode) ) {
+	     !true_lstat(instw->translpath,&tinode) ) {
 		instw->status |= INSTW_ISINTRANSL;
 	}	
 
@@ -2162,6 +2206,13 @@ static int instw_getstatus(instw_t *instw,int *status) {
  *               -1 failed. cf errno     /
  */
 static int instw_apply(instw_t *instw) {
+	int s_errno=errno, r;
+	r=instw_apply_inner(instw);
+	if(r>=0) errno=s_errno;
+	return r;
+}
+
+static int instw_apply_inner(instw_t *instw) {
 	int rcod=0;
 	int status=0;
 	
@@ -2535,6 +2586,15 @@ static int instw_makedirls(instw_t *instw) {
  *
  */
 static int backup(const char *path) {
+	int s_errno=errno, r;
+	  /* backup is bookkeeping the caller never asked for, so whatever it
+	   * runs into is not the caller's error */
+	r=backup_inner(path);
+	errno=s_errno;
+	return r;
+}
+
+static int backup_inner(const char *path) {
 	char checkdir[BUFSIZ];
 	char backup_path[BUFSIZ];
 	char canonical[PATH_MAX+1];
