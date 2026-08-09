@@ -1,3 +1,63 @@
+Checkinstall 1.8.0
+======================================
+
+Packages this version builds can hold files that 1.7.0 left out. An open
+that created or emptied a file without asking for write access, and an
+fopen mode such as "rb+", counted as reading. Those writes missed the
+translated tree, so the file never reached the package, and on a root
+install it landed on the real filesystem instead. Rebuild anything packaged
+with 1.7.0 and compare.
+
+* Exclusions match whole path components. /tmp no longer excludes /tmpfoo,
+  and /usr/local no longer excludes /usr/locality. Nothing under an excluded
+  path is translated, so a name that matched one only by accident was
+  written for real and left out of the package.
+
+* renameat2 hands its flags to the kernel. RENAME_NOREPLACE used to look
+  first and rename afterwards, which is the race the flag exists to close,
+  and it reported the clash as a positive return that reads as success.
+  RENAME_EXCHANGE was dropped altogether, so asking to swap two files
+  renamed one over the other and lost the second.
+
+* An empty pathname asks about a file descriptor rather than a name, and is
+  passed through instead of being turned back into a name. Rebuilding one
+  answers a different question: for an O_PATH descriptor on a symbolic link
+  the rebuilt name gets followed, and a dangling link then looks missing.
+  That is what made tar abort partway through unpacking an archive holding
+  a link ahead of the file it points at, on any system whose glibc is older
+  than 2.32.
+
+* A call that succeeds no longer leaves errno holding an error from
+  somewhere else. Every one of them used to, and callers that look at errno
+  after a call that worked are not unusual.
+
+* A copy that fails partway is no longer taken for one that worked. A short
+  write, or an error the kernel held back until the file was closed, used to
+  leave a truncated file behind for the package to collect. Disks fill and
+  quotas run out.
+
+* Asking whether a file is already in the translated tree no longer follows
+  symbolic links, so one whose target is not unpacked yet stops looking
+  absent.
+
+* Several reads ran off the end of a buffer: a symbolic link that changed
+  underneath a readlink, a working directory joined to a long relative path,
+  a length measured from a buffer nothing had written yet, and an
+  INSTW_ROOTPATH set to nothing at all.
+
+* A path longer than PATH_MAX is refused. Shortening it meant working on
+  whichever file the shortened name happened to hit.
+
+* Four messages could not be translated into anything. They built their
+  value into the string before gettext saw it, so no catalogue ever matched.
+  All ten catalogues are UTF-8 now, in place of the five encodings they used
+  between them.
+
+* The tests run on six glibc versions, on 32-bit and 64-bit x86, on arm64
+  and armhf, and against an installed checkinstall rather than only a source
+  tree. Three of the faults above were found that way and none of them show
+  on a current Debian.
+
 Checkinstall 1.7.0
 ======================================
 

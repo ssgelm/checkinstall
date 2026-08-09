@@ -4,7 +4,7 @@
 #                           ########################                         
 #                                                                            
 #
-#                             CheckInstall v1.7.0
+#                             CheckInstall v1.8.0
 #
 #  Installs a compiled program from the program's source directory using     
 #  "make install" or any other command supplied on checkinstall's command  
@@ -38,7 +38,7 @@
 # Trap the INT signal (ctrl-c, for example)
 trap trapint 2
 
-CHECKINSTALL_VERSION=1.7.0
+CHECKINSTALL_VERSION=1.8.0
 
 # locate the file or directory that the parameter corresponds to;
 # always prints absolute path
