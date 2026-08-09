@@ -345,7 +345,7 @@ typedef struct instw_t {
 
 static instw_t __instw;
 
-static int canonicalize(const char *,char *);
+static const char *canonicalize(const char *,char *,size_t);
 static int reduce(char *);
 static int make_path(const char *);
 static int copy_path(const char *,const char *);
@@ -702,7 +702,9 @@ static inline int debug(int dbglvl,const char *format,...) {
 }
 
 /*
- * procedure = / rc:=canonicalize(path,resolved_path) /
+ * procedure = / result:=canonicalize(path,resolved_path,resolved_size) /
+ *
+ * returns   = / resolved_path if the selected path fits, path otherwise /
  *
  * note      = /
  *	--We use realpath here, but this function calls __lxstat().
@@ -711,37 +713,42 @@ static inline int debug(int dbglvl,const char *format,...) {
  *      --We try to canonicalize as much as possible, considering that 
  * /
  */
-static int canonicalize(const char *path, char *resolved_path) {
-        int s_errno;
+static const char *canonicalize(const char *path, char *resolved_path,
+				size_t resolved_size) {
+	int s_errno;
+	int plen;
+	char canonic[PATH_MAX+1];
+	const char *result=path;
 
         /* save errno */
         s_errno = errno;
 
 	unset_okwrap();
 
-	if(!realpath(path,resolved_path)) {
-		if((path[0] != '/')) {
-			/* The path could not be canonicalized, append it
-		 	 * to the current working directory if it was not 
-		 	 * an absolute path                               */
-			true_getcwd(resolved_path, PATH_MAX-2);
-			resolved_path[MAXPATHLEN-2] = '\0';
-			strcat(resolved_path, "/");
-			strncat(resolved_path, path, MAXPATHLEN - 1 - strlen(resolved_path));
-		} else {
-			strcpy(resolved_path,path);
-		}
+	if(realpath(path,canonic)) {
+		plen=snprintf(resolved_path,resolved_size,"%s",canonic);
+	} else if(path[0] != '/') {
+		if(true_getcwd(canonic,sizeof(canonic)))
+			plen=snprintf(resolved_path,resolved_size,"%s/%s",
+			              canonic,path);
+		else
+			plen=-1;
+	} else {
+		plen=snprintf(resolved_path,resolved_size,"%s",path);
 	}
+
+	if(plen>=0 && (size_t)plen<resolved_size)
+		result=resolved_path;
 
 	reset_okwrap();
 
 #if DEBUG
-	debug(4,"canonicalize(%s,%s)\n",path,resolved_path);
+	debug(4,"canonicalize(%s,%s)\n",path,result);
 #endif
         /* restore errno */
         errno = s_errno;
 
-	return 0;
+	return result;
 } 
 
 /*
@@ -2904,7 +2911,8 @@ int chown32(const char *path, uid_t owner, gid_t group) {
 
 int chroot(const char *path) {
 	int result;
-	char canonic[MAXPATHLEN];
+	const char *canonic;
+	char canonic_buf[MAXPATHLEN];
 
 	REFCOUNT;
 
@@ -2915,7 +2923,7 @@ int chroot(const char *path) {
 	debug(2,"chroot(%s)\n",path);
 #endif
 
-	canonicalize(path, canonic);
+	canonic=canonicalize(path,canonic_buf,sizeof(canonic_buf));
 	result = true_chroot(path);
 	  /*
 	   * From now on, another log file will be written if 
