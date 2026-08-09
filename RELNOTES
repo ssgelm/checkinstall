@@ -1,3 +1,24 @@
+Checkinstall 1.8.2
+======================================
+
+One more fix in the same corner as 1.8.1, for Debian armhf and any other
+port whose glibc turns on 64-bit time by default rather than on request.
+
+installwatch supplies the explicit 64-bit time entry points itself:
+__stat64_time64, __utimensat64 and four more. __time64 was not among them,
+so on those ports every call to time() went straight past the library.
+
+Nothing here depends on that wrapper beyond a counter it keeps, and no
+package built with 1.8.1 is affected. installwatch's own test program does
+depend on it: it calls time() and reads the counter to decide whether it is
+running under installwatch at all. The counter said zero, so the program
+reported it was running unwrapped and gave up. That was the single test
+Debian armhf still failed at 1.8.1, with the other eighteen passing.
+
+The emulated armhf test now runs on unstable with the flags a Debian buildd
+passes, in place of stable with none. That combination is what found this,
+and the old one is why 1.8.1 went out without it.
+
 Checkinstall 1.8.1
 ======================================
 
