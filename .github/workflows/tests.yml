@@ -41,6 +41,71 @@ jobs:
       - name: run the suite
         run: tests/run-tests.sh
 
+  # 32-bit x86 userland on the 64-bit runner, no emulation needed. This is
+  # where the LFS64 wrappers and the explicit *_time64 entry points are
+  # compiled in, which is the ground #1054601 was fought over.
+  i386:
+    runs-on: ubuntu-latest
+    container:
+      image: i386/debian:bookworm
+      options: --platform linux/386
+    steps:
+      - name: install what the suite needs
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get -qq update
+          apt-get -qq install -y build-essential gettext file cmake dpkg-dev git
+      - uses: actions/checkout@v4
+      - name: report the environment
+        run: |
+          echo "userland: $(getconf LONG_BIT)-bit"
+          echo "glibc:    $(ldd --version | head -1)"
+      - name: build
+        run: make
+      - name: confirm the 32-bit time entry points are really compiled in
+        run: |
+          n=$(nm -D --defined-only installwatch/installwatch.so |
+              grep -c '__stat64_time64\|__utimensat64')
+          echo "explicit time64 wrappers: $n"
+          test "$n" -gt 0
+      - name: run the suite
+        run: tests/run-tests.sh
+
+  # Architectures no runner provides. Emulated, so slow, and worth it only
+  # because armhf is where the 64-bit time transition broke the build once
+  # already and s390x is the only big-endian target within reach.
+  emulated:
+    name: ${{ matrix.platform }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux/arm/v7
+            image: arm32v7/debian:bookworm
+            suite: yes
+          - platform: linux/s390x
+            image: s390x/debian:bookworm
+            suite: no
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - name: build and test under emulation
+        run: |
+          docker run --rm --platform ${{ matrix.platform }} \
+            -v "$PWD":/src:ro -w /tmp ${{ matrix.image }} sh -c '
+              set -e
+              export DEBIAN_FRONTEND=noninteractive
+              apt-get -qq update
+              apt-get -qq install -y build-essential gettext file cmake dpkg-dev
+              cp -r /src /work && cd /work
+              echo "arch: $(uname -m), $(getconf LONG_BIT)-bit"
+              echo "glibc: $(ldd --version | head -1)"
+              make
+              if [ "${{ matrix.suite }}" = yes ]; then tests/run-tests.sh; fi
+            '
+
   # The runner itself, unprivileged, which is how an autopkgtest runs it.
   # arm64 is here to catch anything that assumes x86.
   native:
