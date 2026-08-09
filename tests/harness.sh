@@ -11,6 +11,14 @@ fail() { printf '  FAIL  %s\n' "$*"; FAILURES=$((FAILURES + 1)); }
 skip() { printf '  skip  %s\n' "$*"; }
 finish() { [ "$FAILURES" -eq 0 ]; exit $?; }
 
+# evidence <lines> <text>: the tail of some output, indented, with control
+# bytes made printable. A failing install can emit anything, and grep calls
+# a stream with one stray byte in it binary and prints nothing useful. hppa
+# produced exactly that and the log said only that the test had failed.
+evidence() {
+	printf '%s\n' "$2" | tr -d '\000' | cat -v | tail -n "$1" | sed 's/^/      /'
+}
+
 # Per-test scratch directory. It has to live outside /tmp and /var/tmp:
 # installwatch excludes those, so a test run from there would watch nothing.
 WORK=$(mktemp -d "$TESTTMP/work.XXXXXX")

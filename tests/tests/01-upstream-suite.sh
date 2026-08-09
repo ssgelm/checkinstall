@@ -42,7 +42,7 @@ for mode in 0 1; do
 		if printf '%s' "$out" | grep -qi "fail"; then
 			printf '%s\n' "$out" | grep -i "fail" | sed 's/^/      /'
 		else
-			printf '%s\n' "$out" | tail -12 | sed 's/^/      /'
+			evidence 12 "$out"
 			printf '      (no "fail" in the output, exit %s)\n' \
 				"$(run_iw "$WORK/rc$mode" "$mode" "$WORK/test-installwatch" >/dev/null 2>&1; echo $?)"
 		fi

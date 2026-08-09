@@ -23,6 +23,6 @@ if printf '%s' "$out" | grep -q "Installation successful"; then
 	ok "cmake install under fstrans"
 else
 	fail "cmake install under fstrans"
-	printf '%s\n' "$out" | grep -iA2 "cmake error" | sed 's/^/      /'
+	evidence 15 "$out"
 fi
 finish
