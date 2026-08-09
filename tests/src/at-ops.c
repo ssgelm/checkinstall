@@ -26,6 +26,13 @@ int main(int argc, char **argv) {
 	} else if(!strcmp(argv[1],"fstatat")) {
 		struct stat s;
 		r=fstatat(dirfd,argv[3],&s,0)?1:0;
+	} else if(!strcmp(argv[1],"unlink-then-stat")) {
+		/* remove it, then ask again through the same installwatch:
+		 * the deletion has to be visible, not just absent from the
+		 * real tree. 0 means gone, 1 means still there. */
+		struct stat st;
+		if(unlinkat(dirfd,argv[3],0)) r=2;
+		else r=(fstatat(dirfd,argv[3],&st,0)==0) ? 1 : 0;
 	} else if(!strcmp(argv[1],"renameat")) {
 		if(argc<5) { close(dirfd); return 2; }
 		r=renameat(dirfd,argv[3],dirfd,argv[4])?1:0;

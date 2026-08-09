@@ -27,20 +27,26 @@ fi
 target=$base/victim-trunc
 printf 'keep me\n' > "$target"
 run_iw "$WORK/iw2" 1 "$WORK/write-modes" rdonly-trunc "$target" >/dev/null 2>&1
-if [ -s "$target" ]; then
-	ok "O_RDONLY|O_TRUNC left the real file alone"
-else
+if [ ! -s "$target" ]; then
 	fail "O_RDONLY|O_TRUNC emptied the real file"
+elif [ ! -e "$WORK/iw2/TRANSL$target" ]; then
+	fail "O_RDONLY|O_TRUNC did not truncate anything in the translated tree"
+elif [ -s "$WORK/iw2/TRANSL$target" ]; then
+	fail "the translated copy was not truncated, so nothing was tested"
+else
+	ok "O_RDONLY|O_TRUNC truncated the translated copy and left the real file"
 fi
 
 # glibc takes "rb+" as readily as "r+b"
 target=$base/victim-fopen
 printf 'original\n' > "$target"
 run_iw "$WORK/iw3" 1 "$WORK/write-modes" fopen-rbplus "$target" >/dev/null 2>&1
-if [ "$(cat "$target")" = "original" ]; then
-	ok 'fopen "rb+" left the real file alone'
-else
+if [ "$(cat "$target")" != "original" ]; then
 	fail 'fopen "rb+" wrote through to the real file'
+elif ! grep -q clobbered "$WORK/iw3/TRANSL$target" 2>/dev/null; then
+	fail 'fopen "rb+" did not write into the translated copy either'
+else
+	ok 'fopen "rb+" wrote to the translated copy, not the real file'
 fi
 
 # and a genuine read must not be dragged into the translated tree

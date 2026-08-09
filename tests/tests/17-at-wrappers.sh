@@ -53,13 +53,20 @@ printf 'x\n' > "$base/target/before"
 at "$WORK/iw-ren" renameat before after >/dev/null 2>&1
 landed "$WORK/iw-ren" after "renameat moved the file under its descriptor"
 
-# unlinkat should remove inside the translated tree, not the real one
+# unlinkat should remove inside the translated tree, not the real one, and
+# the removal has to be visible to a later lookup through the same
+# installwatch rather than merely absent from the real tree
 printf 'x\n' > "$base/target/doomed"
-at "$WORK/iw-unlink" unlinkat doomed >/dev/null 2>&1
-if [ -e "$base/target/doomed" ]; then
-	ok "unlinkat left the real file in place"
-else
+at "$WORK/iw-unlink" unlink-then-stat doomed >/dev/null 2>&1
+rc=$?
+if [ ! -e "$base/target/doomed" ]; then
 	fail "unlinkat removed the real file"
+elif [ "$rc" -eq 2 ]; then
+	fail "unlinkat itself failed"
+elif [ "$rc" -ne 0 ]; then
+	fail "the file was still visible after unlinkat"
+else
+	ok "unlinkat recorded the deletion and left the real file"
 fi
 
 finish

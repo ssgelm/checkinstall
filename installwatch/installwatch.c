@@ -173,7 +173,7 @@ static int (*true_mkdirat)(int, const char *, mode_t);
 static int (*true_readlinkat)(int, const char *, char *, size_t);
 static int (*true_xmknodat)(int, int, const char *, mode_t, dev_t *);
 static int (*true_renameat)(int, const char *, int, const char *);
-static int (*true_renameat2)(int, const char *, int, const char *);
+static int (*true_renameat2)(int, const char *, int, const char *, unsigned int);
 static int (*true_symlinkat)(const char *, int, const char *);
 static int (*true_unlinkat)(int, const char *, int);
 
@@ -4001,11 +4001,8 @@ int __fstatat64_time64(int dirfd, const char *path, void *s, int flags) {
 		initialize();
 
 	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
-	    !(__instw.gstatus & INSTW_OKWRAP) ) {
-		if(flags & AT_SYMLINK_NOFOLLOW)
-			return true_lstat64_time64(path,s);
-		return true_stat64_time64(path,s);
-	}
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_fstatat64_time64(dirfd,path,s,flags);
 
 	instw_new(&instw);
 	instw_setpathrel(&instw,dirfd,path);
@@ -5869,20 +5866,54 @@ int renameat (int olddirfd, const char *oldpath,
 	return result;
 }
 
-/* Note that this only implements RENAME_NOREPLACE */
+  /*
+   *   The flags have to reach the kernel. RENAME_NOREPLACE is only
+   * meaningful if the test and the rename are one operation, and
+   * RENAME_EXCHANGE swaps two names: dropping it turns a swap into a
+   * one way rename and destroys one of them. So translate both paths the
+   * way rename() does and hand the result to renameat2 itself.
+   */
 int renameat2 (int olddirfd, const char *oldpath,
                   int newdirfd, const char *newpath, unsigned int flags) {
-  if (!libc_handle)
-    initialize();
+	int result;
+	instw_t instwold;
+	instw_t instwnew;
 
-  if ( (flags & RENAME_NOREPLACE) == RENAME_NOREPLACE ) {
-    instw_t instwnew;
-    instw_new(&instwnew);
-    instw_setpathrel(&instwnew,newdirfd,newpath);
-    struct stat buf;
-    if (stat(instwnew.path, &buf) == 0) return EEXIST;
-  }
-  return renameat (olddirfd, oldpath, newdirfd, newpath);
+	REFCOUNT;
+
+	if (!libc_handle)
+		initialize();
+
+#if DEBUG
+	debug(2,"renameat2(%d,%s,%d,%s,0x%x)\n",
+	      olddirfd,oldpath,newdirfd,newpath,flags);
+#endif
+
+	  /* We were asked to work in "real" mode */
+	if( !(__instw.gstatus & INSTW_INITIALIZED) ||
+	    !(__instw.gstatus & INSTW_OKWRAP) )
+		return true_renameat2(olddirfd,oldpath,newdirfd,newpath,flags);
+
+	instw_new(&instwold);
+	instw_new(&instwnew);
+	instw_setpathrel(&instwold,olddirfd,oldpath);
+	instw_setpathrel(&instwnew,newdirfd,newpath);
+
+	backup(instwold.truepath);
+	instw_apply(&instwold);
+	instw_apply(&instwnew);
+
+	  /* Both are absolute after the translation, so the descriptors are
+	   * spent and AT_FDCWD is what is left to pass. */
+	result=true_renameat2(AT_FDCWD,instwold.translpath,
+	                      AT_FDCWD,instwnew.translpath,flags);
+	logg("%d\trenameat2\t%s\t%s\t#%s\n",result,
+	    instwold.reslvpath,instwnew.reslvpath,error(result));
+
+	instw_delete(&instwold);
+	instw_delete(&instwnew);
+
+	return result;
 }
 
 int symlinkat (const char *oldpath, int dirfd, const char *newpath) {
