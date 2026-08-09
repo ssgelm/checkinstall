@@ -1,0 +1,115 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # Containers reach glibc versions the runner images do not. bullseye is
+  # the one that matters: it is the only place the pre-2.33 branch of the
+  # stat wrappers gets built for real rather than against a stub header.
+  suite:
+    name: ${{ matrix.image }}
+    runs-on: ubuntu-latest
+    container: ${{ matrix.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - debian:bullseye
+          - debian:bookworm
+          - debian:trixie
+          - debian:sid
+          - ubuntu:22.04
+          - ubuntu:24.04
+    steps:
+      - name: install what the suite needs
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get -qq update
+          apt-get -qq install -y build-essential gettext file cmake dpkg-dev git
+      - uses: actions/checkout@v4
+      - name: report the environment
+        run: |
+          echo "glibc:  $(ldd --version | head -1)"
+          echo "gcc:    $(gcc --version | head -1)"
+          echo "dpkg:   $(dpkg --version | head -1)"
+          echo "kernel: $(uname -r)"
+      - name: build
+        run: make
+      - name: run the suite
+        run: tests/run-tests.sh
+
+  # The runner itself, unprivileged, which is how an autopkgtest runs it.
+  # arm64 is here to catch anything that assumes x86.
+  native:
+    name: ${{ matrix.os }} (unprivileged)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-22.04, ubuntu-24.04-arm]
+    steps:
+      - uses: actions/checkout@v4
+      - name: install what the suite needs
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -qq install -y build-essential gettext file cmake dpkg-dev
+      - name: report the environment
+        run: |
+          echo "glibc:  $(ldd --version | head -1)"
+          echo "arch:   $(uname -m)"
+          echo "user:   $(id -un)"
+      - name: build
+        run: make
+      - name: run the suite
+        run: tests/run-tests.sh
+
+  # installwatch builds without a warning under Debian's flags. Keeping it
+  # that way is the only reason the last few real bugs were visible.
+  warnings:
+    runs-on: ubuntu-latest
+    container: debian:sid
+    steps:
+      - name: install
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get -qq update
+          apt-get -qq install -y build-essential gettext file dpkg-dev git
+      - uses: actions/checkout@v4
+      - name: build with the distribution's flags and refuse any warning
+        run: |
+          eval "$(dpkg-buildflags --export=sh)"
+          make -C installwatch CPPFLAGS="$CPPFLAGS" CFLAGS="$CFLAGS" \
+               LDFLAGS="$LDFLAGS" 2>&1 | tee build.log
+          if grep -q 'warning:' build.log; then
+            echo "::error::the build produced warnings"
+            grep 'warning:' build.log
+            exit 1
+          fi
+
+  # No runner ships a glibc old enough to reach some of the version guards,
+  # so compile against a stub localdecls.h that claims one.
+  old-glibc-guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install
+        run: sudo apt-get -qq update && sudo apt-get -qq install -y build-essential
+      - name: compile the pre-2.33 branch
+        run: |
+          mkdir -p stub
+          cat > stub/localdecls.h <<'EOF'
+          #ifndef __LOCALDECLS_H_
+          #define __LOCALDECLS_H_
+          #define TRUNCATE_T off_t
+          #define READLINKAT_T ssize_t
+          #define LIBC_FILE "libc.so.6"
+          #define LIBC_VERSION "2.28"
+          #define GLIBC_MAJOR 2
+          #define GLIBC_MINOR 28
+          #endif
+          EOF
+          gcc -fsyntax-only -Istub -Iinstallwatch -D_GNU_SOURCE \
+              installwatch/installwatch.c
