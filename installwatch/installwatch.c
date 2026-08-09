@@ -3090,6 +3090,11 @@ char *getcwd(char *buffer,size_t size) {
 		} else {
 			if(size>=wsize) {
 				strcpy(buffer,wptr);
+				  /* getcwd() returns the caller's buffer, not
+				   * the one we untranslated through. Leaving
+				   * result alone returns wpath, which is gone
+				   * the moment we do. */
+				result=buffer;
 			} else {
 				result=NULL;
 				errno=(size<=0?EINVAL:ERANGE);
