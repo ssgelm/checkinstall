@@ -4286,6 +4286,7 @@ int access (const char *pathname, int type) {
 
 int faccessat (int dirfd, const char *pathname, int type, int flags) {
 	int result;
+	int status;
 	instw_t instw;
 
 	if (!libc_handle)
@@ -4302,16 +4303,20 @@ int faccessat (int dirfd, const char *pathname, int type, int flags) {
 
 	instw_new(&instw);
 	instw_setpathrel(&instw,dirfd,pathname);
+	instw_getstatus(&instw,&status);
 
 #if DEBUG
 	instw_print(&instw);
 #endif
 
-	  /* nothing is modified, so there is nothing to save */
-	instw_apply(&instw);
-
-	  /* instw resolved an absolute path, so the descriptor is spent */
-	result=true_faccessat(AT_FDCWD,instw.translpath,type,flags);
+	  /* A question, not a change: look where the file is rather than
+	   * instw_apply()ing it into the translated tree, which would pull
+	   * everything merely asked about into the built package.
+	   *   instw resolved an absolute path, so the descriptor is spent. */
+	if(status&INSTW_TRANSLATED)
+		result=true_faccessat(AT_FDCWD,instw.translpath,type,flags);
+	else
+		result=true_faccessat(AT_FDCWD,instw.path,type,flags);
 	logg("%d\tfaccessat\t%s\t#%s\n",result,instw.reslvpath,error(result));
 
 	instw_delete(&instw);
@@ -4324,6 +4329,7 @@ int faccessat (int dirfd, const char *pathname, int type, int flags) {
    * to the real filesystem. */
 int euidaccess (const char *pathname, int type) {
 	int result;
+	int status;
 	instw_t instw;
 
 	if (!libc_handle)
@@ -4339,9 +4345,12 @@ int euidaccess (const char *pathname, int type) {
 
 	instw_new(&instw);
 	instw_setpath(&instw,pathname);
-	instw_apply(&instw);
+	instw_getstatus(&instw,&status);
 
-	result=true_euidaccess(instw.translpath,type);
+	if(status&INSTW_TRANSLATED)
+		result=true_euidaccess(instw.translpath,type);
+	else
+		result=true_euidaccess(instw.path,type);
 	logg("%d\teuidaccess\t%s\t#%s\n",result,instw.reslvpath,error(result));
 
 	instw_delete(&instw);
