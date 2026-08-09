@@ -359,6 +359,14 @@ int parse_suffix(char *,char *,const char *);
   /* single method used to minimize excessive returns */
 #define finalize(code) {rcod=code;goto finalize;}
 
+  /* libc annotates these path parameters nonnull, so comparing one to NULL
+   * where it is declared makes gcc warn that the test is redundant. An
+   * interposed call sees whatever the program really passed, annotation or
+   * not, so the test stays and the pointer is checked here instead. */
+static inline int instw_emptypath(const char *p) {
+	return p==NULL || *p=='\0';
+}
+
   /* open() takes its third argument only when it may create a file, and
    * reading a va_arg the caller never passed is undefined. O_TMPFILE is
    * more than one bit, so it has to be masked rather than tested. */
@@ -3975,9 +3983,9 @@ int utimensat (int dirfd, const char *pathname,
            !(__instw.gstatus & INSTW_OKWRAP) )
                return true_utimensat(dirfd,pathname,times,flags);
 
-         /* A null path means the descriptor itself, which needs no */
-         /* translating: it already refers to the translated file.  */
-       if(pathname==NULL)
+         /* A null or empty path means the descriptor itself, which needs */
+         /* no translating: it already refers to the translated file.      */
+       if(instw_emptypath(pathname))
                return true_utimensat(dirfd,pathname,times,flags);
 
        instw_new(&instw);
@@ -4062,7 +4070,7 @@ int __fstatat64_time64(int dirfd, const char *path, void *s, int flags) {
 	   * O_PATH descriptor on a symbolic link the rebuilt name gets followed,
 	   * and a dangling one then reports ENOENT instead of the link. Hand
 	   * these straight over, NULL included, and let libc answer. */
-	if(path==NULL || *path=='\0')
+	if(instw_emptypath(path))
 		return true_fstatat64_time64(dirfd,path,s,flags);
 
 	if(!libc_handle)
@@ -4947,7 +4955,7 @@ int fstatat (int dirfd, const char *path, struct stat *s, int flags) {
 	   * O_PATH descriptor on a symbolic link the rebuilt name gets followed,
 	   * and a dangling one then reports ENOENT instead of the link. Hand
 	   * these straight over, NULL included, and let libc answer. */
-	if(path==NULL || *path=='\0')
+	if(instw_emptypath(path))
 		return true_fstatat(dirfd,path,s,flags);
  
  	/* If all we are doing is normal open, forgo refcounting, etc. */
@@ -5025,7 +5033,7 @@ int __fxstatat (int version, int dirfd, const char *path, struct stat *s, int fl
 	   * O_PATH descriptor on a symbolic link the rebuilt name gets followed,
 	   * and a dangling one then reports ENOENT instead of the link. Hand
 	   * these straight over, NULL included, and let libc answer. */
-	if(path==NULL || *path=='\0')
+	if(instw_emptypath(path))
 		return true_fxstatat(version,dirfd,path,s,flags);
  
  	/* If all we are doing is normal open, forgo refcounting, etc. */
@@ -5102,7 +5110,7 @@ int fstatat64 (int dirfd, const char *path, struct stat64 *s, int flags) {
 	   * O_PATH descriptor on a symbolic link the rebuilt name gets followed,
 	   * and a dangling one then reports ENOENT instead of the link. Hand
 	   * these straight over, NULL included, and let libc answer. */
-	if(path==NULL || *path=='\0')
+	if(instw_emptypath(path))
 		return true_fstatat64(dirfd,path,s,flags);
  
  	/* If all we are doing is normal open, forgo refcounting, etc. */
@@ -5178,7 +5186,7 @@ int __fxstatat64 (int version, int dirfd, const char *path, struct stat64 *s, in
 	   * O_PATH descriptor on a symbolic link the rebuilt name gets followed,
 	   * and a dangling one then reports ENOENT instead of the link. Hand
 	   * these straight over, NULL included, and let libc answer. */
-	if(path==NULL || *path=='\0')
+	if(instw_emptypath(path))
 		return true_fxstatat64(version,dirfd,path,s,flags);
  
  	/* If all we are doing is normal open, forgo refcounting, etc. */
@@ -5756,7 +5764,7 @@ int statx(int dirfd, const char *path, int flags,
 
 	  /* An empty path asks about 'dirfd' itself (AT_EMPTY_PATH), */
 	  /* so there is nothing for us to translate.                 */
-	if(path==NULL || *path=='\0')
+	if(instw_emptypath(path))
 		return true_statx(dirfd,path,flags,mask,buf);
 
 	instw_new(&instw);
