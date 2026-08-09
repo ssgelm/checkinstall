@@ -16,7 +16,9 @@
  * along with this program; if not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <errno.h>
 #include <fcntl.h>
+#include <limits.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -24,6 +26,7 @@
 #include <time.h>
 #include <dlfcn.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "localdecls.h"
 
@@ -90,7 +93,58 @@ void test_chown(void) {
 }
 
 void test_chroot(void) {
+	char *error;
+	char *longpath;
+	void *libc;
+	int (*libc_chroot)(const char *);
+	int old_refcount;
+	int libc_result,libc_errno;
+	int wrapper_result,wrapper_errno;
+
 	chroot("/");
+	longpath=malloc(PATH_MAX*2+1);
+	if(!longpath) exit(255);
+	memset(longpath,'a',PATH_MAX*2);
+	longpath[0]='/';
+	longpath[PATH_MAX*2]='\0';
+
+	libc=dlopen(LIBC_FILE,RTLD_LAZY);
+	if(!libc) {
+		fprintf(stderr,"Unable to open " LIBC_FILE ": %s\n",dlerror());
+		exit(255);
+	}
+	dlerror();
+	libc_chroot=(int (*)(const char *))dlsym(libc,"chroot");
+	if((error=dlerror()) != NULL) {
+		fprintf(stderr,"Unable to resolve chroot in " LIBC_FILE ": %s\n",
+		        error);
+		exit(255);
+	}
+
+	old_refcount=*refcount;
+	errno=0;
+	libc_result=libc_chroot(longpath);
+	libc_errno=errno;
+	if(*refcount != old_refcount) {
+		fprintf(stderr,
+		        "FAIL: direct libc chroot changed refcount from %d to %d\n",
+		        old_refcount,*refcount);
+		exit(1);
+	}
+
+	errno=0;
+	wrapper_result=chroot(longpath);
+	wrapper_errno=errno;
+	if(wrapper_result != libc_result || wrapper_errno != libc_errno) {
+		fprintf(stderr,
+		        "FAIL: libc chroot returned %d with errno %d; "
+		        "installwatch returned %d with errno %d\n",
+		        libc_result,libc_errno,wrapper_result,wrapper_errno);
+		exit(1);
+	}
+
+	dlclose(libc);
+	free(longpath);
 }
 
 void test_creat(void) {
@@ -243,7 +297,7 @@ int main(int argc, char **argv) {
 	passed = failed = 0;
 	do_test("chmod", test_chmod, 3);
 	do_test("chown", test_chown, 3);
-	do_test("chroot", test_chroot, 1);
+	do_test("chroot", test_chroot, 2);
 	do_test("creat", test_creat, 2);
 	do_test("fchmod", test_fchmod, 3);
 	do_test("fchown", test_fchown, 3);
