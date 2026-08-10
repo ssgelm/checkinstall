@@ -2,6 +2,8 @@
 # cmake's file(INSTALL) stats the destination before copying (#1051180).
 . "$HARNESS"
 
+need "$CK_PKGTOOL" "no tool for $CK_PKGTYPE packages"
+
 command -v cmake >/dev/null || { skip "cmake is not installed"; finish; }
 
 d=$WORK/pkg; make_pkgdir "$d"

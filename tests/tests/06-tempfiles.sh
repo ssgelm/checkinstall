@@ -3,6 +3,8 @@
 # wrapper, so mkstemp() and its relatives need wrapping themselves.
 . "$HARNESS"
 
+need "$CK_PKGTOOL" "no tool for $CK_PKGTYPE packages"
+
 # 1. sed -i, the everyday case
 d=$WORK/pkg; make_pkgdir "$d"
 cat > "$d/sed.sh" <<'INNER'

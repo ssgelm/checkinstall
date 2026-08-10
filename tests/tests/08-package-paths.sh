@@ -3,6 +3,9 @@
 # /lib/systemd/system belongs in /usr/lib/systemd/system (DEP 17).
 . "$HARNESS"
 
+need_pkgtype D
+need dpkg-deb "this one reads a .deb"
+
 [ -L /lib ] || { skip "/lib is not a symlink on this system"; finish; }
 
 d=$WORK/pkg; make_pkgdir "$d"

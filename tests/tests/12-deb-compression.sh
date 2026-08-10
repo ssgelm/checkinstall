@@ -2,6 +2,9 @@
 # --debcompression picks what dpkg-deb packs the data member with.
 . "$HARNESS"
 
+need_pkgtype D
+need dpkg-deb "this one reads a .deb"
+
 build() { # <name> <checkinstall args...>
 	local n=$1; shift
 	local d=$WORK/$n; make_pkgdir "$d"

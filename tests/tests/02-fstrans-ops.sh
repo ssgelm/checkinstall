@@ -3,6 +3,8 @@
 # see the files the ones before it created.
 . "$HARNESS"
 
+need "$CK_PKGTOOL" "no tool for $CK_PKGTYPE packages"
+
 d=$WORK/pkg; make_pkgdir "$d"
 cat > "$d/ops.sh" <<'INNER'
 #!/bin/sh

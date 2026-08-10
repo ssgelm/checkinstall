@@ -3,6 +3,9 @@
 # (#785441).
 . "$HARNESS"
 
+need_pkgtype D
+need dpkg-deb "this one reads a .deb"
+
 d=$WORK/pkg; make_pkgdir "$d"
 printf 'hello\n' > "$d/hello.txt"
 cat > "$d/Makefile" <<'INNER'

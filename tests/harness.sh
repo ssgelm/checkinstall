@@ -11,6 +11,21 @@ fail() { printf '  FAIL  %s\n' "$*"; FAILURES=$((FAILURES + 1)); }
 skip() { printf '  skip  %s\n' "$*"; }
 finish() { [ "$FAILURES" -eq 0 ]; exit $?; }
 
+# need <command> [reason]: skip the whole test when a tool is absent. The
+# suite runs on distributions that have no dpkg, no rpmbuild, or neither.
+need() {
+	command -v "$1" >/dev/null 2>&1 || {
+		skip "${2:-$1 is not installed}"; finish; }
+}
+
+# need_pkgtype <D|R|S>: skip when the suite is building another format.
+# Having the tool is not the same as using it: dpkg-deb is installed on
+# plenty of machines that are running the suite against rpm.
+need_pkgtype() {
+	[ "${CK_PKGTYPE:-D}" = "$1" ] || {
+		skip "building $CK_PKGTYPE packages, not $1"; finish; }
+}
+
 # evidence <lines> <text>: the tail of some output, indented, with control
 # bytes made printable. A failing install can emit anything, and grep calls
 # a stream with one stray byte in it binary and prints nothing useful. hppa

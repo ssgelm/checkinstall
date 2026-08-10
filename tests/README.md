@@ -67,6 +67,8 @@ run from there.
 | `18-renameat2.sh` | `RENAME_NOREPLACE` refusing properly, and `RENAME_EXCHANGE` swapping rather than destroying |
 | `19-empty-path.sh` | `AT_EMPTY_PATH` keeping descriptor semantics for an `O_PATH` handle on a dangling link |
 | `20-access.sh` | `faccessat()` and `euidaccess()` asking about the translated path, not the real one |
+| `21-rpm.sh` | the rpm backend building a package with the installed files and the right header |
+| `22-slackware.sh` | the Slackware backend building a tarball through makepkg |
 
 `src/` holds seven small C helpers: one that materialises an `O_TMPFILE`
 through `linkat`, one that calls the LFS64 temporary-file functions
@@ -75,6 +77,21 @@ that drives the `*at` calls with a real directory descriptor, one that
 calls `renameat2` with its flags, one that stats an `O_PATH` descriptor
 through `AT_EMPTY_PATH`, and one that puts the same question to every
 member of the `access` family.
+
+## Package formats
+
+The suite builds Debian packages where `dpkg-deb` is present, rpms where
+only `rpmbuild` is, and a Slackware tarball where neither is, which is how
+it has something to test on Fedora, openSUSE and Arch. `CHECKINSTALL_PKGTYPE`
+set to `D`, `R` or `S` overrides the choice.
+
+A test that reads a `.deb` starts with `need_pkgtype D` and is skipped
+elsewhere. Having a tool is not the same as using it: plenty of machines
+running the suite against rpm have dpkg installed as well.
+
+Slackware packages are built by a makepkg. checkinstall ships its own,
+`makepak`, which the prefix under test has unless the packager dropped it,
+as Debian does.
 
 ## Unit tests or integration tests
 
@@ -117,7 +134,6 @@ something under installwatch alone. Numbering is only for ordering.
 - `11-workdir-exclusion.sh` checks the source rather than the behaviour.
   Driving that branch needs a build whose own files reach checkinstall's file
   list, which has not happened from this harness.
-- Nothing here covers rpm or Slackware output, `--install=yes`, or the
-  interactive prompts.
+- `--install=yes` and the interactive prompts have no coverage.
 - `02` reports each operation separately but stops at the first one that
   breaks the chain, since later steps reuse earlier files.

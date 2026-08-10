@@ -11,6 +11,9 @@
 # breaks the extraction here.
 . "$HARNESS"
 
+need_pkgtype D
+need dpkg-deb "this one reads a .deb"
+
 # The symlink sorts before its target, so tar extracts it while it dangles.
 d=$WORK/sym; make_pkgdir "$d"
 mkdir -p "$d/stage/usr/local/bin"

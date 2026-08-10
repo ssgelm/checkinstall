@@ -3,6 +3,8 @@
 # the stat calls a build makes afterwards (#1116590).
 . "$HARNESS"
 
+need "$CK_PKGTOOL" "no tool for $CK_PKGTYPE packages"
+
 d=$WORK/pkg; make_pkgdir "$d"
 cat > "$d/mk.sh" <<'INNER'
 #!/bin/sh

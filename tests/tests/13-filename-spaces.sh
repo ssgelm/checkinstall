@@ -4,6 +4,9 @@
 # and the file was dropped from the package.
 . "$HARNESS"
 
+need_pkgtype D
+need dpkg-deb "this one reads a .deb"
+
 # ---- a file whose name contains two consecutive spaces ----
 d=$WORK/dbl; make_pkgdir "$d"
 { printf 'install:\n'

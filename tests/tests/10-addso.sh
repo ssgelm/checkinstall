@@ -3,6 +3,9 @@
 # postinstall guard it writes has to work under /bin/sh (#892985).
 . "$HARNESS"
 
+need_pkgtype D
+need dpkg-deb "this one reads a .deb"
+
 d=$WORK/pkg; make_pkgdir "$d"
 printf 'int f(void){return 1;}\n' > "$d/f.c"
 gcc -shared -fPIC -o "$d/libckt.so.1" "$d/f.c" 2>/dev/null || { skip "no compiler for a shared library"; finish; }

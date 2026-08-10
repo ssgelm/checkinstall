@@ -46,6 +46,7 @@ else
 	echo "checkinstall source: $CK_SRC"
 fi
 
+CK_MAKEPKG=/sbin/makepkg
 CKPREFIX=$(mktemp -d "$here/.prefix.XXXXXX")
 TESTTMP=$(mktemp -d "$here/.tmp.XXXXXX")
 PKGDIR=$TESTTMP/packages
@@ -58,9 +59,29 @@ trap 'rm -rf "$CKPREFIX" "$TESTTMP"' EXIT
 write_rc() {
 	sed -e "s|^PAK_DIR=.*|PAK_DIR=$PKGDIR|" \
 	    -e "s|^INSTALLWATCH_PREFIX=.*|INSTALLWATCH_PREFIX=\"$CKPREFIX\"|" \
-	    -e "s|^INSTYPE=.*|INSTYPE=\"D\"|" \
+	    -e "s|^INSTYPE=.*|INSTYPE=\"$CK_PKGTYPE\"|" \
+	    -e "s|^MAKEPKG=.*|MAKEPKG=\"$CK_MAKEPKG\"|" \
 	    "$1" > "$TESTTMP/checkinstallrc"
 }
+
+# Which package format to build. Debian is the default where dpkg-deb is
+# there, otherwise whatever this distribution can actually make, so the
+# suite has something to test on Fedora, Arch and openSUSE too.
+#   D deb, R rpm, S Slackware tarball. Slackware needs a makepkg, and the
+# one checkinstall ships is makepak, installed into the prefix under test.
+CK_PKGTYPE=${CHECKINSTALL_PKGTYPE:-}
+if [ -z "$CK_PKGTYPE" ]; then
+	if   command -v dpkg-deb >/dev/null 2>&1; then CK_PKGTYPE=D
+	elif command -v rpmbuild >/dev/null 2>&1; then CK_PKGTYPE=R
+	else                                           CK_PKGTYPE=S
+	fi
+fi
+case $CK_PKGTYPE in
+	D) CK_PKGTOOL=dpkg-deb; CK_PKGEXT=deb ;;
+	R) CK_PKGTOOL=rpmbuild; CK_PKGEXT=rpm ;;
+	S) CK_PKGTOOL=tar;      CK_PKGEXT=tgz ;;
+	*) echo "error: CHECKINSTALL_PKGTYPE must be D, R or S"; exit 2 ;;
+esac
 
 if [ -n "$CK_INSTALLED" ]; then
 	rm -rf "$CKPREFIX"
@@ -107,6 +128,20 @@ else
 fi
 
 CKBIN=$(find "$CKPREFIX" -name checkinstall -type f -perm -u+x | head -1)
+  # A Slackware package is built by a makepkg. checkinstall ships its own,
+  # makepak, which the prefix under test has unless the packager dropped it,
+  # as Debian does. The rc file is already written by now, so amend it.
+if [ "$CK_PKGTYPE" = S ]; then
+	found=$(find "$CKPREFIX" -name makepak -type f 2>/dev/null | head -1)
+	[ -n "$found" ] || found=$(command -v makepkg 2>/dev/null)
+	if [ -n "$found" ]; then
+		CK_MAKEPKG=$found
+		CK_PKGTOOL=$found
+		sed -i "s|^MAKEPKG=.*|MAKEPKG=\"$CK_MAKEPKG\"|" "$TESTTMP/checkinstallrc"
+	fi
+	echo "makepkg: $CK_MAKEPKG"
+fi
+
 IW_SO=$(find "$CKPREFIX" -name installwatch.so | head -1)
 if [ -z "$CKBIN" ] || [ -z "$IW_SO" ]; then
 	echo "error: no checkinstall or installwatch.so under $CKPREFIX"
@@ -116,6 +151,7 @@ fi
 export CK="$CKBIN"
 export IW_SO
 export CKPREFIX CKRC="$TESTTMP/checkinstallrc" CK_SRC PKGDIR TESTTMP
+export CK_PKGTYPE CK_PKGTOOL CK_PKGEXT
 export CK_MODE=$([ -n "$CK_DEB" ] && echo deb || echo src)
 export HARNESS="$here/harness.sh"
 

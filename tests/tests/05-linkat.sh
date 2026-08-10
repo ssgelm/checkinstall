@@ -3,6 +3,8 @@
 # the source is a descriptor rather than a path.
 . "$HARNESS"
 
+need "$CK_PKGTOOL" "no tool for $CK_PKGTYPE packages"
+
 # 1. a hard link between two paths that exist for real must not reach /
 d=$WORK/pkg; make_pkgdir "$d"
 real=$WORK/real; mkdir -p "$real"; echo source > "$real/source"
