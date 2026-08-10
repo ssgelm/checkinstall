@@ -105,6 +105,38 @@ jobs:
               tests/run-tests.sh
             '
 
+  # Everything above is Debian or Ubuntu, so nothing was exercising the rpm
+  # backend, or a distribution that packages glibc and coreutils its own way.
+  # The suite picks its package format from what it finds: rpm on Fedora and
+  # openSUSE, a Slackware tarball on Arch, which has neither dpkg nor rpm.
+  other-distros:
+    name: ${{ matrix.image }}
+    runs-on: ubuntu-latest
+    container: ${{ matrix.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: fedora:latest
+            install: dnf -y install gcc make gettext file cmake rpm-build findutils diffutils tar gzip git
+          - image: opensuse/tumbleweed
+            install: zypper --non-interactive install gcc make gettext-tools file cmake rpm-build findutils diffutils tar gzip git
+          - image: archlinux:latest
+            install: pacman -Sy --noconfirm gcc make gettext file cmake findutils diffutils tar gzip git
+    steps:
+      - name: install what the suite needs
+        run: ${{ matrix.install }}
+      - uses: actions/checkout@v4
+      - name: report the environment
+        run: |
+          echo "distro: $(. /etc/os-release && echo "$PRETTY_NAME")"
+          echo "glibc:  $(ldd --version | head -1)"
+          echo "gcc:    $(gcc --version | head -1)"
+      - name: build
+        run: make
+      - name: run the suite
+        run: tests/run-tests.sh
+
   # Architectures no runner provides. Emulated, so slow, and worth it only
   # because armhf is where the 64-bit time transition broke the build once
   # already and s390x is the only big-endian target within reach.
