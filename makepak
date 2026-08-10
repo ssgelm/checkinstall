@@ -68,6 +68,17 @@ EOF
 TMP=/tmp # This can be a hole, but I'm going to be careful about file
          # creation in there, so don't panic. :^)
 
+# Slackware's makepkg takes -l and -c. This one has never needed them, but
+# checkinstall passes MAKEPKG_FLAGS="-l y -c n" by default, and printing the
+# usage message in reply meant no package was built at all.
+while [ $# -gt 1 ]; do
+  case "$1" in
+    -l|-c|--linkadd|--chown) shift 2 ;;
+    -p|--prepend) shift ;;
+    *) break ;;
+  esac
+done
+
 # These tests, while by no means exhaustive, will give a usage message
 # and exit with a wide range of bad input.
 

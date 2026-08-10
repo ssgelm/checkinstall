@@ -112,12 +112,33 @@ function ckversion {
 
 
 
+# show_log <file>: offer the log to somebody who can answer, and simply
+# print it to anybody who cannot. A build run from a script or a CI job used
+# to be asked anyway, take the default yes, and hand the log to a pager that
+# is often not installed, losing the one piece of output that mattered.
+show_log() {
+   if [ -t 0 ]; then
+      echogn "Do you want to see the log file? "
+      yorn || return 1
+      if [ -n "`command -v ${PAGER%% *} 2> /dev/null`" ]; then
+         $PAGER "$1"
+      else
+         cat "$1"
+      fi
+   else
+      echo
+      cat "$1"
+   fi
+   return 0
+}
+
 function usage() {
 
 # If the user has a default pager defined in the PAGER environment variable,
 # we'll use that. If not, we'll use "more".
 
 ! [ "$PAGER" ] && PAGER=more
+
 
 
    echo
@@ -1060,7 +1081,7 @@ if ! [ -x "$VISUAL" ]; then
    if [ -x "$EDITOR" ]; then
       VISUAL=$EDITOR
    else
-      VISUAL=`which vi`
+      VISUAL=`command -v vi`
    fi
 fi
 
@@ -1072,7 +1093,7 @@ BADTAR=0
 if [ "$TAR" ]; then
    ! [ -x "$TAR" ] && BADTAR=1 
 else
-   TAR=`which tar-1.13 2> /dev/null`
+   TAR=`command -v tar-1.13 2> /dev/null`
 fi
 
 if ! [ -x "$TAR" ]; then
@@ -2203,7 +2224,7 @@ FAILED=0
 if [ $INSTALL -gt 0 ]; then
    # Verify that we have the "installpkg" command in our path 
 
-   INSTALLPKG_PATH=`which installpkg 2> /dev/null`
+   INSTALLPKG_PATH=`command -v installpkg 2> /dev/null`
 
    if ! [ -x "$INSTALLPKG_PATH" ]; then
       echo
@@ -2332,7 +2353,15 @@ else
    okfail
 fi
 
-mv ${TMP_DIR}/"${SLACK_PKG_BASENAME}.tgz" "$DIRECTORIO_FUENTE"
+if [ ! -f ${TMP_DIR}/"${SLACK_PKG_BASENAME}.tgz" ]; then
+   echo
+   echo "*** $MAKEPKG did not produce ${SLACK_PKG_BASENAME}.tgz"
+   echo "*** Slackware package creation failed"
+   echo
+   FAILED=1
+else
+   mv ${TMP_DIR}/"${SLACK_PKG_BASENAME}.tgz" "$DIRECTORIO_FUENTE" || FAILED=1
+fi
 
 #
 # If requested, we install the package to register it in Slackware's
@@ -2370,9 +2399,7 @@ if [ "$INSTALL" = "1" ]; then
       echog "*** Failed to install the package"
       echo
       if [ $SHOW_SLACK_INSTALL -eq 0 ]; then
-         echogn "Do you want to see the log file? "
-         if yorn ; then
-            $PAGER ${TMP_DIR}/slackinstall.log
+         if show_log ${TMP_DIR}/slackinstall.log ; then
             cleanup
             exit 1
          fi
@@ -2410,7 +2437,7 @@ FAILED=0
 
 # Verify that we have the rpm command in our path
 
-RPM_PATH=`which rpm 2> /dev/null`
+RPM_PATH=`command -v rpm 2> /dev/null`
 
 if ! [ -x "$RPM_PATH" ]; then
    echo
@@ -2446,21 +2473,26 @@ fi
 # "--target=arch" instead of "--target arch"
 # are 3.x < version < 4.0.3
 
-if [ $RPM_MAJOR_VERSION -eq 4 -a $RPM_PATCH_LEVEL -lt 3 ]; then
+if [ "$RPM_MAJOR_VERSION" = 4 ] && [ "$RPM_PATCH_LEVEL" -lt 3 ] 2> /dev/null; then
    RPM_TARGET_FLAG="--target="
 else
    RPM_TARGET_FLAG="--target "
 fi
 
-# rpmbuild seems to exist only in RPM 4
+# rpmbuild arrived in RPM 4 and rpm itself lost the build modes soon after,
+# so ask whether rpmbuild is there rather than deciding from a version.
+# Everything past 4 read as "not 4" and was told to run "rpm -bb", which
+# current rpm answers with "-bb: unknown option".
 
-if [ $RPM_MAJOR_VERSION -eq 4 ]; then
+if [ -n "`command -v rpmbuild 2> /dev/null`" ]; then
+   RPMBUILD="rpmbuild"
+elif [ "$RPM_MAJOR_VERSION" -ge 4 ] 2> /dev/null; then
    RPMBUILD="rpmbuild"
 else
    RPMBUILD="rpm"
 fi
 
-if [ "$RPMBUILD" = "rpmbuild" -a ! -x "`which rpmbuild 2> /dev/null`" ]; then
+if [ "$RPMBUILD" = "rpmbuild" -a ! -x "`command -v rpmbuild 2> /dev/null`" ]; then
    echo
    echo "*** The \"rpmbuild\" program is not in your PATH!"
    echo
@@ -2487,10 +2519,32 @@ fi
 [ $DEBUG -gt 0 ] && echo "debug: RPMSOURCEDIR=$RPMSOURCEDIR"
 
 
+  # rpm names a _topdir whether or not it exists yet: on a system where
+  # nobody has built a package the macro is set and nothing is on disk.
+  # rpmbuild creates it on demand, so do the same rather than asking.
+if [ -n "$RPMSOURCEDIR" ] && [ "$RPMSOURCEDIR" != "NOT-FOUND" ] &&
+   ! [ -d "$RPMSOURCEDIR/SOURCES" ]; then
+   mkdir -p "$RPMSOURCEDIR/SOURCES" 2> /dev/null
+fi
+
+  # Only ask if there is somebody to answer. Reading a closed stdin returns
+  # at once, and this loop asked again, forever, at full tilt.
 while ! [ -d "$RPMSOURCEDIR/SOURCES" ]; do
+   if ! [ -t 0 ]; then
+      echo
+      echog "*** No RPM source directory tree, and no terminal to ask for one"
+      echog "*** Set %%_topdir in your rpm macros, or create SOURCES under it"
+      echo
+      cleanup
+   fi
    echo
    echogn "%s has no SOURCES directory. Please write the path to\nthe RPM source directory tree: " "$RPMSOURCEDIR"
-   read RPMSOURCEDIR
+   if ! read RPMSOURCEDIR; then
+      echo
+      echog "*** No RPM source directory tree given"
+      echo
+      cleanup
+   fi
    ! [ "$RPMSOURCEDIR" ] && RPMSOURCEDIR="NOT-FOUND"
 done
 
@@ -2522,10 +2576,28 @@ License: $LICENSE
 Packager:  checkinstall-$CHECKINSTALL_VERSION
 Group:     $PKG_GROUP          
 BuildRoot: $BROOTPATH
-Provides:  $PROVIDES
-Requires:  $REQUIRES,/bin/sh
-Recommends: $RECOMMENDS
-Suggests:  $SUGGESTS
+EOF
+
+  # rpm refuses a tag with nothing after it: "error: line 11: Empty tag:
+  # Recommends:". Write only the ones that have a value. Requires always
+  # carries /bin/sh, and an empty $REQUIRES in front of it left a leading
+  # comma, which is a syntax error of its own.
+   if [ -n "$REQUIRES" ]; then
+      echo "Requires:  $REQUIRES,/bin/sh" >> "$SPEC_PATH"
+   else
+      echo "Requires:  /bin/sh" >> "$SPEC_PATH"
+   fi
+   if [ -n "$PROVIDES" ]; then
+      echo "Provides:  $PROVIDES" >> "$SPEC_PATH"
+   fi
+   if [ -n "$RECOMMENDS" ]; then
+      echo "Recommends: $RECOMMENDS" >> "$SPEC_PATH"
+   fi
+   if [ -n "$SUGGESTS" ]; then
+      echo "Suggests:  $SUGGESTS" >> "$SPEC_PATH"
+   fi
+
+   cat >> "$SPEC_PATH" << EOF
 
 %description
 EOF
@@ -2617,10 +2689,7 @@ if [ $? -gt 0 ]; then
    echo
    echog "*** Failed to build the package"
    echo
-   echogn "Do you want to see the log file? "
-   if yorn ; then
-      $PAGER ${TMP_DIR}/rpmbuild.log
-   fi
+   show_log ${TMP_DIR}/rpmbuild.log
    FAILED=1
 fi
  
@@ -2643,10 +2712,7 @@ if ! [ $FAILED -gt 0 ]; then
          echo
          echog "*** Failed to install the package"
          echo
-         echogn "Do you want to see the log file? "
-         if yorn ; then
-            $PAGER ${TMP_DIR}/rpminstall.log
-         fi
+         show_log ${TMP_DIR}/rpminstall.log
          FAILED=1
       fi
    else
@@ -2684,7 +2750,7 @@ d|D)
 # Work out the shared library dependencies the way a regular package does.
 # The binaries are staged by now, so this cannot happen before the summary.
 AUTOREQUIRES=""
-if [ $AUTODEPS -gt 0 ] && [ -x "`which dpkg-shlibdeps 2> /dev/null`" ]; then
+if [ $AUTODEPS -gt 0 ] && [ -x "`command -v dpkg-shlibdeps 2> /dev/null`" ]; then
    echogn "Looking for shared library dependencies..."
 
    SHLIB_BINARIES=`find "$BUILD_DIR" -type f | while read f; do
@@ -2727,7 +2793,7 @@ FAILED=0
 
 # Verify that we have the dpkg command in our path
 
-DPKG_PATH=`which dpkg 2> /dev/null`
+DPKG_PATH=`command -v dpkg 2> /dev/null`
 
 if ! [ -x "$DPKG_PATH" ]; then
    echo
@@ -2835,10 +2901,7 @@ if [ $? -gt 0 ]; then
    echo
    echog "*** Failed to build the package"
    echo
-   echogn "Do you want to see the log file? "
-   if yorn ; then
-      $PAGER ${TMP_DIR}/dpkgbuild.log
-   fi
+   show_log ${TMP_DIR}/dpkgbuild.log
    FAILED=1
 fi
 
@@ -2854,10 +2917,7 @@ if ! [ $FAILED -gt 0 ]; then
          echo
          echog "*** Failed to install the package"
          echo
-         echogn "Do you want to see the log file? "
-         if yorn ; then
-            $PAGER ${TMP_DIR}/dpkginstall.log
-         fi
+         show_log ${TMP_DIR}/dpkginstall.log
          FAILED=1
       fi
    else
