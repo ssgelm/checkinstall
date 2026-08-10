@@ -39,4 +39,28 @@ case $out in
 	            evidence 6 "$out" ;;
 esac
 
+# An access check on a descriptor rather than a name. The wrapper turned it
+# into a name, which is a different question for a dangling symlink.
+link=$base/dangling
+ln -sfn /nonexistent-target "$link"
+bare=$("$WORK/access-ops" "$target" "$link" 2>&1 | sed -n 's/^empty-path //p')
+wrapped=$(run_iw "$WORK/iw2" 1 "$WORK/access-ops" "$target" "$link" 2>&1 |
+          sed -n 's/^empty-path //p')
+if [ -z "$bare" ] || [ -z "$wrapped" ]; then
+	fail "the empty-path probe produced nothing (bare=[$bare] wrapped=[$wrapped])"
+elif [ "$bare" = "$wrapped" ]; then
+	ok "AT_EMPTY_PATH asks about the descriptor ($bare)"
+else
+	fail "AT_EMPTY_PATH: bare $bare, wrapped $wrapped"
+fi
+
+# Asking about a file must not drag it into the package.
+probe=/usr/bin/env
+run_iw "$WORK/iw3" 1 "$WORK/access-ops" "$probe" >/dev/null 2>&1
+if [ -e "$WORK/iw3/TRANSL$probe" ]; then
+	fail "access() copied $probe into the translated tree"
+else
+	ok "asking about a real file left it out of the translated tree"
+fi
+
 finish

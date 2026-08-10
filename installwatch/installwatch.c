@@ -4258,6 +4258,7 @@ long long int __time64(long long int *timer) {
 
 int access (const char *pathname, int type) {
        int result;
+       int status;
        instw_t instw;
 
        if (!libc_handle)
@@ -4276,15 +4277,20 @@ int access (const char *pathname, int type) {
 
        instw_new(&instw);
        instw_setpath(&instw,pathname);
+       instw_getstatus(&instw,&status);
 
 #if DEBUG
        instw_print(&instw);
 #endif
 
-         /* access() cannot modify anything, so there is nothing to save */
-       instw_apply(&instw);
-
-       result=true_access(instw.translpath,type);
+         /* A question, not a change. instw_apply() would materialise the
+          * path in the translated tree, so merely asking whether a file
+          * exists put it in the built package. Look where it is, as the
+          * rest of the access family does. */
+       if(status&INSTW_TRANSLATED)
+               result=true_access(instw.translpath,type);
+       else
+               result=true_access(instw.path,type);
        logg("%d\taccess\t%s\t#%s\n",result,instw.reslvpath,error(result));
 
        instw_delete(&instw);
@@ -4303,6 +4309,13 @@ int faccessat (int dirfd, const char *pathname, int type, int flags) {
 #if DEBUG
 	debug(2,"faccessat(%d,%s,%d,%d)\n",dirfd,pathname,type,flags);
 #endif
+
+	  /* With AT_EMPTY_PATH an empty pathname asks about 'dirfd' itself.
+	   * Rebuilding a name for it asks a different question: the rebuilt
+	   * name is followed, so an O_PATH descriptor on a dangling symlink
+	   * comes back ENOENT. Same as the fstatat family. */
+	if(instw_emptypath(pathname))
+		return true_faccessat(dirfd,pathname,type,flags);
 
 	  /* We were asked to work in "real" mode */
 	if( !(__instw.gstatus & INSTW_INITIALIZED) ||

@@ -44,6 +44,23 @@ int main(int argc, char **argv) {
 		}
 	}
 
+	/* An empty pathname with AT_EMPTY_PATH asks about the descriptor, not
+	 * about a name. Rebuilding a name follows it, so an O_PATH handle on a
+	 * dangling symlink used to come back ENOENT. Compare against a bare
+	 * run: the caller cannot tell us what the right answer is, only that
+	 * it must be the same one. */
+	if (argc > 2) {
+		int pfd = open(argv[2], O_PATH | O_NOFOLLOW);
+		if (pfd < 0) {
+			puts("could not open the link with O_PATH");
+			bad = 1;
+		} else {
+			rc = faccessat(pfd, "", F_OK, AT_EMPTY_PATH);
+			printf("empty-path rc=%d\n", rc);
+			close(pfd);
+		}
+	}
+
 	if (!bad)
 		puts("ok");
 	return bad;
