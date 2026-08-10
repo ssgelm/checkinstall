@@ -29,7 +29,7 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
           apt-get -qq update
           apt-get -qq install -y build-essential gettext file cmake dpkg-dev git
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: report the environment
         run: |
           echo "glibc:  $(ldd --version | head -1)"
@@ -51,7 +51,7 @@ jobs:
   i386:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: build and test in a 32-bit userland
         run: |
           docker run --rm --platform linux/386 \
@@ -83,7 +83,7 @@ jobs:
   distro-flags:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: build with a distribution's flags in a 32-bit userland
         run: |
           docker run --rm --platform linux/386 \
@@ -126,7 +126,7 @@ jobs:
     steps:
       - name: install what the suite needs
         run: ${{ matrix.install }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: report the environment
         run: |
           echo "distro: $(. /etc/os-release && echo "$PRETTY_NAME")"
@@ -162,8 +162,8 @@ jobs:
             suite: no
             flags: ""
     steps:
-      - uses: actions/checkout@v4
-      - uses: docker/setup-qemu-action@v3
+      - uses: actions/checkout@v7
+      - uses: docker/setup-qemu-action@v4
       - name: build and test under emulation
         run: |
           docker run --rm --platform ${{ matrix.platform }} \
@@ -189,7 +189,7 @@ jobs:
       matrix:
         os: [ubuntu-24.04, ubuntu-22.04, ubuntu-24.04-arm]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: install what the suite needs
         run: |
           sudo apt-get -qq update
@@ -215,7 +215,7 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
           apt-get -qq update
           apt-get -qq install -y build-essential gettext file dpkg-dev git
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: build with the distribution's flags and refuse any warning
         run: |
           eval "$(dpkg-buildflags --export=sh)"
@@ -232,7 +232,7 @@ jobs:
   old-glibc-guards:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: install
         run: sudo apt-get -qq update && sudo apt-get -qq install -y build-essential
       - name: compile the pre-2.33 branch
