@@ -132,12 +132,14 @@ show_log() {
    return 0
 }
 
-function usage() {
-
 # If the user has a default pager defined in the PAGER environment variable,
-# we'll use that. If not, we'll use "more".
+# we'll use that. If not, we'll use "more". This lived inside usage() below,
+# so it only ever ran when the usage message was printed and every other
+# $PAGER in the script expanded to nothing.
 
 ! [ "$PAGER" ] && PAGER=more
+
+function usage() {
 
 
 
